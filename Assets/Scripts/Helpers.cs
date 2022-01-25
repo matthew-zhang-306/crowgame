@@ -40,11 +40,15 @@ public static class Helpers {
         f();
     }
 
-    public static Vector2 ToVector2(this Vector3 v) {
+    public static Vector2 XY(this Vector3 v) {
 		return new Vector2(v.x, v.y);
 	}
 
-    public static Vector3 ToVector3(this Vector2 v, float z = 0f) {
+    public static Vector2 XZ(this Vector3 v) {
+        return new Vector2(v.x, v.z);
+    }
+
+    public static Vector3 XYZ(this Vector2 v, float z = 0f) {
         return new Vector3(v.x, v.y, z);
     }
 
