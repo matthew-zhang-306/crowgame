@@ -11,23 +11,31 @@ public class PushableBox : MonoBehaviour
     Vector3 intendedPosition;
     new Rigidbody rigidbody;
     new Collider collider;
+    int wallMask;
 
     Vector3 groundNormal;
     float groundY;
+
+    Transform currentRide;
     
 
     private void Awake() {
         rigidbody = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
+        wallMask = LayerMask.GetMask("Wall");
 
         intendedPosition = transform.position;
     }
 
 
     private void FixedUpdate() {
+        if (currentRide != null) {
+            intendedPosition = currentRide.position + new Vector3(0, 0, 0);
+        }
+
         groundNormal = Vector3.zero;
         groundY = 0f;
-        if (Physics.BoxCast(collider.bounds.center + Vector3.up * 0.1f, collider.bounds.extents - Vector3.one * 0.03f, Vector3.down, out RaycastHit hit, Quaternion.identity, 0.25f)) {
+        if (Physics.BoxCast(collider.bounds.center + Vector3.up * 0.1f, collider.bounds.extents - Vector3.one * 0.03f, Vector3.down, out RaycastHit hit, Quaternion.identity, 0.25f, wallMask)) {
             Debug.DrawRay(transform.position, hit.normal * 2f, Color.red, Time.fixedDeltaTime);
             groundY = hit.point.y;
             groundNormal = hit.normal;
@@ -52,10 +60,23 @@ public class PushableBox : MonoBehaviour
         if (other.CompareTag("Peck") && groundNormal != Vector3.zero) {
             Vector3 pushDirection = other.transform.forward;
             Debug.DrawRay(collider.bounds.center, other.transform.forward * 1f, Color.yellow, 0.2f);
-            if (!Physics.BoxCast(collider.bounds.center, Vector3.one * 0.4f, pushDirection, out RaycastHit hit, Quaternion.identity, 1f)) {
+            if (!Physics.BoxCast(collider.bounds.center, Vector3.one * 0.4f, pushDirection, out RaycastHit hit, Quaternion.identity, 1f, wallMask)) {
                 // move
                 intendedPosition += pushDirection;
+                currentRide = null;
             }
+        }
+
+        if (other.CompareTag("Ride")) {
+            Debug.Log("entered ride");
+            currentRide = other.transform;
+        }
+    }
+
+    private void OnTriggerExit(Collider other) {
+        if (other.transform == currentRide) {
+            Debug.Log("exited ride");
+            currentRide = null;
         }
     }
 
