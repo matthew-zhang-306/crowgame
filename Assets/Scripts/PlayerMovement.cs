@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     new Rigidbody rigidbody;
     new Collider collider;
     Vector3 groundNormal;
+    float groundDistance;
 
     private void Awake() {
         rigidbody = GetComponent<Rigidbody>();
@@ -22,8 +23,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate() {
         groundNormal = Vector3.zero;
-        if (Physics.BoxCast(collider.bounds.center + Vector3.up * 0.1f, collider.bounds.extents, Vector3.down, out RaycastHit hit, Quaternion.identity, 0.15f)) {
+        if (Physics.BoxCast(collider.bounds.center + Vector3.up * 0.1f, collider.bounds.extents, Vector3.down, out RaycastHit hit, Quaternion.identity, 0.25f)) {
             Debug.DrawRay(transform.position, hit.normal * 2f, Color.red, Time.fixedDeltaTime);
+            groundDistance = hit.distance - 0.11f;
             groundNormal = hit.normal;
         }
         
@@ -63,6 +65,9 @@ public class PlayerMovement : MonoBehaviour
             velocity += Vector3.down * gravity * Time.deltaTime;
             if (velocity.y < -maxFallSpeed)
                 velocity.y = maxFallSpeed;
+        }
+        else {
+            velocity.y -= groundDistance / Time.fixedDeltaTime;
         }
 
         Debug.DrawRay(transform.position, velocity, Color.cyan, Time.fixedDeltaTime);
