@@ -19,11 +19,13 @@ public class PlayerMovement : MonoBehaviour
     Vector3 horizontalInput;
     Vector3 groundNormal;
     float groundDistance;
+    int wallMask;
 
 
     private void Awake() {
         rigidbody = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
+        wallMask = LayerMask.GetMask("Wall", "Box");
 
         peckHitbox.SetActive(false);
     }
@@ -31,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate() {
         groundNormal = Vector3.zero;
-        if (Physics.BoxCast(collider.bounds.center + Vector3.up * 0.1f, collider.bounds.extents, Vector3.down, out RaycastHit hit, Quaternion.identity, 0.25f)) {
+        if (Physics.BoxCast(collider.bounds.center + Vector3.up * 0.1f, collider.bounds.extents, Vector3.down, out RaycastHit hit, Quaternion.identity, 0.25f, wallMask)) {
             Debug.DrawRay(transform.position, hit.normal * 2f, Color.red, Time.fixedDeltaTime);
             groundDistance = hit.distance - 0.11f;
             groundNormal = hit.normal;

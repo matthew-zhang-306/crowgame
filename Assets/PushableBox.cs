@@ -8,6 +8,8 @@ public class PushableBox : MonoBehaviour
     public float gravity;
     private float currentGravity;
 
+    public Transform selfRide;
+
     Vector3 intendedPosition;
     new Rigidbody rigidbody;
     new Collider collider;
@@ -17,22 +19,28 @@ public class PushableBox : MonoBehaviour
     float groundY;
 
     Transform currentRide;
+    Tornado currentTornado;
     
 
     private void Awake() {
         rigidbody = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
-        wallMask = LayerMask.GetMask("Wall");
+        wallMask = LayerMask.GetMask("Wall", "Box");
 
         intendedPosition = transform.position;
     }
 
 
     private void FixedUpdate() {
+        // align x and z to anything that the box is riding
         if (currentRide != null) {
-            intendedPosition = currentRide.position + new Vector3(0, 0, 0);
+            intendedPosition = currentRide.position.WithY(intendedPosition.y);
+        }
+        else if (currentTornado != null) {
+            intendedPosition = currentTornado.transform.position.WithY(intendedPosition.y);
         }
 
+        // check for ground
         groundNormal = Vector3.zero;
         groundY = 0f;
         if (Physics.BoxCast(collider.bounds.center + Vector3.up * 0.1f, collider.bounds.extents - Vector3.one * 0.03f, Vector3.down, out RaycastHit hit, Quaternion.identity, 0.25f, wallMask)) {
@@ -41,7 +49,11 @@ public class PushableBox : MonoBehaviour
             groundNormal = hit.normal;
         }
 
-        if (groundNormal == Vector3.zero) {
+        // figure out where the box should go vertically
+        if (currentTornado != null && currentRide == null) {
+            intendedPosition.y = currentTornado.Top.y;
+        }
+        else if (groundNormal == Vector3.zero) {
             intendedPosition.y -= currentGravity * Time.deltaTime;
             currentGravity += gravity * Time.deltaTime;
         }
@@ -67,17 +79,24 @@ public class PushableBox : MonoBehaviour
             }
         }
 
-        if (other.CompareTag("Ride")) {
-            Debug.Log("entered ride");
+        if (other.CompareTag("Ride") && other.transform != selfRide) {
             currentRide = other.transform;
         }
     }
 
     private void OnTriggerExit(Collider other) {
         if (other.transform == currentRide) {
-            Debug.Log("exited ride");
             currentRide = null;
         }
+    }
+
+
+    public void EnterTornado(Tornado tornado) {
+        currentTornado = tornado;
+    }
+
+    public void ExitTornado() {
+        currentTornado = null;
     }
 
 

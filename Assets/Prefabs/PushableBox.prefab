@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2133725053585659184}
   - component: {fileID: 2133725053585659194}
   - component: {fileID: 2133725053585659189}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: PushableBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -903,7 +903,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &2133725053585659189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -918,6 +918,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxPushSpeed: 20
   gravity: 20
+  selfRide: {fileID: 8390750122270672669}
 --- !u!1 &5514458343878101319
 GameObject:
   m_ObjectHideFlags: 0
@@ -929,7 +930,7 @@ GameObject:
   - component: {fileID: 8390750122270672669}
   - component: {fileID: 4874831560788150648}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Ride
   m_TagString: Ride
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
