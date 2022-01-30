@@ -9,6 +9,27 @@ public class Tornado : GridAlignedObject
 
     PushableBox previousBox;
 
+    public delegate void TornadoDelegate(Tornado tornado);
+    public static TornadoDelegate OnTornadoSpawned;
+
+
+    protected override void Awake() {
+        base.Awake();
+        OnTornadoSpawned?.Invoke(this);
+    }
+
+    private void OnEnable() {
+        OnTornadoSpawned += TornadoSpawned;
+    }
+    private void OnDisable() {
+        OnTornadoSpawned -= TornadoSpawned;
+    }
+
+
+    private void TornadoSpawned(Tornado otherTornado) {
+        Destroy(gameObject);
+    }
+
 
     protected override void FixedUpdate() {
         base.FixedUpdate();
