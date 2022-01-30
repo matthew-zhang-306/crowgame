@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     public float acceleration;
     public float maxFallSpeed;
     public float gravity;
+    public float tornadoRiseAccel;
+    public float tornadoRiseSpeed;
 
     [Header("References")]
     public Transform rotateTransform;
@@ -22,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     Vector3 groundNormal;
     float groundDistance;
     int wallMask;
+    Tornado currentTornado;
 
     private bool peckInput;
     private bool oldPeckInput;
@@ -104,7 +107,11 @@ public class PlayerMovement : MonoBehaviour
             Debug.DrawRay(transform.position + horizontalVel, new Vector3(0, velocity.y, 0), Color.magenta, Time.fixedDeltaTime);
         }
         
-        if (groundNormal == Vector3.zero) {
+        if (currentTornado != null) {
+            velocity.y += tornadoRiseAccel * Time.deltaTime;
+            velocity.y = Mathf.Min(velocity.y, tornadoRiseSpeed * Time.deltaTime);
+        }
+        else if (groundNormal == Vector3.zero) {
             velocity += Vector3.down * gravity * Time.deltaTime;
             if (velocity.y < -maxFallSpeed)
                 velocity.y = maxFallSpeed;
@@ -115,6 +122,14 @@ public class PlayerMovement : MonoBehaviour
 
         Debug.DrawRay(transform.position, velocity, Color.cyan, Time.fixedDeltaTime);
         rigidbody.velocity = velocity;
+    }
+
+
+    public void EnterTornado(Tornado tornado) {
+        currentTornado = tornado;
+    }
+    public void ExitTornado() {
+        currentTornado = null;
     }
 
 
