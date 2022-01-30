@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("References")]
     public Transform rotateTransform;
     public GameObject peckHitbox;
+    public Transform gustSpawnLocation;
+    public GameObject gustPrefab;
 
     new Rigidbody rigidbody;
     new Collider collider;
@@ -20,6 +22,11 @@ public class PlayerMovement : MonoBehaviour
     Vector3 groundNormal;
     float groundDistance;
     int wallMask;
+
+    private bool peckInput;
+    private bool oldPeckInput;
+    private bool gustInput;
+    private bool oldGustInput;
 
 
     private void Awake() {
@@ -30,6 +37,11 @@ public class PlayerMovement : MonoBehaviour
         peckHitbox.SetActive(false);
     }
 
+
+    private void Update() {
+        peckInput = Input.GetAxisRaw("Action1") > 0;
+        gustInput = Input.GetAxisRaw("Action2") > 0;
+    }
 
     private void FixedUpdate() {
         groundNormal = Vector3.zero;
@@ -42,11 +54,18 @@ public class PlayerMovement : MonoBehaviour
         GetHorizontalInput();
         HandleMovement();
 
-        if (Input.GetAxisRaw("Action1") > 0 && !peckHitbox.activeInHierarchy) {
+        if (peckInput && !oldPeckInput && !peckHitbox.activeInHierarchy) {
             // peck
             peckHitbox.SetActive(true);
             this.Invoke(() => peckHitbox.SetActive(false), 0.2f);
         }
+        if (gustInput && !oldGustInput) {
+            // gust
+            Instantiate(gustPrefab, gustSpawnLocation.position, rotateTransform.rotation, null);
+        }
+
+        oldPeckInput = peckInput;
+        oldGustInput = gustInput;
     }
 
 

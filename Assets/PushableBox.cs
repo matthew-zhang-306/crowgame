@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PushableBox : GridAlignedObject
 {
-    public Transform selfRide;
     Tornado currentTornado;
     
 
@@ -54,6 +53,7 @@ public class PushableBox : GridAlignedObject
 
     public void EnterTornado(Tornado tornado) {
         currentTornado = tornado;
+        currentRide = null;
     }
 
     public void ExitTornado() {

@@ -167,4 +167,9 @@ public static class Helpers {
     public static float VolumeToDB(float volume) {
         return Mathf.Log10(Mathf.Clamp(volume, 0.0001f, 1f)) * 20f;
     }
+
+
+    public static bool LayerMaskContains(int mask, int layer) {
+        return mask == (mask | (1 << layer));
+    }
 }
