@@ -10,11 +10,25 @@ public class DialogueManager : MonoBehaviour
     private Queue<string> sentences;
     public Text nameText;
     public Text dialogueText;
+    private bool pressed;
 
     // Start is called before the first frame update
     void Start()
     {
         sentences = new Queue<string>();
+    }
+
+    private void Update()
+    {
+        // dialogue moves faster is space is pressed
+        if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0))
+        {
+            pressed = true;
+        }
+        else
+        {
+            pressed = false;
+        }
     }
 
     public void StartDialogue(Dialogue dialogue)
@@ -48,7 +62,16 @@ public class DialogueManager : MonoBehaviour
         foreach (char letter in sentence.ToCharArray())
         {
             dialogueText.text += letter;
-            yield return null;
+            if (pressed == true)
+            {
+                //Debug.Log("check");
+                yield return new WaitForSeconds(0.001f);
+            }
+            else
+            {
+                //Debug.Log("not pressed");
+                yield return new WaitForSeconds(0.05f);
+            }
         }
     }
     public void EndDialogue()
