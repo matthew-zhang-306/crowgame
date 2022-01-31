@@ -19,7 +19,13 @@ public class PushableBox : GridAlignedObject
     protected override void AlignIntendedPosition()
     {
         if (currentTornado != null) {
-            intendedPosition = currentTornado.transform.position.WithY(intendedPosition.y);
+            // check if the box wants to be in the tornado
+            Vector3 roundedIntendedPosition = intendedPosition.WithY(0).RoundToNearest(1);
+            Vector3 tornadoPosition = currentTornado.IntendedPosition.WithY(0).RoundToNearest(1);
+            
+            if (roundedIntendedPosition == tornadoPosition) {
+                intendedPosition = currentTornado.transform.position.WithY(intendedPosition.y);
+            }
         }
         base.AlignIntendedPosition();
     }
@@ -36,7 +42,7 @@ public class PushableBox : GridAlignedObject
 
 
     protected override void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Peck") && groundNormal != Vector3.zero) {
+        if (other.CompareTag("Peck") && (groundNormal != Vector3.zero || currentTornado != null)) {
             Vector3 pushDirection = other.transform.forward;
             Debug.DrawRay(collider.bounds.center, other.transform.forward * 1f, Color.yellow, 0.2f);
             if (!Physics.BoxCast(collider.bounds.center, Vector3.one * 0.4f, pushDirection, out RaycastHit hit, Quaternion.identity, 1f, wallMask)) {
