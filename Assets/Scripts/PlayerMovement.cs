@@ -50,8 +50,11 @@ public class PlayerMovement : MonoBehaviour
         groundNormal = Vector3.zero;
         if (Physics.BoxCast(collider.bounds.center + Vector3.up * 0.1f, collider.bounds.extents, Vector3.down, out RaycastHit hit, Quaternion.identity, 0.25f, wallMask)) {
             Debug.DrawRay(transform.position, hit.normal * 2f, Color.red, Time.fixedDeltaTime);
-            groundDistance = hit.distance - 0.11f;
-            groundNormal = hit.normal;
+            
+            if (Vector3.Dot(Vector3.up, hit.normal) > 0.7f) {
+                groundDistance = hit.distance - 0.11f;
+                groundNormal = hit.normal;
+            }
         }
         
         GetHorizontalInput();
@@ -102,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
                 velocity.y = horizontalVel.magnitude * horizontalFactor / groundNormalUp.magnitude;
             else
                 velocity.y = 0;
+            Debug.Log(groundNormalHorizontal + " " + horizontalFactor + " " + groundNormalUp + " " + velocity.y);
             
             Debug.DrawRay(transform.position, horizontalVel, Color.magenta, Time.fixedDeltaTime);
             Debug.DrawRay(transform.position + horizontalVel, new Vector3(0, velocity.y, 0), Color.magenta, Time.fixedDeltaTime);
