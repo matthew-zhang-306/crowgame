@@ -16,6 +16,8 @@ public class GridAlignedObject : MonoBehaviour
     public float gravity;
     public float maxMoveSpeed;
 
+    public Vector3 IntendedPosition => intendedPosition;
+
     protected virtual void Awake() {
         wallMask = LayerMask.GetMask("Wall", "Box");
         rigidbody = GetComponent<Rigidbody>();
