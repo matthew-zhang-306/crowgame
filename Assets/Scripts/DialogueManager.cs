@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 // partial code credit to Brackeys on dialogue systems
 public class DialogueManager : MonoBehaviour
@@ -76,7 +77,8 @@ public class DialogueManager : MonoBehaviour
     }
     public void EndDialogue()
     {
-        Debug.Log("End of Conversation");
+        //Debug.Log("End of Conversation");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
 
