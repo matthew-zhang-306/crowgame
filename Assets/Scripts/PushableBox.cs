@@ -5,12 +5,10 @@ using UnityEngine;
 public class PushableBox : GridAlignedObject
 {
     Tornado currentTornado;
-    
 
     protected override void Awake() {
         base.Awake();
     }
-
 
     protected override void FixedUpdate() {
         base.FixedUpdate();
@@ -20,12 +18,16 @@ public class PushableBox : GridAlignedObject
     {
         if (currentTornado != null) {
             // check if the box wants to be in the tornado
+            /*
             Vector3 roundedIntendedPosition = intendedPosition.WithY(0).RoundToNearest(1);
             Vector3 tornadoPosition = currentTornado.IntendedPosition.WithY(0).RoundToNearest(1);
             
             if (roundedIntendedPosition == tornadoPosition) {
                 intendedPosition = currentTornado.transform.position.WithY(intendedPosition.y);
             }
+            */
+
+            intendedPosition = currentTornado.transform.position.WithY(intendedPosition.y);
         }
         base.AlignIntendedPosition();
     }
@@ -49,6 +51,7 @@ public class PushableBox : GridAlignedObject
                 // move
                 intendedPosition += pushDirection;
                 currentRide = null;
+                currentTornado = null;
             }
         }
 
