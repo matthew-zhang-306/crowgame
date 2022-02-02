@@ -62,11 +62,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (peckInput && !oldPeckInput && !peckHitbox.activeInHierarchy) {
             // peck
+            FindObjectOfType<AudioManager>().PlaySound("Peck");
             peckHitbox.SetActive(true);
             this.Invoke(() => peckHitbox.SetActive(false), 0.2f);
         }
         if (gustInput && !oldGustInput) {
             // gust
+            FindObjectOfType<AudioManager>().PlaySound("Gust");
             Instantiate(gustPrefab, gustSpawnLocation.position, rotateTransform.rotation, null);
         }
 

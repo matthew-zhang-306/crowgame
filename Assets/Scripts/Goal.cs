@@ -9,7 +9,18 @@ public class Goal : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            StartCoroutine(waiter());           
+        }
+
+
+        IEnumerator waiter()
+        {
+            //play sound and wait to finish before loading next scene
+            FindObjectOfType<AudioManager>().PlaySound("Victory");
+
+            yield return new WaitForSeconds(1);
+
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
