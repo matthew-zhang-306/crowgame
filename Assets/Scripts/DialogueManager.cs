@@ -12,6 +12,7 @@ public class DialogueManager : MonoBehaviour
     public Text nameText;
     public Text dialogueText;
     private bool pressed;
+    private bool isRunning;
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +23,7 @@ public class DialogueManager : MonoBehaviour
     private void Update()
     {
         // dialogue moves faster is space is pressed
-        if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0))
+        if (Input.GetKey(KeyCode.Space))
         {
             pressed = true;
         }
@@ -46,19 +47,23 @@ public class DialogueManager : MonoBehaviour
 
     public void DisplayNextSentence()
     {
-        if (sentences.Count == 0)
+        if (!isRunning)
         {
-            EndDialogue();
-            return;
+            if (sentences.Count == 0)
+            {
+                EndDialogue();
+                return;
+            }
+            string sentence = sentences.Dequeue();
+            //dialogueText.text = sentence;
+            StopAllCoroutines();
+            StartCoroutine(TypeSentence(sentence));
         }
-        string sentence = sentences.Dequeue();
-        //dialogueText.text = sentence;
-        StopAllCoroutines();
-        StartCoroutine(TypeSentence(sentence));
     }
 
     IEnumerator TypeSentence(string sentence)
     {
+        isRunning = true;
         dialogueText.text = "";
         foreach (char letter in sentence.ToCharArray())
         {
@@ -74,6 +79,7 @@ public class DialogueManager : MonoBehaviour
                 yield return new WaitForSeconds(0.05f);
             }
         }
+        isRunning = false;
     }
     public void EndDialogue()
     {
