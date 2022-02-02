@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (gustInput && !oldGustInput) {
             // gust
-            FindObjectOfType<AudioManager>().PlaySound("Gust");
+            FindObjectOfType<AudioManager>().PlaySound("Tornado");
             Instantiate(gustPrefab, gustSpawnLocation.position, rotateTransform.rotation, null);
         }
 
