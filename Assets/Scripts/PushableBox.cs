@@ -6,16 +6,12 @@ public class PushableBox : GridAlignedObject
 {
     Tornado currentTornado;
 
-    private float peckedTimer;
-
     protected override void Awake() {
         base.Awake();
     }
 
     protected override void FixedUpdate() {
         base.FixedUpdate();
-
-        peckedTimer = Mathf.Max(peckedTimer - Time.deltaTime, 0f);
     }
 
     protected override void AlignIntendedPosition()
@@ -48,7 +44,7 @@ public class PushableBox : GridAlignedObject
 
 
     protected override void OnTriggerEnter(Collider other) {
-        if (peckedTimer == 0f && other.CompareTag("Peck") && (groundNormal != Vector3.zero || currentTornado != null)) {
+        if (other.CompareTag("Peck") && (groundNormal != Vector3.zero || currentTornado != null)) {
             Vector3 pushDirection = other.transform.forward;
             Debug.DrawRay(collider.bounds.center, other.transform.forward * 1f, Color.yellow, 0.2f);
             if (!Physics.BoxCast(collider.bounds.center, Vector3.one * 0.4f, pushDirection, out RaycastHit hit, Quaternion.identity, 1f, wallMask)) {
@@ -56,7 +52,6 @@ public class PushableBox : GridAlignedObject
                 intendedPosition += pushDirection;
                 currentRide = null;
                 currentTornado = null;
-                peckedTimer = 0.15f;
             }
         }
 
