@@ -65,7 +65,7 @@ Transform:
   m_LocalPosition: {x: 1, y: 0.5, z: -9}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children:
-  - {fileID: 5760937829642705367}
+  - {fileID: 7523748966877298913}
   - {fileID: 5760937828559660949}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -939,6 +939,7 @@ MonoBehaviour:
   gravity: 30
   tornadoRiseAccel: 100
   tornadoRiseSpeed: 250
+  cameraFacingTransform: {fileID: 7523748966877298913}
   rotateTransform: {fileID: 5760937828559660949}
   peckHitbox: {fileID: 5760937829312072292}
   gustSpawnLocation: {fileID: 1303731947466250391}
@@ -1080,9 +1081,9 @@ Transform:
   m_GameObject: {fileID: 5760937829642705360}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.56, z: 0}
-  m_LocalScale: {x: 0.6563243, y: 0.6563243, z: 0.6563243}
+  m_LocalScale: {x: 0.6563244, y: 0.6563244, z: 0.6563244}
   m_Children: []
-  m_Father: {fileID: 5760937829165965224}
+  m_Father: {fileID: 7523748966877298913}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5760937829642705366
@@ -1136,6 +1137,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &6639923088116331532
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7523748966877298913}
+  m_Layer: 3
+  m_Name: things that face the camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7523748966877298913
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6639923088116331532}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5760937829642705367}
+  m_Father: {fileID: 5760937829165965224}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8070011095354329060
 GameObject:
   m_ObjectHideFlags: 0
