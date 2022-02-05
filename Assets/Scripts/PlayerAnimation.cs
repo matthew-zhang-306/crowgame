@@ -5,22 +5,39 @@ using UnityEngine;
 public class PlayerAnimation : MonoBehaviour
 {
     private Animator anim;
+    public Rigidbody myRB;
     // way the player is facing
     // 1 = front
     // 2 = left
     // 3 = right
     // 4 = back
     private int direction;
+    private float dirX;
+    private float dirY;
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+        //myRB = GetComponentInParent<Rigidbody>();
         direction = 1;
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("Axis: " + Input.GetAxisRaw("Horizontal") + Input.GetAxisRaw("Vertical") + Input.GetAxisRaw("Action1") + Input.GetAxisRaw("Action2"));
+        anim.SetFloat("MoveX", Input.GetAxisRaw("Horizontal"));
+        anim.SetFloat("MoveY", Input.GetAxisRaw("Vertical"));
+
+        // set the last move float to last input
+        if (Input.GetAxisRaw("Horizontal") == 1 || Input.GetAxisRaw("Horizontal") == -1 || Input.GetAxisRaw("Vertical") == 1 || Input.GetAxisRaw("Vertical") == -1)
+        {
+            anim.SetFloat("LastMoveX", Input.GetAxisRaw("Horizontal"));
+            anim.SetFloat("LastMoveY", Input.GetAxisRaw("Vertical"));
+        }
+
+        /*
+        Debug.Log("Velocity: " + GetComponentInParent<Rigidbody>().velocity);
         if (Input.GetAxisRaw("Horizontal") < 0)
         {
             anim.SetBool("isFrontWalking", false);
@@ -98,6 +115,6 @@ public class PlayerAnimation : MonoBehaviour
                 anim.SetTrigger("BackGust");
                 Debug.Log("BackGust");
             }
-        }
+        }*/
     }
 }

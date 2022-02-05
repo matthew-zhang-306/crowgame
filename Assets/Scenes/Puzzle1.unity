@@ -1330,7 +1330,7 @@ Animator:
   m_GameObject: {fileID: 253836165}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1d9aee960ec46e548b63525da1b008d6, type: 2}
+  m_Controller: {fileID: 9100000, guid: 17a74a830888a6346ab2c6db3b2e2e4f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1351,6 +1351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c77cc4d4686c8b044a7ac1ebf56bc035, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myRB: {fileID: 493975153}
 --- !u!1 &263683212
 GameObject:
   m_ObjectHideFlags: 0
@@ -2383,6 +2384,11 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!54 &493975153 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 5760937829165965238, guid: 91074f21f36081d4288d4386e078671e, type: 3}
+  m_PrefabInstance: {fileID: 437475475}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &537506560
 GameObject:
   m_ObjectHideFlags: 0
