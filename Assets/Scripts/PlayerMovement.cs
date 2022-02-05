@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate() {
         groundNormal = Vector3.zero;
         if (Physics.BoxCast(collider.bounds.center + Vector3.up * 0.1f, collider.bounds.extents, Vector3.down, out RaycastHit hit, Quaternion.identity, 0.25f, wallMask)) {
-            Debug.DrawRay(transform.position, hit.normal * 2f, Color.red, Time.fixedDeltaTime);
+            Debug.DrawRay(hit.point, hit.normal * 2f, Color.red, Time.fixedDeltaTime);
             
             if (Vector3.Dot(Vector3.up, hit.normal) > 0.7f) {
                 groundDistance = hit.distance - 0.11f;

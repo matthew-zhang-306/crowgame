@@ -38,8 +38,11 @@ public class ScenesManager : MonoBehaviour
             return;
         }
 
-        // todo
-        // should load a scene asycrhonously after doing a screen transition of some kind
+        IsTransitioning = true;
+
+        // todo: implement transition
+        // todo: make scene load asynchronous
+        SceneManager.LoadScene(sceneName);
     }
 
 
@@ -49,7 +52,9 @@ public class ScenesManager : MonoBehaviour
             return;
         }
 
-        // todo
+        IsTransitioning = true;
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
 }
