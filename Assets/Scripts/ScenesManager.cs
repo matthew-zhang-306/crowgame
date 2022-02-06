@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class ScenesManager : MonoBehaviour
 {
+    public SceneTransition sceneTransition;
     public bool IsTransitioning { get; private set; }
+    bool didTransitionOut;
 
     public void Init() {
         // do stuff here
@@ -17,6 +19,10 @@ public class ScenesManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode) {
         // do stuff here
+        if (didTransitionOut) {
+            sceneTransition.TransitionIn(0.5f);
+            didTransitionOut = false;
+        }
     }
 
 
@@ -33,16 +39,21 @@ public class ScenesManager : MonoBehaviour
     }
 
 
-    public void ChangeScene(string sceneName, float transitionTime) {
+    public void ChangeScene(string sceneName, float transitionTime = 0.5f) {
         if (IsTransitioning) {
             return;
         }
 
         IsTransitioning = true;
-
-        // todo: implement transition
-        // todo: make scene load asynchronous
-        SceneManager.LoadScene(sceneName);
+        if (transitionTime > 0f) {
+            didTransitionOut = true;
+            sceneTransition.TransitionOut(transitionTime, () => {
+                this.Invoke(() => SceneManager.LoadSceneAsync(sceneName), 0.2f);
+            });
+        }
+        else {
+            SceneManager.LoadScene(sceneName);
+        }
     }
 
 
@@ -53,7 +64,6 @@ public class ScenesManager : MonoBehaviour
         }
 
         IsTransitioning = true;
-
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

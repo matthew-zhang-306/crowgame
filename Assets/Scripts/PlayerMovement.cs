@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("References")]
     public Transform cameraFacingTransform;
     public Transform rotateTransform;
+    public SpriteRenderer mainSprite;
     public GameObject peckHitbox;
     public Transform gustSpawnLocation;
     public GameObject gustPrefab;
@@ -34,6 +36,8 @@ public class PlayerMovement : MonoBehaviour
     private bool gustInput;
     private bool oldGustInput;
 
+    private bool inCutscene;
+
 
     private void Awake() {
         rigidbody = GetComponent<Rigidbody>();
@@ -43,10 +47,16 @@ public class PlayerMovement : MonoBehaviour
         peckHitbox.SetActive(false);
     }
 
+    private void OnEnable() {
+        WarpAltar.OnAltarWarp += PlayWarpAnimation;
+    }
+    private void OnDisable() {
+        WarpAltar.OnAltarWarp -= PlayWarpAnimation;
+    }
+
     private void Start() {
         mainCamera = Camera.main;
     }
-
 
     private void Update() {
         peckInput = Input.GetAxisRaw("Action1") > 0;
@@ -67,6 +77,10 @@ public class PlayerMovement : MonoBehaviour
         GetHorizontalInput();
         HandleMovement();
 
+        if (inCutscene) {
+            return;
+        }
+
         if (peckInput && !oldPeckInput && !peckHitbox.activeInHierarchy) {
             // peck
             FindObjectOfType<AudioManager>().PlaySound("Peck");
@@ -85,6 +99,11 @@ public class PlayerMovement : MonoBehaviour
 
 
     private void GetHorizontalInput() {
+        horizontalInput = Vector3.zero;
+        if (inCutscene) {
+            return;
+        }
+
         horizontalInput = new Vector3(
             Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")
         );
@@ -151,6 +170,17 @@ public class PlayerMovement : MonoBehaviour
     }
     public void ExitTornado() {
         currentTornado = null;
+    }
+
+
+    public void PlayWarpAnimation(WarpAltar _) {
+        inCutscene = true;
+
+        mainSprite.DOKill();
+        DOTween.Sequence()
+            .Append(mainSprite.transform.DOScaleX(0.05f, 0.4f).SetEase(Ease.InOutCubic))
+            .Append(mainSprite.transform.DOLocalMoveY(10f, 0.4f).SetEase(Ease.InCubic))
+            .SetLink(gameObject).SetTarget(mainSprite);
     }
 
 

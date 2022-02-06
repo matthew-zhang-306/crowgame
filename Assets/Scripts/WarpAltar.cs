@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class WarpAltar : MonoBehaviour
 {
@@ -17,7 +18,8 @@ public class WarpAltar : MonoBehaviour
     private void Update() {
         if (playerInside != null && Input.GetAxisRaw("Action1") > 0) {
             OnAltarWarp?.Invoke(this);
-            Managers.ScenesManager.ChangeScene(targetScene, 2f);
+            DOTween.Sequence().InsertCallback(
+                1.0f, () => Managers.ScenesManager.ChangeScene(targetScene));
         }
     }
 
