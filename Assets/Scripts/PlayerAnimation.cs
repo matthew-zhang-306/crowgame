@@ -5,21 +5,25 @@ using UnityEngine;
 public class PlayerAnimation : MonoBehaviour
 {
     private Animator anim;
-    public Rigidbody myRB;
+    private Rigidbody myRB;
     // way the player is facing
     // 1 = front
     // 2 = left
     // 3 = right
     // 4 = back
-    private int direction;
-    private float dirX;
-    private float dirY;
+    //private int direction;
+
+    private float peckTime = 0.15f;
+    private float peckCount = 0.15f;
+    private bool isPecking;
+    private float gustTime = 0.25f;
+    private float gustCount = 0.25f;
+    private bool isGusting;
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
-        //myRB = GetComponentInParent<Rigidbody>();
-        direction = 1;
+        myRB = GetComponentInParent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -34,6 +38,44 @@ public class PlayerAnimation : MonoBehaviour
         {
             anim.SetFloat("LastMoveX", Input.GetAxisRaw("Horizontal"));
             anim.SetFloat("LastMoveY", Input.GetAxisRaw("Vertical"));
+        }
+
+        // pecking animation timer
+        if (isPecking)
+        {
+            myRB.velocity = Vector2.zero;
+            peckCount -= Time.deltaTime;
+            if (peckCount <= 0)
+            {
+                anim.SetBool("isPecking", false);
+                isPecking = false;
+            }
+        }
+
+        if (Input.GetAxisRaw("Action1") > 0)
+        {
+            peckCount = peckTime;
+            anim.SetBool("isPecking", true);
+            isPecking = true;
+        }
+
+        // Gust wind animation timer
+        if (isGusting)
+        {
+            myRB.velocity = Vector2.zero;
+            gustCount -= Time.deltaTime;
+            if (gustCount <= 0)
+            {
+                anim.SetBool("isGusting", false);
+                isGusting = false;
+            }
+        }
+
+        if (Input.GetAxisRaw("Action2") > 0)
+        {
+            gustCount = gustTime;
+            anim.SetBool("isGusting", true);
+            isGusting = true;
         }
 
         /*
