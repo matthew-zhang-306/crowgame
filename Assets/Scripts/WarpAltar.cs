@@ -14,6 +14,13 @@ public class WarpAltar : MonoBehaviour
     public static AltarDelegate OnAltarExit;
     public static AltarDelegate OnAltarWarp;
 
+    private WarpAltarRock[] rocks;
+
+
+    private void Awake() {
+        rocks = GetComponentsInChildren<WarpAltarRock>();
+    }
+
 
     private void Update() {
         if (playerInside != null && Input.GetAxisRaw("Action1") > 0) {
@@ -27,6 +34,9 @@ public class WarpAltar : MonoBehaviour
         if (other.CompareTag("Player")) {
             OnAltarEnter?.Invoke(this);
             playerInside = other.GetComponent<PlayerMovement>();
+            foreach (var rock in rocks) {
+                rock.IsLifted = true;
+            }
         }
     }
 
@@ -34,6 +44,9 @@ public class WarpAltar : MonoBehaviour
         if (other.CompareTag("Player")) {
             OnAltarExit?.Invoke(this);
             playerInside = null;
+            foreach (var rock in rocks) {
+                rock.IsLifted = false;
+            }
         }
     }
 }
