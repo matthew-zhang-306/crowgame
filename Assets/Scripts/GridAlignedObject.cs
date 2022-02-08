@@ -7,6 +7,7 @@ public class GridAlignedObject : MonoBehaviour
     protected Vector3 intendedPosition;
     protected Vector3 groundNormal;
     protected float groundY;
+    protected float groundDistance;
     protected Transform currentRide;
     public Transform selfRide;
     protected int wallMask;
@@ -50,6 +51,7 @@ public class GridAlignedObject : MonoBehaviour
             Debug.DrawRay(transform.position, hit.normal * 2f, Color.red, Time.fixedDeltaTime);
             groundY = hit.point.y;
             groundNormal = hit.normal;
+            groundDistance = hit.distance - 0.11f;
         }
     }
 

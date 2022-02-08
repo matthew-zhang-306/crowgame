@@ -154,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
         else if (groundNormal == Vector3.zero) {
             velocity += Vector3.down * gravity * Time.deltaTime;
             if (velocity.y < -maxFallSpeed)
-                velocity.y = maxFallSpeed;
+                velocity.y = -maxFallSpeed;
         }
         else {
             velocity.y -= groundDistance / Time.fixedDeltaTime;
