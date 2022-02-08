@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public float tornadoRiseSpeed;
 
     [Header("References")]
+    public PlayerAnimation playerAnimation;
     public Transform cameraFacingTransform;
     public Transform rotateTransform;
     public SpriteRenderer mainSprite;
@@ -167,9 +168,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void EnterTornado(Tornado tornado) {
         currentTornado = tornado;
+        playerAnimation.isInsideTornado = true;
     }
     public void ExitTornado() {
         currentTornado = null;
+        playerAnimation.isInsideTornado = false;
     }
 
 
