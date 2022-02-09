@@ -325,6 +325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PauseMenuUI: {fileID: 1212227161740687712}
   settingsMenuUI: {fileID: 451211456489097459}
+  audioMixer: {fileID: 24100000, guid: b85721aafbf64494687a705b2f7a86ef, type: 2}
 --- !u!1 &451211455519428698
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,13 +660,25 @@ MonoBehaviour:
   m_FillRect: {fileID: 451211455361213702}
   m_HandleRect: {fileID: 451211456173026295}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -40
+  m_MaxValue: 20
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7527253235694234698}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: SetSFXVolume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &451211455859983442
 GameObject:
   m_ObjectHideFlags: 0
@@ -1907,13 +1920,25 @@ MonoBehaviour:
   m_FillRect: {fileID: 844563532561577764}
   m_HandleRect: {fileID: 7233987263790454608}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -80
+  m_MaxValue: 0
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7527253235694234698}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: SetMusicVolume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3112462555651706618
 GameObject:
   m_ObjectHideFlags: 0
