@@ -31,8 +31,6 @@ public class PlayerMovement : MonoBehaviour
     float groundDistance;
     int wallMask;
     Tornado currentTornado;
-    private Vector3 facingDirection;
-    private Vector3 facingDirectionRounded;
 
     private bool peckInput;
     private bool oldPeckInput;
@@ -85,10 +83,15 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if (peckInput && !oldPeckInput && !peckHitbox.activeInHierarchy) {
-            Peck();
+            // peck
+            FindObjectOfType<AudioManager>().PlaySound("Peck");
+            peckHitbox.SetActive(true);
+            this.Invoke(() => peckHitbox.SetActive(false), 0.2f);
         }
         if (gustInput && !oldGustInput) {
-            Gust();
+            // gust
+            FindObjectOfType<AudioManager>().PlaySound("Tornado");
+            Instantiate(gustPrefab, gustSpawnLocation.position, rotateTransform.rotation, null);
         }
 
         oldPeckInput = peckInput;
@@ -117,7 +120,8 @@ public class PlayerMovement : MonoBehaviour
         cameraFacingTransform.Rotate(new Vector3(0, rotateAngle, 0));
     
         if (horizontalInput != Vector3.zero) {
-            SetFacingDirection(horizontalInput);
+            Vector3 hInputRounded = Quaternion.Euler(0, Helpers.RoundToNearest(Vector3.SignedAngle(Vector3.forward, horizontalInput, Vector3.up), 90f), 0) * Vector3.forward;
+            rotateTransform.Rotate(0, Vector3.SignedAngle(rotateTransform.forward, hInputRounded, Vector3.up), 0);
         }
     }
 
@@ -158,38 +162,6 @@ public class PlayerMovement : MonoBehaviour
 
         Debug.DrawRay(transform.position, velocity, Color.cyan, Time.fixedDeltaTime);
         rigidbody.velocity = velocity;
-    }
-
-
-    private void Peck() {
-        FindObjectOfType<AudioManager>().PlaySound("Peck");
-
-        SetFacingDirection(GetMouseFacingDirection());
-        peckHitbox.SetActive(true);
-        this.Invoke(() => peckHitbox.SetActive(false), 0.2f);
-    }
-
-    private void Gust() {
-        FindObjectOfType<AudioManager>().PlaySound("Tornado");
-
-        SetFacingDirection(GetMouseFacingDirection());
-        Instantiate(gustPrefab, gustSpawnLocation.position, rotateTransform.rotation, null);
-    }
-
-
-    private Vector3 GetMouseFacingDirection() {
-        Vector3 mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition.WithZ(1f));
-        Debug.Log(mousePos + " " + mainCamera.transform.position + " " + transform.position);
-        // need mousePos.y = transform.position.y
-        float t = (transform.position.y - mainCamera.transform.position.y) / (mousePos.y - mainCamera.transform.position.y);
-        mousePos = mainCamera.transform.position + t * (mousePos - mainCamera.transform.position);
-        return (mousePos - transform.position).WithY(0).normalized;
-    }
-
-    private void SetFacingDirection(Vector3 dir) {
-        facingDirection = dir.normalized;
-        facingDirectionRounded = Quaternion.Euler(0, Helpers.RoundToNearest(Vector3.SignedAngle(Vector3.forward, facingDirection, Vector3.up), 90f), 0) * Vector3.forward;
-        rotateTransform.Rotate(0, Vector3.SignedAngle(rotateTransform.forward, facingDirection, Vector3.up), 0);
     }
 
 
