@@ -19,6 +19,9 @@ public class PlayerAnimation : MonoBehaviour
     private float gustTime = 0.25f;
     private float gustCount = 0.25f;
     private bool isGusting;
+
+    public bool isInsideTornado = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -77,6 +80,25 @@ public class PlayerAnimation : MonoBehaviour
             anim.SetBool("isGusting", true);
             isGusting = true;
         }
+
+        if (isInsideTornado)
+        {
+            anim.SetBool("isRising", true);
+        }
+        else
+        {
+            anim.SetBool("isRising", false);
+        }
+
+        if (myRB.velocity.y < -0.1)
+        {
+            anim.SetBool("isFalling", true);
+        }
+        else
+        {
+            anim.SetBool("isFalling", false);
+        }
+
 
         /*
         Debug.Log("Velocity: " + GetComponentInParent<Rigidbody>().velocity);
