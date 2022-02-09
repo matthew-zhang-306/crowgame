@@ -142,7 +142,6 @@ public class PlayerMovement : MonoBehaviour
                 velocity.y = horizontalVel.magnitude * horizontalFactor / groundNormalUp.magnitude;
             else
                 velocity.y = 0;
-            Debug.Log(groundNormalHorizontal + " " + horizontalFactor + " " + groundNormalUp + " " + velocity.y);
             
             Debug.DrawRay(transform.position, horizontalVel, Color.magenta, Time.fixedDeltaTime);
             Debug.DrawRay(transform.position + horizontalVel, new Vector3(0, velocity.y, 0), Color.magenta, Time.fixedDeltaTime);

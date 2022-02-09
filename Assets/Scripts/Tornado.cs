@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tornado : GridAlignedObject
+public class Tornado : PhysicsObject
 {
     public float topOffset;
     public Vector3 Top => transform.position + Vector3.up * topOffset;
