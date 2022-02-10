@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8673707794265209540}
   - component: {fileID: 8673707794265209541}
   - component: {fileID: 8673707794265209542}
-  - component: {fileID: 8673707794265209543}
+  - component: {fileID: 1383430170881264023}
   m_Layer: 7
   m_Name: Tornado
   m_TagString: Untagged
@@ -46,9 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96c130563e140a649a16c3d3505f941a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selfRide: {fileID: 0}
+  friction: 1
+  riseAccel: 0
+  maxRiseSpeed: 0
+  maxFallSpeed: 1000
   gravity: 20
-  maxMoveSpeed: 20
   topOffset: 2
 --- !u!54 &8673707794265209542
 Rigidbody:
@@ -66,20 +68,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!136 &8673707794265209543
-CapsuleCollider:
+--- !u!65 &1383430170881264023
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8673707794265209536}
-  m_Material: {fileID: 13400000, guid: c661746dcee586440ab0f904be0c8afa, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.48
-  m_Height: 1
-  m_Direction: 2
-  m_Center: {x: 0, y: 0.5, z: 0}
+  serializedVersion: 2
+  m_Size: {x: 0.8, y: 0.02, z: 0.8}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8673707795007031188
 GameObject:
   m_ObjectHideFlags: 0
