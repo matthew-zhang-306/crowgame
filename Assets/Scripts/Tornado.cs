@@ -23,7 +23,7 @@ public class Tornado : PhysicsObject
         OnTornadoSpawned += TornadoSpawned;
     }
     private void OnDisable() {
-        previousBox?.ExitTornado();
+        SetNotRiding(previousBox);
         previousBox = null;
         previousPlayer?.ExitTornado();
         previousPlayer = null;
@@ -53,8 +53,8 @@ public class Tornado : PhysicsObject
             box = hit.rigidbody?.GetComponent<PushableBox>();
 
         if (box != previousBox) {
-            previousBox?.ExitTornado();
-            box?.EnterTornado(this);
+            SetNotRiding(previousBox);
+            SetRiding(box);
         }
         previousBox = box;
 
@@ -74,6 +74,30 @@ public class Tornado : PhysicsObject
             player?.EnterTornado(this);
         }
         previousPlayer = player;
+    }
+
+
+    public override Vector3 GetRidePoint() {
+        return Top;
+    }
+
+
+    public override void SetRiding(PhysicsObject riding) {
+        if (riding == null) {
+            return;
+        }
+
+        riding.EnterTornado(this);
+        base.SetRiding(riding);
+    }
+
+    public override void SetNotRiding(PhysicsObject riding) {
+        if (riding == null) {
+            return;
+        }
+
+        riding.ExitTornado();
+        base.SetNotRiding(riding);
     }
 
 

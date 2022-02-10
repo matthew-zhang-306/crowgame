@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using DG.Tweening;
 
@@ -9,6 +10,7 @@ public class PhysicsObject : MonoBehaviour
     public float friction;
     public float maxFallSpeed;
     public float gravity;
+    public float rideSnapSpeed;
 
     [Header("Tornado Physics Parameters")]
     public float tornadoStopAccel;
@@ -24,6 +26,8 @@ public class PhysicsObject : MonoBehaviour
     protected new Collider collider;
     protected float currentGravity;
 
+    protected HashSet<PhysicsObject> allRiding;
+    protected HashSet<PhysicsObject> allRides;
     protected Tornado currentTornado;
     protected Coroutine tornadoRoutine;
     
@@ -32,6 +36,29 @@ public class PhysicsObject : MonoBehaviour
         wallMask = LayerMask.GetMask("Wall", "Box");
         rigidbody = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
+
+        allRiding = new HashSet<PhysicsObject>();
+        allRides = new HashSet<PhysicsObject>();
+    }
+
+
+    protected virtual void SetRelativeVelocity(Vector3 vel) {
+        Vector3 velocity = rigidbody.velocity;
+        velocity -= previousGroundVelocity;
+        velocity = vel;
+
+        PhysicsObject ride = GetRide();
+        previousGroundVelocity = ride != null ? ride.rigidbody.velocity : Vector3.zero;
+        velocity += previousGroundVelocity;
+        rigidbody.velocity = velocity;
+
+        foreach (PhysicsObject riding in allRiding) {
+            riding.SetRelativeVelocity(riding.GetRelativeVelocity());
+        }
+    }
+
+    protected virtual Vector3 GetRelativeVelocity() {
+        return rigidbody.velocity - previousGroundVelocity;
     }
 
     protected virtual void FixedUpdate() {
@@ -54,42 +81,49 @@ public class PhysicsObject : MonoBehaviour
     }
 
     protected virtual void HandleMovement() {
-        Vector3 hVelocity = rigidbody.velocity.WithY(0);
-        float vVelocity = rigidbody.velocity.y;
-
-        hVelocity -= previousGroundVelocity.WithY(0);
-        vVelocity -= previousGroundVelocity.y;
+        Vector3 hVelocity = GetRelativeVelocity().WithY(0);
+        float vVelocity = GetRelativeVelocity().y;
         
-        hVelocity = Vector3.MoveTowards(hVelocity, Vector3.zero, friction);
-        if (groundNormal == Vector3.zero && currentTornado == null) {
-            hVelocity = Vector3.zero;
+        // handle horizontal velocity
+        PhysicsObject theRide = GetRide();
+        if (allRides.Count > 0) {
+            // we're riding something. snap towards its position
+            Vector3 rideOffset = theRide.GetRidePoint().WithY(0) - transform.position.WithY(0);
+            hVelocity = Vector3.ClampMagnitude(rideOffset, rideSnapSpeed * Time.deltaTime);
+        }
+        else {
+            // apply friction while not riding something
+            hVelocity = Vector3.MoveTowards(hVelocity, Vector3.zero, friction);
+            if (groundNormal == Vector3.zero && currentTornado == null) {
+                hVelocity = Vector3.zero;
+            }
         }
 
+        // handle vertical velocity
         if (currentTornado != null) {
-            /*vVelocity += riseAccel * Time.deltaTime;
-            vVelocity = Mathf.Min(vVelocity, maxRiseSpeed * Time.deltaTime);*/
+            // do nothing! we have a coroutine handling this case
+            if (gameObject.name == "PushableBox (1)") {
+                Debug.Log("tornado " + vVelocity);
+            }
         }
         else if (groundNormal == Vector3.zero) {
+            // apply gravity while in the air
             vVelocity -= gravity * Time.deltaTime;
             if (vVelocity < -maxFallSpeed)
                 vVelocity = -maxFallSpeed;
+            if (gameObject.name == "PushableBox (1)") {
+                Debug.Log("gravity " + vVelocity);
+            }
         }
         else {
-            vVelocity -= groundDistance / Time.fixedDeltaTime;
+            // stay at the ground height while on the ground
+            vVelocity = -groundDistance / Time.fixedDeltaTime;
+            if (gameObject.name == "PushableBox (1)") {
+                Debug.Log("on ground " + vVelocity + " " + groundDistance);
+            }
         }
 
-        previousGroundVelocity = Vector3.zero;
-        if (groundRigidbody != null) {
-            hVelocity += groundRigidbody.velocity.WithY(0);
-            vVelocity += groundRigidbody.velocity.y;
-            previousGroundVelocity = groundRigidbody.velocity;
-        }
-        else if (currentTornado != null) {
-            hVelocity += currentTornado.rigidbody.velocity.WithY(0);
-            vVelocity += currentTornado.rigidbody.velocity.y;
-            previousGroundVelocity = currentTornado.rigidbody.velocity;
-        }
-        rigidbody.velocity = hVelocity.WithY(vVelocity);
+        SetRelativeVelocity(hVelocity.WithY(vVelocity));
     }
 
 
@@ -127,8 +161,6 @@ public class PhysicsObject : MonoBehaviour
                 }
                 timer = Mathf.Min(timer + Time.fixedDeltaTime, tornadoRiseTime);
             }
-
-            rigidbody.velocity = rigidbody.velocity.WithY(0);
         }
         else {
             bool isSlowing = true;
@@ -170,11 +202,48 @@ public class PhysicsObject : MonoBehaviour
                 }
                 yield return new WaitForFixedUpdate();
             }
+        }
 
-            rigidbody.velocity = rigidbody.velocity.WithY(0);
+        while (true) {
+            rigidbody.velocity = rigidbody.velocity.WithY((currentTornado.Top.y - transform.position.y) / Time.fixedDeltaTime);
+            yield return 0;
         }
     }
 
 
+    public virtual Vector3 GetRidePoint() {
+        return collider.bounds.center + Vector3.up * collider.bounds.extents.y;
+    }
+
+
+    protected virtual PhysicsObject GetRide() {
+        if (allRides.Count == 0) {
+            return null;
+        }
+
+        PhysicsObject theRide = allRides.FirstOrDefault(p => p is Tornado t);
+        if (theRide != null) {
+            return theRide;
+        }
+
+        foreach (PhysicsObject aRide in allRides) {
+            if (theRide == null || (transform.position - theRide.GetRidePoint()).sqrMagnitude >
+                (transform.position - aRide.GetRidePoint()).sqrMagnitude)
+            {
+                theRide = aRide;
+            }
+        }
+        return theRide;
+    }
+
+    public virtual void SetRiding(PhysicsObject riding) {
+        allRiding.Add(riding);
+        riding.allRides.Add(this);
+    }
+
+    public virtual void SetNotRiding(PhysicsObject riding) {
+        allRiding.Remove(riding);
+        riding.allRides.Remove(this);
+    }
 
 }
