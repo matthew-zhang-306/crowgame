@@ -28,8 +28,8 @@ public class PushableBox : PhysicsObject
         }
 
         if (currentTornado != null) {
-            vVelocity += riseAccel * Time.deltaTime;
-            vVelocity = Mathf.Min(vVelocity, maxRiseSpeed * Time.deltaTime);
+            /*vVelocity += riseAccel * Time.deltaTime;
+            vVelocity = Mathf.Min(vVelocity, maxRiseSpeed * Time.deltaTime);*/
         }
         else if (groundNormal == Vector3.zero) {
             vVelocity -= gravity * Time.deltaTime;
@@ -67,13 +67,5 @@ public class PushableBox : PhysicsObject
     }
 
 
-
-    public void EnterTornado(Tornado tornado) {
-        currentTornado = tornado;
-    }
-
-    public void ExitTornado() {
-        currentTornado = null;
-    }
     
 }

@@ -1,16 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PhysicsObject : MonoBehaviour
 {
     [Header("Physics Parameters")]
     public float friction;
-    public float riseAccel;
-    public float maxRiseSpeed;
     public float maxFallSpeed;
     public float gravity;
-    
+
+    [Header("Tornado Physics Parameters")]
+    public float tornadoStopAccel;
+    public float tornadoRiseTime;
+
     protected Vector3 groundNormal;
     protected float groundY;
     protected float groundDistance;
@@ -22,6 +25,7 @@ public class PhysicsObject : MonoBehaviour
     protected float currentGravity;
 
     protected Tornado currentTornado;
+    protected Coroutine tornadoRoutine;
     
 
     protected virtual void Awake() {
@@ -62,8 +66,8 @@ public class PhysicsObject : MonoBehaviour
         }
 
         if (currentTornado != null) {
-            vVelocity += riseAccel * Time.deltaTime;
-            vVelocity = Mathf.Min(vVelocity, maxRiseSpeed * Time.deltaTime);
+            /*vVelocity += riseAccel * Time.deltaTime;
+            vVelocity = Mathf.Min(vVelocity, maxRiseSpeed * Time.deltaTime);*/
         }
         else if (groundNormal == Vector3.zero) {
             vVelocity -= gravity * Time.deltaTime;
@@ -86,6 +90,89 @@ public class PhysicsObject : MonoBehaviour
             previousGroundVelocity = currentTornado.rigidbody.velocity;
         }
         rigidbody.velocity = hVelocity.WithY(vVelocity);
+    }
+
+
+    public virtual void EnterTornado(Tornado tornado) {
+        currentTornado = tornado;
+        tornadoRoutine = StartCoroutine(DoTornadoPhysics());
+    }
+    public virtual void ExitTornado() {
+        currentTornado = null;
+        if (tornadoRoutine != null) {
+            StopCoroutine(tornadoRoutine);
+        }
+    }
+
+    protected IEnumerator DoTornadoPhysics() {
+        if (rigidbody.velocity.y <= 0f) {
+            // slow to 0
+            while (rigidbody.velocity.y < 0f) {
+                rigidbody.velocity = rigidbody.velocity.WithY(rigidbody.velocity.y + tornadoStopAccel * Time.fixedDeltaTime);
+                yield return new WaitForFixedUpdate();
+            }
+
+            // raise w/ ease in/out
+            float startY = transform.position.y;
+            float timer = 0;
+            while (true) {
+                float endY = currentTornado.Top.y;
+                float desiredY = DOVirtual.EasedValue(startY, endY, timer / tornadoRiseTime, Ease.InOutQuad);
+                rigidbody.velocity = rigidbody.velocity.WithY((desiredY - transform.position.y) / Time.fixedDeltaTime);
+
+                yield return new WaitForFixedUpdate();
+
+                if (timer == tornadoRiseTime) {
+                    break;
+                }
+                timer = Mathf.Min(timer + Time.fixedDeltaTime, tornadoRiseTime);
+            }
+
+            rigidbody.velocity = rigidbody.velocity.WithY(0);
+        }
+        else {
+            bool isSlowing = true;
+
+            // raise a ghost w/ ease in/out
+            float startY = transform.position.y;
+            float ghostY = transform.position.y;
+            float timer = 0;
+            while (timer < tornadoRiseTime) {
+                float endY = currentTornado.Top.y;
+                float desiredY = DOVirtual.EasedValue(startY, endY, timer / tornadoRiseTime, Ease.InOutQuad);
+                float desiredYVel = (desiredY - ghostY) / Time.fixedDeltaTime;
+
+                if (isSlowing) {
+                    // decrease velocity and check if we can switch to the ghost
+                    rigidbody.velocity = rigidbody.velocity.WithY(rigidbody.velocity.y - tornadoStopAccel);
+                    if (rigidbody.velocity.y <= desiredYVel) {
+                        isSlowing = false;
+                    } 
+                }
+                if (!isSlowing) {
+                    rigidbody.velocity = rigidbody.velocity.WithY(desiredYVel);
+                }
+
+                yield return new WaitForFixedUpdate();
+
+                ghostY = desiredY;
+                if (timer == tornadoRiseTime) {
+                    break;
+                }
+                timer = Mathf.Min(timer + Time.fixedDeltaTime, tornadoRiseTime);
+            }
+
+            while (isSlowing) {
+                // continue decreasing velocity
+                rigidbody.velocity = rigidbody.velocity.WithY(rigidbody.velocity.y - tornadoStopAccel);
+                if (rigidbody.velocity.y <= 0) {
+                    isSlowing = false;
+                }
+                yield return new WaitForFixedUpdate();
+            }
+
+            rigidbody.velocity = rigidbody.velocity.WithY(0);
+        }
     }
 
 
