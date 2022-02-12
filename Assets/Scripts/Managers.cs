@@ -26,7 +26,6 @@ public class Managers : MonoBehaviour
             AudioManager?.Init();
             ScenesManager = GetComponentInChildren<ScenesManager>();
             ScenesManager?.Init();
-
             // add more manager initializations below
         }
     }
