@@ -5,7 +5,7 @@ using UnityEngine;
 // all singletons will be stored here
 public class Managers : MonoBehaviour
 {
-    Managers instance;
+    static Managers instance;
     public static AudioManager AudioManager;
     public static ScenesManager ScenesManager;
     // etc
