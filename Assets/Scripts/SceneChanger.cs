@@ -13,5 +13,6 @@ public class SceneChanger : MonoBehaviour
     public void QuitApplication()
     {
         Application.Quit();
+        PlayerPrefs.SetInt("FirstTime", 0);
     }
 }

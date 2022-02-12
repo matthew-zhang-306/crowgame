@@ -7,6 +7,7 @@ public class WarpAltar : MonoBehaviour
 {
     public string targetScene;
     public string destinationName;
+    public SavingSystem savingSystem;
     private PlayerMovement playerInside;
 
     public delegate void AltarDelegate(WarpAltar altar);
@@ -25,6 +26,7 @@ public class WarpAltar : MonoBehaviour
     private void Update() {
         if (playerInside != null && Input.GetAxisRaw("Action1") > 0) {
             OnAltarWarp?.Invoke(this);
+            savingSystem.SavePlayerPosition();
             DOTween.Sequence().InsertCallback(
                 1.0f, () => Managers.ScenesManager.ChangeScene(targetScene));
         }
