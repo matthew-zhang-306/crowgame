@@ -114,10 +114,6 @@ public class PlayerMovement : MonoBehaviour
         Debug.DrawRay(transform.position, Vector3.Cross(cameraDir, Vector3.up), Color.green, Time.fixedDeltaTime);
         horizontalInput = horizontalInput.x * -Vector3.Cross(cameraDir, Vector3.up) + horizontalInput.z * cameraDir;
         horizontalInput = horizontalInput.normalized;
-
-        // since we have the camera angle we'll do the sprite rotation now
-        float rotateAngle = Vector3.SignedAngle(cameraFacingTransform.forward, cameraDir, Vector3.up);
-        cameraFacingTransform.Rotate(new Vector3(0, rotateAngle, 0));
     
         if (horizontalInput != Vector3.zero) {
             Vector3 hInputRounded = Quaternion.Euler(0, Helpers.RoundToNearest(Vector3.SignedAngle(Vector3.forward, horizontalInput, Vector3.up), 90f), 0) * Vector3.forward;
