@@ -26,7 +26,11 @@ public class WarpAltar : MonoBehaviour
     private void Update() {
         if (playerInside != null && Input.GetAxisRaw("Action1") > 0) {
             OnAltarWarp?.Invoke(this);
-            savingSystem.SavePlayerPosition();
+            
+            if (Managers.ScenesManager.GetSceneName() == "Hub-World") {
+                savingSystem.SavePlayerPosition();
+            }
+            
             DOTween.Sequence().InsertCallback(
                 1.0f, () => Managers.ScenesManager.ChangeScene(targetScene));
         }
