@@ -9,6 +9,7 @@ public class PauseMenu : MonoBehaviour
     public static bool gamePaused = false;
     public GameObject PauseMenuUI;
     public GameObject settingsMenuUI;
+    public GameObject levelsMenuUI;
     public AudioMixer audioMixer;
 
     private GameObject currentMenu;
@@ -61,6 +62,15 @@ public class PauseMenu : MonoBehaviour
         settingsMenuUI.SetActive(true);
         currentMenu = settingsMenuUI;
         
+    }
+
+    public void LoadLevelSelect()
+    {
+        //switch to the level select menu (which has its own script)
+        PauseMenuUI.SetActive(false);
+        levelsMenuUI.SetActive(true);
+        currentMenu = levelsMenuUI;
+
     }
 
     public void QuitGame()

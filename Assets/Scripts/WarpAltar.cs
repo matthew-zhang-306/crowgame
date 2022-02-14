@@ -30,7 +30,7 @@ public class WarpAltar : MonoBehaviour
             if (Managers.ScenesManager.GetSceneName() == "Hub-World") {
                 savingSystem.SavePlayerPosition();
             }
-            
+
             DOTween.Sequence().InsertCallback(
                 1.0f, () => Managers.ScenesManager.ChangeScene(targetScene));
         }
@@ -54,5 +54,13 @@ public class WarpAltar : MonoBehaviour
                 rock.IsLifted = false;
             }
         }
+    }
+
+    public void SceneTrans(string target)
+    {
+        Managers.PauseMenu.Resume();
+        OnAltarWarp?.Invoke(this);
+        DOTween.Sequence().InsertCallback(
+            1.0f, () => Managers.ScenesManager.ChangeScene(target));
     }
 }

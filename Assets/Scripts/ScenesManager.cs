@@ -68,7 +68,6 @@ public class ScenesManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-
     public string GetSceneName() {
         return SceneManager.GetActiveScene().name;
     }

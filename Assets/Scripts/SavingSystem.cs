@@ -16,7 +16,7 @@ public class SavingSystem : MonoBehaviour
     {
         isMoved = false;
         //SavePlayerPosition();
-        if (PlayerPrefs.GetInt("FirstTime") == 0){
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("Hub-World") && PlayerPrefs.GetInt("FirstTime") == 0){
             SavePlayerPosition();
             PlayerPrefs.SetInt("FirstTime", 1);
         }
