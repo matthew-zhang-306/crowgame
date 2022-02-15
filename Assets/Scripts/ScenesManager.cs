@@ -68,6 +68,11 @@ public class ScenesManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+
+    public bool IsHubSceneLoaded() {
+        return GetSceneName().Contains("Hub");
+    }
+
     public string GetSceneName() {
         return SceneManager.GetActiveScene().name;
     }

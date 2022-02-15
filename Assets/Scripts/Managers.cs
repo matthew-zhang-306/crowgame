@@ -8,6 +8,7 @@ public class Managers : MonoBehaviour
     static Managers instance;
     public static AudioManager AudioManager;
     public static ScenesManager ScenesManager;
+    public static ProgressManager ProgressManager;
     public static PauseMenu PauseMenu;
     // etc
 
@@ -27,6 +28,8 @@ public class Managers : MonoBehaviour
             AudioManager?.Init();
             ScenesManager = GetComponentInChildren<ScenesManager>();
             ScenesManager?.Init();
+            ProgressManager = GetComponentInChildren<ProgressManager>();
+            ProgressManager?.Init();
             PauseMenu = GetComponentInChildren<PauseMenu>();
             // add more manager initializations below
         }
