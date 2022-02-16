@@ -22,6 +22,17 @@ public class PushableBox : PhysicsObject
     }
 
 
+    protected override Vector3 HandleHorizontalMovement(Vector3 hVelocity) {
+        if (peckedTimer > 0f) {
+            // while the box has been pecked, ignore any rides and apply friction
+            hVelocity = Vector3.MoveTowards(hVelocity, Vector3.zero, friction);
+            return hVelocity;
+        }
+
+        return base.HandleHorizontalMovement(hVelocity);
+    }
+
+
     public override Vector3 GetRidePoint() {
         return rideRegion.transform.position;
     }

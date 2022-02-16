@@ -16,9 +16,9 @@ public class SavingSystem : MonoBehaviour
     {
         isMoved = false;
         //SavePlayerPosition();
-        if (PlayerPrefs.GetInt("FirstTime") == 0){
+        if (Managers.ScenesManager.IsHubSceneLoaded() && PlayerPrefsX.GetBool("FirstTime", false)){
             SavePlayerPosition();
-            PlayerPrefs.SetInt("FirstTime", 1);
+            PlayerPrefsX.SetBool("FirstTime", true);
         }
     }
 
@@ -28,10 +28,10 @@ public class SavingSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             // count as first time playing again
-            PlayerPrefs.SetInt("FirstTime", 0);
+            PlayerPrefsX.SetBool("FirstTime", false);
         }
 
-        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("Hub-World") && !isMoved)
+        if (Managers.ScenesManager.IsHubSceneLoaded() && !isMoved)
         {
             SetPlayerPosition();
             isMoved = true;
@@ -40,16 +40,14 @@ public class SavingSystem : MonoBehaviour
 
     public void SavePlayerPosition()
     {
-        PlayerPrefs.SetFloat("playerXPos", player.transform.position.x);
-        PlayerPrefs.SetFloat("playerYPos", player.transform.position.y);
-        PlayerPrefs.SetFloat("playerZPos", player.transform.position.z);
+        PlayerPrefsX.SetVector3("playerPos", player.transform.position);
         Debug.Log("Saved");
         Debug.Log("Player Pos: " + player.transform.position.x + ", " + player.transform.position.y + ", " + player.transform.position.z);
     }
 
     public void SetPlayerPosition()
     {
-        player.transform.position = new Vector3(PlayerPrefs.GetFloat("playerXPos"), PlayerPrefs.GetFloat("playerYPos"), PlayerPrefs.GetFloat("playerZPos"));
+        player.transform.position = PlayerPrefsX.GetVector3("playerPos", player.transform.position);
         Debug.Log("Moved");
         Debug.Log("Player Pos: " + player.transform.position.x + ", " + player.transform.position.y + ", " + player.transform.position.z);
     }

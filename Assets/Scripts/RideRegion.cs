@@ -12,7 +12,7 @@ public class RideRegion : MonoBehaviour
         PhysicsObject obj = other.GetComponent<PhysicsObject>();
 
         if (obj != null && obj != physicsObject) {
-            physicsObject.SetRiding(obj);
+            physicsObject.AddRider(obj);
         }
     }
 
@@ -20,7 +20,7 @@ public class RideRegion : MonoBehaviour
         PhysicsObject obj = other.GetComponent<PhysicsObject>();
 
         if (obj != null && obj != physicsObject) {
-            physicsObject.SetNotRiding(obj);
+            physicsObject.RemoveRider(obj);
         }
     }
 }

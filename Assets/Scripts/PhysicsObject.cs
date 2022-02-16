@@ -26,8 +26,8 @@ public class PhysicsObject : MonoBehaviour
     protected new Collider collider;
     protected float currentGravity;
 
-    protected HashSet<PhysicsObject> allRiding;
-    protected HashSet<PhysicsObject> allRides;
+    protected HashSet<PhysicsObject> allRiders;
+    protected HashSet<PhysicsObject> allCarriers;
     protected Tornado currentTornado;
     protected Coroutine tornadoRoutine;
     
@@ -37,8 +37,20 @@ public class PhysicsObject : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
 
-        allRiding = new HashSet<PhysicsObject>();
-        allRides = new HashSet<PhysicsObject>();
+        allRiders = new HashSet<PhysicsObject>();
+        allCarriers = new HashSet<PhysicsObject>();
+    }
+
+    protected virtual void OnEnable() {
+        // empty, for now
+    }
+    protected virtual void OnDisable() {
+        foreach (PhysicsObject rider in allRiders.ToList()) {
+            this.RemoveRider(rider);
+        }
+        foreach (PhysicsObject carrier in allCarriers.ToList()) {
+            carrier.RemoveRider(this);
+        }
     }
 
 
@@ -52,7 +64,7 @@ public class PhysicsObject : MonoBehaviour
         velocity += previousGroundVelocity;
         rigidbody.velocity = velocity;
 
-        foreach (PhysicsObject riding in allRiding) {
+        foreach (PhysicsObject riding in allRiders) {
             riding.SetRelativeVelocity(riding.GetRelativeVelocity());
         }
     }
@@ -84,9 +96,16 @@ public class PhysicsObject : MonoBehaviour
         Vector3 hVelocity = GetRelativeVelocity().WithY(0);
         float vVelocity = GetRelativeVelocity().y;
         
-        // handle horizontal velocity
+        hVelocity = HandleHorizontalMovement(hVelocity);
+        vVelocity = HandleVerticalMovement(vVelocity);
+
+        SetRelativeVelocity(hVelocity.WithY(vVelocity));
+    }
+
+    // calculates what the object's new horizontal velocity should be based on what it is currently
+    protected virtual Vector3 HandleHorizontalMovement(Vector3 hVelocity) {
         PhysicsObject theRide = GetRide();
-        if (allRides.Count > 0) {
+        if (allCarriers.Count > 0) {
             // we're riding something. snap towards its position
             Vector3 rideOffset = theRide.GetRidePoint().WithY(0) - transform.position.WithY(0);
             hVelocity = Vector3.ClampMagnitude(rideOffset, rideSnapSpeed * Time.deltaTime);
@@ -99,31 +118,25 @@ public class PhysicsObject : MonoBehaviour
             }
         }
 
-        // handle vertical velocity
+        return hVelocity;
+    }
+
+    protected virtual float HandleVerticalMovement(float vVelocity) {
         if (currentTornado != null) {
             // do nothing! we have a coroutine handling this case
-            if (gameObject.name == "PushableBox (1)") {
-                Debug.Log("tornado " + vVelocity);
-            }
         }
         else if (groundNormal == Vector3.zero) {
             // apply gravity while in the air
             vVelocity -= gravity * Time.deltaTime;
             if (vVelocity < -maxFallSpeed)
                 vVelocity = -maxFallSpeed;
-            if (gameObject.name == "PushableBox (1)") {
-                Debug.Log("gravity " + vVelocity);
-            }
         }
         else {
             // stay at the ground height while on the ground
             vVelocity = -groundDistance / Time.fixedDeltaTime;
-            if (gameObject.name == "PushableBox (1)") {
-                Debug.Log("on ground " + vVelocity + " " + groundDistance);
-            }
         }
 
-        SetRelativeVelocity(hVelocity.WithY(vVelocity));
+        return vVelocity;
     }
 
 
@@ -217,16 +230,16 @@ public class PhysicsObject : MonoBehaviour
 
 
     protected virtual PhysicsObject GetRide() {
-        if (allRides.Count == 0) {
+        if (allCarriers.Count == 0) {
             return null;
         }
 
-        PhysicsObject theRide = allRides.FirstOrDefault(p => p is Tornado t);
+        PhysicsObject theRide = allCarriers.FirstOrDefault(p => p is Tornado t);
         if (theRide != null) {
             return theRide;
         }
 
-        foreach (PhysicsObject aRide in allRides) {
+        foreach (PhysicsObject aRide in allCarriers) {
             if (theRide == null || (transform.position - theRide.GetRidePoint()).sqrMagnitude >
                 (transform.position - aRide.GetRidePoint()).sqrMagnitude)
             {
@@ -236,14 +249,14 @@ public class PhysicsObject : MonoBehaviour
         return theRide;
     }
 
-    public virtual void SetRiding(PhysicsObject riding) {
-        allRiding.Add(riding);
-        riding.allRides.Add(this);
+    public virtual void AddRider(PhysicsObject rider) {
+        allRiders.Add(rider);
+        rider.allCarriers.Add(this);
     }
 
-    public virtual void SetNotRiding(PhysicsObject riding) {
-        allRiding.Remove(riding);
-        riding.allRides.Remove(this);
+    public virtual void RemoveRider(PhysicsObject rider) {
+        allRiders.Remove(rider);
+        rider.allCarriers.Remove(this);
     }
 
 }

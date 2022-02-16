@@ -19,6 +19,7 @@ public class ScenesManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode) {
         // do stuff here
+        IsTransitioning = false;
         if (didTransitionOut) {
             sceneTransition.TransitionIn(0.5f);
             didTransitionOut = false;
@@ -65,6 +66,15 @@ public class ScenesManager : MonoBehaviour
 
         IsTransitioning = true;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+
+    public bool IsHubSceneLoaded() {
+        return GetSceneName().Contains("Hub");
+    }
+
+    public string GetSceneName() {
+        return SceneManager.GetActiveScene().name;
     }
 
 }
