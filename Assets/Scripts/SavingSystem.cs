@@ -16,7 +16,7 @@ public class SavingSystem : MonoBehaviour
     {
         isMoved = false;
         //SavePlayerPosition();
-        if (Managers.ScenesManager.IsHubSceneLoaded() && PlayerPrefsX.GetBool("FirstTime", false)){
+        if (Managers.ScenesManager.IsHubSceneLoaded() && !PlayerPrefsX.GetBool("FirstTime", false)){
             SavePlayerPosition();
             PlayerPrefsX.SetBool("FirstTime", true);
         }
@@ -47,6 +47,7 @@ public class SavingSystem : MonoBehaviour
 
     public void SetPlayerPosition()
     {
+        // todo: get camera to center on player immediately
         player.transform.position = PlayerPrefsX.GetVector3("playerPos", player.transform.position);
         Debug.Log("Moved");
         Debug.Log("Player Pos: " + player.transform.position.x + ", " + player.transform.position.y + ", " + player.transform.position.z);
