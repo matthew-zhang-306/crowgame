@@ -56,7 +56,7 @@ public class PauseMenu : MonoBehaviour
 
     public void LoadSettings()
     {
-        //switch to the settings menu (which has its own script)
+        //switch to the settings menu
         PauseMenuUI.SetActive(false);
         settingsMenuUI.SetActive(true);
         currentMenu = settingsMenuUI;

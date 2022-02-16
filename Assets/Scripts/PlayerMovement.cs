@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform gustSpawnLocation;
     public GameObject gustPrefab;
 
+
     Camera mainCamera;
 
     new Rigidbody rigidbody;
@@ -36,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     private bool oldPeckInput;
     private bool gustInput;
     private bool oldGustInput;
+    public GameObject tornadoMarker;
 
     private bool inCutscene;
 
@@ -84,14 +86,37 @@ public class PlayerMovement : MonoBehaviour
 
         if (peckInput && !oldPeckInput && !peckHitbox.activeInHierarchy) {
             // peck
-            FindObjectOfType<AudioManager>().PlaySound("Peck");
+            Managers.AudioManager.PlaySound("Peck");
             peckHitbox.SetActive(true);
             this.Invoke(() => peckHitbox.SetActive(false), 0.2f);
         }
         if (gustInput && !oldGustInput) {
-            // gust
-            FindObjectOfType<AudioManager>().PlaySound("Tornado");
-            Instantiate(gustPrefab, gustSpawnLocation.position, rotateTransform.rotation, null);
+            //calculate the position that the tornado will spawn
+            Debug.Log("Sending out calc gust");
+            Object.Instantiate(gustPrefab, gustSpawnLocation.position, rotateTransform.rotation, null);
+
+        }
+
+        //just let go of tornado button
+        if(!gustInput && oldGustInput)
+        {
+            //send out the tornado
+
+            //cant keep reference to gust or error, so need to manually find the wc to destroy it
+            GameObject[] markers = GameObject.FindGameObjectsWithTag("WorldCanvas");
+
+            foreach (GameObject marker in markers)
+            {
+                Destroy(marker);
+            }
+            Debug.Log("Destroying WC");
+            GameObject wc = GameObject.Find("WorldCanvas(Clone)");
+            Destroy(wc);
+
+             Debug.Log("Sending out real gust");
+             Managers.AudioManager.PlaySound("Tornado");
+             Instantiate(gustPrefab, gustSpawnLocation.position, rotateTransform.rotation, null);
+
         }
 
         oldPeckInput = peckInput;
