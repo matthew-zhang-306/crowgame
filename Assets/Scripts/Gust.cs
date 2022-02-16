@@ -79,12 +79,14 @@ public class Gust : MonoBehaviour
         {
             //this gust was sent to see where the marker should go
             Debug.Log("Spawning marker");
+            if(WorldCanvas != null)
+            {
+                WorldCanvas.GetComponent<worldCanvas>().setTornadoMarker(thePosition);
+            }
             
-            WorldCanvas.GetComponent<worldCanvas>().setTornadoMarker(thePosition);
         }
         Debug.Log("Destroying gust");
         Destroy(gameObject);
-
     }
 
 }
