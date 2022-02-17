@@ -57,58 +57,22 @@ public class PlayerMovement : PhysicsObject
         base.FixedUpdate();
 
         Debug.DrawRay(transform.position, rigidbody.velocity, Color.cyan, Time.fixedDeltaTime);
-        /*
-        groundNormal = Vector3.zero;
-        if (Physics.BoxCast(collider.bounds.center + Vector3.up * 0.1f, collider.bounds.extents, Vector3.down, out RaycastHit hit, Quaternion.identity, 0.25f, wallMask)) {
-            Debug.DrawRay(hit.point, hit.normal * 2f, Color.red, Time.fixedDeltaTime);
-            
-            if (Vector3.Dot(Vector3.up, hit.normal) > 0.65f) {
-                groundDistance = hit.distance - 0.11f;
-                groundNormal = hit.normal;
-            }
-        }
-        
-        GetHorizontalInput();
-        HandleMovement();
-        */
 
         if (inCutscene) {
             return;
         }
 
         if (peckInput && !oldPeckInput && !peckHitbox.activeInHierarchy) {
-            // peck
-            Managers.AudioManager.PlaySound("Peck");
-            peckHitbox.SetActive(true);
-            this.Invoke(() => peckHitbox.SetActive(false), 0.2f);
+            Peck();
         }
         if (gustInput && !oldGustInput) {
-            //calculate the position that the tornado will spawn
-            Debug.Log("Sending out calc gust");
-            Object.Instantiate(gustPrefab, gustSpawnLocation.position, rotateTransform.rotation, null);
-
+            ChargeGust();
         }
 
         //just let go of tornado button
         if(!gustInput && oldGustInput)
         {
-            //send out the tornado
-
-            //cant keep reference to gust or error, so need to manually find the wc to destroy it
-            GameObject[] markers = GameObject.FindGameObjectsWithTag("WorldCanvas");
-
-            foreach (GameObject marker in markers)
-            {
-                Destroy(marker);
-            }
-            Debug.Log("Destroying WC");
-            GameObject wc = GameObject.Find("WorldCanvas(Clone)");
-            Destroy(wc);
-
-             Debug.Log("Sending out real gust");
-             Managers.AudioManager.PlaySound("Tornado");
-             Instantiate(gustPrefab, gustSpawnLocation.position, rotateTransform.rotation, null);
-
+            Gust();
         }
 
         oldPeckInput = peckInput;
@@ -137,45 +101,6 @@ public class PlayerMovement : PhysicsObject
         }
     }
 
-    /*
-    private void HandleMovement() {
-        Vector3 velocity = rigidbody.velocity;
-        
-        Vector3 horizontalVel = velocity.WithY(0);
-        horizontalVel = Vector3.MoveTowards(horizontalVel, horizontalInput * maxSpeed, acceleration * Time.deltaTime);
-        velocity.x = horizontalVel.x;
-        velocity.z = horizontalVel.z;
-
-        if (groundNormal != Vector3.zero) {
-            Vector3 groundNormalHorizontal = groundNormal.WithY(0);
-            float horizontalFactor = -Vector3.Dot(groundNormalHorizontal, horizontalVel.normalized);
-            Vector3 groundNormalUp = groundNormal - groundNormalHorizontal;
-            if (groundNormalUp.magnitude != 0)
-                velocity.y = horizontalVel.magnitude * horizontalFactor / groundNormalUp.magnitude;
-            else
-                velocity.y = 0;
-            
-            Debug.DrawRay(transform.position, horizontalVel, Color.magenta, Time.fixedDeltaTime);
-            Debug.DrawRay(transform.position + horizontalVel, new Vector3(0, velocity.y, 0), Color.magenta, Time.fixedDeltaTime);
-        }
-        
-        if (currentTornado != null) {
-            velocity.y += tornadoRiseAccel * Time.deltaTime;
-            velocity.y = Mathf.Min(velocity.y, tornadoRiseSpeed * Time.deltaTime);
-        }
-        else if (groundNormal == Vector3.zero) {
-            velocity += Vector3.down * gravity * Time.deltaTime;
-            if (velocity.y < -maxFallSpeed)
-                velocity.y = -maxFallSpeed;
-        }
-        else {
-            velocity.y -= groundDistance / Time.fixedDeltaTime;
-        }
-
-        Debug.DrawRay(transform.position, velocity, Color.cyan, Time.fixedDeltaTime);
-        rigidbody.velocity = velocity;
-    }
-    */
 
     protected override void CheckForGround() {
         groundNormal = Vector3.zero;
@@ -243,6 +168,37 @@ public class PlayerMovement : PhysicsObject
     }
 
 
+    public void Peck() {
+        Managers.AudioManager.PlaySound("Peck");
+        peckHitbox.SetActive(true);
+        this.Invoke(() => peckHitbox.SetActive(false), 0.2f);
+    }
+
+    public void ChargeGust() {
+        Debug.Log("Sending out calc gust");
+        Object.Instantiate(gustPrefab, gustSpawnLocation.position, rotateTransform.rotation, null);
+    }
+
+    public void Gust() {
+        //send out the tornado
+
+        //cant keep reference to gust or error, so need to manually find the wc to destroy it
+        GameObject[] markers = GameObject.FindGameObjectsWithTag("WorldCanvas");
+
+        foreach (GameObject marker in markers)
+        {
+            Destroy(marker);
+        }
+        Debug.Log("Destroying WC");
+        GameObject wc = GameObject.Find("WorldCanvas(Clone)");
+        Destroy(wc);
+
+        Debug.Log("Sending out real gust");
+        Managers.AudioManager.PlaySound("Tornado");
+        Instantiate(gustPrefab, gustSpawnLocation.position, rotateTransform.rotation, null);
+    }
+
+
     public void PlayWarpAnimation(WarpAltar _) {
         inCutscene = true;
 
@@ -255,8 +211,8 @@ public class PlayerMovement : PhysicsObject
 
 
     private void OnDrawGizmos() {
-        if (peckHitbox != null && peckHitbox.activeInHierarchy) {
-            Gizmos.color = Color.green;
+        if (peckHitbox != null) {
+            Gizmos.color = peckHitbox.activeInHierarchy ? Color.green : Color.yellow;
             Gizmos.DrawWireCube(peckHitbox.transform.position, Vector3.one * 0.5f);
         }
     }
