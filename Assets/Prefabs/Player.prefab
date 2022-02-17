@@ -933,12 +933,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b75f351baa05cb488594e5f7577c6e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 5
-  acceleration: 50
+  friction: 0
   maxFallSpeed: 1000
   gravity: 30
-  tornadoRiseAccel: 100
-  tornadoRiseSpeed: 250
+  rideSnapSpeed: 0
+  tornadoStopAccel: 20
+  tornadoRiseTime: 0.5
+  maxSpeed: 5
+  acceleration: 50
   playerAnimation: {fileID: 253836169}
   cameraFacingTransform: {fileID: 7523748966877298913}
   rotateTransform: {fileID: 5760937828559660949}
@@ -946,6 +948,7 @@ MonoBehaviour:
   peckHitbox: {fileID: 5760937829312072292}
   gustSpawnLocation: {fileID: 1303731947466250391}
   gustPrefab: {fileID: 6822401769803232554, guid: 8ec65cbe03de8824281305ba60dcecea, type: 3}
+  cameraPosition: {fileID: 11400000, guid: 84bdca8a8afb61247bdb17c8adbcbf89, type: 2}
   tornadoMarker: {fileID: 1758836936633934081, guid: afabf8e4297df6046bb7e09dd20a547a, type: 3}
 --- !u!54 &5760937829165965238
 Rigidbody:

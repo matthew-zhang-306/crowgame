@@ -71,8 +71,8 @@ public class Tornado : PhysicsObject
             player = hit.rigidbody?.GetComponent<PlayerMovement>();
         
         if (player != previousPlayer) {
-            previousPlayer?.ExitTornado();
-            player?.EnterTornado(this);
+            RemoveRider(previousPlayer);
+            AddRider(player);
         }
         previousPlayer = player;
     }
