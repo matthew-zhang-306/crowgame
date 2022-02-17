@@ -25,7 +25,7 @@ public class WarpUI : MonoBehaviour
 
 
     private void ShowUI(WarpAltar altar) {
-        text.text = "Warp to " + altar.destinationName;
+        text.text = "Warp to " + altar.targetLevel.displayName;
     }
 
     private void HideUI(WarpAltar altar) {

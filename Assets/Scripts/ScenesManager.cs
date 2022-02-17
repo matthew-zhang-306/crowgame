@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class ScenesManager : MonoBehaviour
 {
+    public LevelListSO levelList;
     public SceneTransition sceneTransition;
     public bool IsTransitioning { get; private set; }
     bool didTransitionOut;
@@ -70,11 +71,7 @@ public class ScenesManager : MonoBehaviour
 
 
     public bool IsHubSceneLoaded() {
-        return GetSceneName().Contains("Hub");
-    }
-
-    public string GetSceneName() {
-        return SceneManager.GetActiveScene().name;
+        return SceneManager.GetActiveScene().name == levelList.hub.sceneName;
     }
 
 }

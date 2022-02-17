@@ -13,9 +13,33 @@ MonoBehaviour:
   m_Name: LevelList
   m_EditorClassIdentifier: 
   starsPerLevel: 3
+  hub:
+    sceneName: Hub-World
+    displayName: Hub
+    zodiacAnimal: 
+    difficulty: 0
   levels:
-  - {fileID: 11400000, guid: f58409d246613a6499725a06a6d48782, type: 2}
-  - {fileID: 11400000, guid: 15620f3040d010e4f96c70c9a980ce4b, type: 2}
-  - {fileID: 11400000, guid: 112aa542eb05ac5489e4c14bec985bdc, type: 2}
-  - {fileID: 11400000, guid: cd7b33c9855148a43a9fe74a53808a1d, type: 2}
-  - {fileID: 11400000, guid: 4aacfa6db313d6c4d958fa7172f0beb8, type: 2}
+  - sceneName: P_SimpleBoxes
+    displayName: 1A
+    zodiacAnimal: Pig
+    difficulty: 1
+  - sceneName: P_SimpleTornados
+    displayName: 1B
+    zodiacAnimal: Dog
+    difficulty: 1
+  - sceneName: P_OneBlockBridge
+    displayName: 1C
+    zodiacAnimal: Rooster
+    difficulty: 1
+  - sceneName: P_LargeHole
+    displayName: 2A
+    zodiacAnimal: Monkey
+    difficulty: 2
+  - sceneName: P_BoxOnTornadoOnBox
+    displayName: 2B
+    zodiacAnimal: Goat
+    difficulty: 2
+  - sceneName: P_TwoStackThreeStack
+    displayName: 2C
+    zodiacAnimal: Horse
+    difficulty: 2

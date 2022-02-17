@@ -5,8 +5,13 @@ using DG.Tweening;
 
 public class WarpAltar : MonoBehaviour
 {
-    public string targetScene;
-    public string destinationName;
+    public LevelListSO levelList;
+
+    [Tooltip("-1 = Hub, 0 = First level, 1 = Second level, ...")]
+    public int levelIndex;
+
+    public LevelDef targetLevel => levelIndex >= 0 ? levelList.levels[levelIndex] : levelList.hub;
+
     public SavingSystem savingSystem;
     private PlayerMovement playerInside;
 
@@ -27,12 +32,12 @@ public class WarpAltar : MonoBehaviour
         if (playerInside != null && Input.GetAxisRaw("Action1") > 0) {
             OnAltarWarp?.Invoke(this);
             
-            if (Managers.ScenesManager.GetSceneName() == "Hub-World") {
+            if (Managers.ScenesManager.IsHubSceneLoaded()) {
                 savingSystem.SavePlayerPosition();
             }
 
             DOTween.Sequence().InsertCallback(
-                1.0f, () => Managers.ScenesManager.ChangeScene(targetScene));
+                1.0f, () => Managers.ScenesManager.ChangeScene(targetLevel.sceneName));
         }
     }
 
