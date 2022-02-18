@@ -7,6 +7,7 @@ using UnityEngine.Audio;
 public class PauseMenu : MonoBehaviour
 {
     public static bool gamePaused = false;
+    public static bool isTelescopeOn = false;
     public GameObject PauseMenuUI;
     public GameObject settingsMenuUI;
     public GameObject levelsMenuUI;
@@ -24,7 +25,7 @@ public class PauseMenu : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape) && !isTelescopeOn)
         {
             if(gamePaused)
             {
