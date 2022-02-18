@@ -71,12 +71,12 @@ public class DialogueManager : MonoBehaviour
             if (pressed == true)
             {
                 //Debug.Log("check");
-                yield return new WaitForSeconds(0.001f);
+                yield return new WaitForSeconds(0.0001f);
             }
             else
             {
                 //Debug.Log("not pressed");
-                yield return new WaitForSeconds(0.05f);
+                yield return new WaitForSeconds(0.001f);
             }
         }
         isRunning = false;
