@@ -74,4 +74,8 @@ public class ScenesManager : MonoBehaviour
         return SceneManager.GetActiveScene().name == levelList.hub.sceneName;
     }
 
+    public bool IsPuzzleSceneLoaded() {
+        return SceneManager.GetActiveScene().name.StartsWith("P_");
+    }
+
 }
