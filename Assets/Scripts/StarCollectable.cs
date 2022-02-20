@@ -5,7 +5,11 @@ using DG.Tweening;
 
 public class StarCollectable : MonoBehaviour
 {
-    public StarCounterSO starCounter;
+    //public StarCounterSO starCounter;
+    public StarTrackerSO starTracker;
+    public  int sceneIndex;
+    public int starNumber;
+
     private bool collected;
 
     public float rotateSpeed;
@@ -15,6 +19,10 @@ public class StarCollectable : MonoBehaviour
 
     private void Awake() {
         currentRotateSpeed = rotateSpeed;
+        if (starTracker.levels[sceneIndex].starsCollected[starNumber] == 1)
+        {
+            this.gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -23,7 +31,8 @@ public class StarCollectable : MonoBehaviour
         
         if (other.CompareTag("Player")) {
             collected = true;
-            starCounter.currentCount += 1;
+            //starCounter.currentCount += 1;
+            starTracker.levels[sceneIndex].starsCollected[starNumber] = 1;
 
             DOTween.Sequence()
                 .Insert(0, DOTween.To(s => currentRotateSpeed = s, rotateSpeed * 5f, 0f, 1f).SetEase(Ease.InCubic))
