@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ScenesManager : MonoBehaviour
 {
+    [HideInInspector] public int levelNumber;
     public LevelListSO levelList;
     public SceneTransition sceneTransition;
     public bool IsTransitioning { get; private set; }
@@ -19,6 +21,8 @@ public class ScenesManager : MonoBehaviour
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode) {
+        levelNumber = levelList.levels.ToList().FindIndex(0, levelList.levels.Length, l => l.sceneName == scene.name);
+
         // do stuff here
         IsTransitioning = false;
         if (didTransitionOut) {
@@ -72,6 +76,10 @@ public class ScenesManager : MonoBehaviour
 
     public bool IsHubSceneLoaded() {
         return SceneManager.GetActiveScene().name == levelList.hub.sceneName;
+    }
+
+    public bool IsPuzzleSceneLoaded() {
+        return SceneManager.GetActiveScene().name.StartsWith("P_");
     }
 
 }
