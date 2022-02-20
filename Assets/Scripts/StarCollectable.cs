@@ -32,7 +32,8 @@ public class StarCollectable : MonoBehaviour
         if (other.CompareTag("Player")) {
             collected = true;
             //starCounter.currentCount += 1;
-            starTracker.levels[sceneIndex].starsCollected[starNumber] = 1;
+            // starTracker.levels[Managers.ScenesManager.levelNumber].starsCollected[starNumber] = 1;
+            Managers.ProgressManager.SetStarCollected(Managers.ScenesManager.levelNumber, starNumber, true);
 
             DOTween.Sequence()
                 .Insert(0, DOTween.To(s => currentRotateSpeed = s, rotateSpeed * 5f, 0f, 1f).SetEase(Ease.InCubic))

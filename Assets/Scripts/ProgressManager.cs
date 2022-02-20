@@ -15,10 +15,13 @@ public class ProgressManager : MonoBehaviour
         }
     }
 
+    // if (Managers.ProgressManager.IsStarCollected(0, 0)) { // stuff }
     public bool IsStarCollected(int levelIndex, int starIndex) {
         return starsCollected[levelIndex * levelList.starsPerLevel + starIndex];
     }
 
+
+    // Managers.ProgressManager.SetStarCollected(0, 0, true);
     public void SetStarCollected(int levelIndex, int starIndex, bool isCollected) {
         starsCollected[levelIndex * levelList.starsPerLevel + starIndex] = isCollected;
         PlayerPrefsX.SetBoolArray("StarsCollected", starsCollected);
