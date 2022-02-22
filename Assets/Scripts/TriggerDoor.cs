@@ -9,16 +9,20 @@ public class TriggerDoor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        door.GetComponent<DoorManager>().Switch();
+        if (other.CompareTag("Player") || other.CompareTag("Box")) {
+            door.GetComponent<DoorManager>().Switch();
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        //if a pressure plate door only stays open while player inside
-        //if a button nothing needs to be done on exit, stay in position
-        if (this.CompareTag("PressurePlate"))
-        {
-            door.GetComponent<DoorManager>().Switch();
+        if (other.CompareTag("Player") || other.CompareTag("Box")) { 
+            //if a pressure plate door only stays open while player inside
+            //if a button nothing needs to be done on exit, stay in position
+            if (this.CompareTag("PressurePlate"))
+            {
+                door.GetComponent<DoorManager>().Switch();
+            }
         }
     }
 }
