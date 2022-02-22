@@ -175,7 +175,7 @@ public class AudioManager : MonoBehaviour
     private Tween GetFadeTween(AudioSource audioSource, bool shouldPlay, float duration, bool hasLayers) {
         Ease ease = Ease.Linear;
         if (hasLayers) {
-            ease = shouldPlay ? Ease.OutCubic : Ease.InCubic;
+            ease = shouldPlay ? Ease.OutQuad : Ease.InQuad;
         }
 
         audioSource.DOKill();
