@@ -53,8 +53,9 @@ public class AudioManager : MonoBehaviour
     private void Update() {
         // loop music
         if (musicSources.Count > 0 && musicSources[0].isPlaying && musicSources[0].time >= currentSong.loopEndTime) {
+            float currentTime = musicSources[0].time;
             foreach (AudioSource s in musicSources) {
-                s.time = musicSources[0].time - (currentSong.loopEndTime - currentSong.loopStartTime);
+                s.time = currentTime - (currentSong.loopEndTime - currentSong.loopStartTime);
             }
         }
     }
