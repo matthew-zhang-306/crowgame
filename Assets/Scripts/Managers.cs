@@ -25,13 +25,15 @@ public class Managers : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         
             AudioManager = GetComponentInChildren<AudioManager>();
-            AudioManager?.Init();
             ScenesManager = GetComponentInChildren<ScenesManager>();
-            ScenesManager?.Init();
             ProgressManager = GetComponentInChildren<ProgressManager>();
-            ProgressManager?.Init();
             PauseMenu = GetComponentInChildren<PauseMenu>();
-            // add more manager initializations below
+
+            AudioManager?.Init();
+            ScenesManager?.Init();
+            ProgressManager?.Init();
+        
+            // add more initializations as needed
         }
     }
 }

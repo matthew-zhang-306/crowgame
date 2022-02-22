@@ -30,11 +30,13 @@ public class AudioManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         musicSources = musicObj.GetComponents<AudioSource>().ToList();
         SceneManager.sceneLoaded += OnSceneLoaded;
-
-        PlaySong(mainSong);
     }
     private void OnDestroy() {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void Start() {
+        PlaySong(mainSong);
     }
 
 
@@ -79,6 +81,11 @@ public class AudioManager : MonoBehaviour
     }
 
     public void PlaySong(SongSO song, float fadeInTime = 0f) {
+        if (song.versions.Length == 0) {
+            Debug.LogError("Trying to play a song that doesn't have any primary audio!");
+            return;
+        }
+        
         if (song == currentSong) {
             return;
         }
