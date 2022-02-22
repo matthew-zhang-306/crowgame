@@ -35,6 +35,15 @@ public class ScenesManager : MonoBehaviour
     private void Update() {
         if (Input.GetKeyDown(KeyCode.R)) {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            Debug.Log("Scene Reloaded");
+            if (!IsHubSceneLoaded())
+            {
+                for (int s = 0; s < levelList.starsPerLevel; s++)
+                {
+                    Managers.ProgressManager.starTracker.levels[levelNumber].starsCollected[s] = 0;
+                    Managers.ProgressManager.SetStarCollected(levelNumber, s, false);
+                }
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Equals)) {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
@@ -70,7 +79,7 @@ public class ScenesManager : MonoBehaviour
         }
 
         IsTransitioning = true;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex) ;
     }
 
 
@@ -81,5 +90,4 @@ public class ScenesManager : MonoBehaviour
     public bool IsPuzzleSceneLoaded() {
         return SceneManager.GetActiveScene().name.StartsWith("P_");
     }
-
 }

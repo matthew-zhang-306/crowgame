@@ -31,6 +31,22 @@ public class WarpAltar : MonoBehaviour
     private void Update() {
         if (playerInside != null && Input.GetAxisRaw("Action1") > 0) {
             OnAltarWarp?.Invoke(this);
+            /*saves the data to bool only if they use the warp altar
+            for (int i = 0; i < Managers.ProgressManager.starTracker.levels.Length; i++)
+            {
+                if (Managers.ScenesManager.GetSceneName() == Managers.ProgressManager.starTracker.levels[i].sceneName)
+                {
+                    for (int starIndex = 0; starIndex < 2; starIndex++)
+                    {
+                        if (Managers.ProgressManager.starTracker.levels[i].starsCollected[starIndex] == 1)
+                        {
+                            Managers.ProgressManager.SetStarCollected(i, starIndex, true);
+                            Debug.Log("Collected: Scene: " + i + " Star: " + starIndex);
+                            Debug.Log(PlayerPrefsX.GetBoolArray("starsCollected"));
+                        }
+                    }
+                }
+            }*/
             
             if (Managers.ScenesManager.IsHubSceneLoaded()) {
                 savingSystem.SavePlayerPosition();
