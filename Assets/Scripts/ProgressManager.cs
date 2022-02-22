@@ -14,6 +14,17 @@ public class ProgressManager : MonoBehaviour
         if (starsCollected.Length != levelList.numStars) {
             ResetStarsCollected();
         }
+        for (int i = 0; i < starTracker.levels.Length; i++)
+        {
+            for (int s = 0; s < levelList.starsPerLevel; s++)
+            {
+                Debug.Log("Stars State Scene: " + i + " StarIndex: " + s + " = " + starTracker.levels[i].starsCollected[s]);
+                if (IsStarCollected(i, s))
+                {
+                    starTracker.levels[i].starsCollected[s] = 1;
+                }
+            }
+        }
     }
 
     // if (Managers.ProgressManager.IsStarCollected(0, 0)) { // stuff }

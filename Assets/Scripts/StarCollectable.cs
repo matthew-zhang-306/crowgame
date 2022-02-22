@@ -45,7 +45,7 @@ public class StarCollectable : MonoBehaviour
             collected = true;
             //starCounter.currentCount += 1;
             starTracker.levels[sceneIndex].starsCollected[starNumber] = 1;
-            //Managers.ProgressManager.SetStarCollected(Managers.ScenesManager.levelNumber, starNumber, true);
+            Managers.ProgressManager.SetStarCollected(sceneIndex, starNumber, true);
 
             DOTween.Sequence()
                 .Insert(0, DOTween.To(s => currentRotateSpeed = s, rotateSpeed * 5f, 0f, 1f).SetEase(Ease.InCubic))
