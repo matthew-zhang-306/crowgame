@@ -6,15 +6,30 @@ using UnityEngine;
 
 public class DoorManager : MonoBehaviour
 {
-    //needed so that doors open status can be globally controlled
+    public bool startsOpen = false;
     private bool doorOpen = false;
-    public void switchDoor()
-    {
-        doorOpen = !doorOpen;
+    
+    private Animator animator;
+
+    private void Awake() {
+        animator = GetComponent<Animator>();
+    
+        if (startsOpen) {
+            Switch();
+        }
     }
 
-    public bool getDoorStatus()
-    {
-        return doorOpen;
+
+    public void Switch() {
+        doorOpen = !doorOpen;
+
+        if (doorOpen)
+        {
+            animator.Play("DoorOpen", 0, 0f);
+        }
+        else
+        {
+            animator.Play("DoorClose", 0, 0f);
+        }
     }
 }
