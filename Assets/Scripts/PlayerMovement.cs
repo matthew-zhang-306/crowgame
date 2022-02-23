@@ -18,6 +18,8 @@ public class PlayerMovement : PhysicsObject
     public GameObject peckHitbox;
     public Transform gustSpawnLocation;
     public GameObject gustPrefab;
+    public GameObject tornadoPrefab;
+    public GameObject tornadoMarker;
 
     public PositionSO cameraPosition;
 
@@ -28,15 +30,12 @@ public class PlayerMovement : PhysicsObject
     private bool oldPeckInput;
     private bool gustInput;
     private bool oldGustInput;
-    public GameObject tornadoMarker;
 
     private bool inCutscene;
 
-    //raycast vars
-    bool boxCastHit;
-    Collider objectHitCollider;
-
-    Collider m_Collider;
+    //raycast variables
+    public bool boxCastHit;
+    public bool colliding;
     RaycastHit objectHit;
 
 
@@ -258,16 +257,18 @@ public class PlayerMovement : PhysicsObject
         {
             Debug.DrawRay(gustSpawnLocation.position, rotateTransform.forward * objectHit.distance, Color.black, Time.fixedDeltaTime);
             //set tornado's spawn point to be 1/2 tornado size away from the object it collided with (prevents from being inside walls)
-            //Debug.Log("Hit : " + objectHit.collider.name);
-
-            //tornadoMarker.GetComponent<TornadoMarker>().setTornadoMarker(objectHit.point );
-
             Vector3 backward = -1 * rotateTransform.forward;
             GameObject markerPrefab = tornadoMarker.GetComponent<TornadoMarker>().MarkerImage;
-            tornadoMarker.GetComponent<TornadoMarker>().setTornadoMarker(objectHit.point + Vector3.Scale(backward, markerPrefab.transform.localScale / 2)
-                + Vector3.Scale(backward, gustPrefab.transform.localScale / 2));
+            tornadoMarker.GetComponent<TornadoMarker>().setTornadoMarker(objectHit.point 
+                + Vector3.Scale(backward, tornadoPrefab.transform.localScale / 2));
         }
-        //did not collide
+
+        //makes sure it is not touching the ground, just walls
+        else if (GameObject.Find("wallCollider").GetComponent<WallCollisionCheck>().colliding)
+        {
+            //player is in a wall but cast is not
+            tornadoMarker.GetComponent<TornadoMarker>().setTornadoMarker(transform.position);
+        }
         else
         {
             //set marker to be at max distance for tornado spawn
@@ -275,6 +276,10 @@ public class PlayerMovement : PhysicsObject
             tornadoMarker.GetComponent<TornadoMarker>().setTornadoMarker(gustSpawnLocation.position + rotateTransform.forward * tornadoSpawnDistance);
         }
     }
+
+
+   
+
 
 
 }

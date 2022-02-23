@@ -12,6 +12,7 @@ public class Gust : MonoBehaviour
     [Header("References")]
     public GameObject tornadoPrefab;
     public GameObject Player;
+    public GameObject tornadoMarker;
 
     Vector3 startPosition;
     int wallMask;
@@ -21,6 +22,7 @@ public class Gust : MonoBehaviour
         wallMask = LayerMask.GetMask("Wall", "Box");
         isMoving = true;
         startPosition = transform.position;
+
     }
 
 
@@ -28,7 +30,7 @@ public class Gust : MonoBehaviour
         if (isMoving) {
             transform.position += transform.forward * moveSpeed * Time.deltaTime;
 
-            if (Vector3.Distance(startPosition, transform.position) >= maxDistance) {
+            if (Vector3.Distance(startPosition, transform.position) > maxDistance) {
                 Stop(null);
             }
         }
@@ -46,15 +48,38 @@ public class Gust : MonoBehaviour
 
     private void Stop(GameObject hitSurface) {
         isMoving = false;
-        
+        Vector3 markerSize = tornadoMarker.GetComponent<TornadoMarker>().MarkerImage.transform.localScale;
         Vector3 thePosition = transform.position;
+
+        //use player from scene, not prefab
+        GameObject playerInScene = GameObject.Find("Player");
+        bool rayHit = playerInScene.GetComponent<PlayerMovement>().boxCastHit;
+        GameObject wallCollider = GameObject.Find("wallCollider");
+        bool playerColliding = wallCollider.GetComponent<WallCollisionCheck>().colliding;
+
         if (hitSurface != null && hitSurface.layer == LayerMask.NameToLayer("Box")) {
             // want to spawn the tornado inside the box
             thePosition = hitSurface.transform.position;
+            
         }
-        else {
-            thePosition = new Vector3(Helpers.RoundToNearest(thePosition.x, 1f), thePosition.y, Helpers.RoundToNearest(thePosition.z, 1f));
+
+        else if(rayHit)
+        {
+            Vector3 backward = -1 * transform.forward;
+            
+            thePosition = thePosition + Vector3.Scale(backward, tornadoPrefab.transform.localScale / 2)
+             + Vector3.Scale(transform.forward, markerSize / 2);
+
+            Debug.Log("boxcast hit");
         }
+        else if (!playerColliding)
+        {
+
+            //acount for size of tornado prefab
+            thePosition = thePosition + Vector3.Scale(transform.forward, markerSize / 2);
+            Debug.Log("boxcast not hit");
+        }
+
         GameObject.Instantiate(tornadoPrefab, thePosition, Quaternion.identity, null);
         Destroy(gameObject);
     }
