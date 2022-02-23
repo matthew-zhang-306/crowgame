@@ -9,6 +9,6 @@ public class BillboardSprite : MonoBehaviour
     private void FixedUpdate() {
         // since we have the camera angle we'll do the sprite rotation now
         float rotateAngle = Vector3.SignedAngle(transform.forward, cameraPositionSO.direction.WithY(0), Vector3.up);
-        transform.Rotate(new Vector3(0, rotateAngle, 0));
+        transform.RotateAround(transform.position, Vector3.up, rotateAngle);
     }
 }

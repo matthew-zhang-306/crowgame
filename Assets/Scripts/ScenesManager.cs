@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ScenesManager : MonoBehaviour
 {
+    [HideInInspector] public int levelNumber;
     public LevelListSO levelList;
     public SceneTransition sceneTransition;
     public bool IsTransitioning { get; private set; }
@@ -19,6 +21,8 @@ public class ScenesManager : MonoBehaviour
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode) {
+        levelNumber = levelList.levels.ToList().FindIndex(0, levelList.levels.Length, l => l.sceneName == scene.name);
+
         // do stuff here
         IsTransitioning = false;
         if (didTransitionOut) {
@@ -31,6 +35,15 @@ public class ScenesManager : MonoBehaviour
     private void Update() {
         if (Input.GetKeyDown(KeyCode.R)) {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            Debug.Log("Scene Reloaded");
+            if (!IsHubSceneLoaded())
+            {
+                for (int s = 0; s < levelList.starsPerLevel; s++)
+                {
+                    Managers.ProgressManager.starTracker.levels[levelNumber].starsCollected[s] = 0;
+                    Managers.ProgressManager.SetStarCollected(levelNumber, s, false);
+                }
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Equals)) {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
@@ -66,7 +79,7 @@ public class ScenesManager : MonoBehaviour
         }
 
         IsTransitioning = true;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex) ;
     }
 
 
@@ -74,4 +87,7 @@ public class ScenesManager : MonoBehaviour
         return SceneManager.GetActiveScene().name == levelList.hub.sceneName;
     }
 
+    public bool IsPuzzleSceneLoaded() {
+        return SceneManager.GetActiveScene().name.StartsWith("P_");
+    }
 }

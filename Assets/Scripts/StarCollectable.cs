@@ -19,6 +19,18 @@ public class StarCollectable : MonoBehaviour
 
     private void Awake() {
         currentRotateSpeed = rotateSpeed;
+
+        /*if (Managers.ProgressManager.IsStarCollected(sceneIndex, starNumber) == true)
+        {
+            starTracker.levels[sceneIndex].starsCollected[starNumber] = 1;
+        }
+        else
+        {
+            starTracker.levels[sceneIndex].starsCollected[starNumber] = 0;
+        }*/
+        //starTracker.levels[sceneIndex].starsCollected[starNumber] = Managers.ProgressManager.checkStarCollection(sceneIndex, starNumber);
+
+        //Debug.Log(Managers.ProgressManager.IsStarCollected(sceneIndex, starNumber));
         if (starTracker.levels[sceneIndex].starsCollected[starNumber] == 1)
         {
             this.gameObject.SetActive(false);
@@ -33,6 +45,7 @@ public class StarCollectable : MonoBehaviour
             collected = true;
             //starCounter.currentCount += 1;
             starTracker.levels[sceneIndex].starsCollected[starNumber] = 1;
+            Managers.ProgressManager.SetStarCollected(sceneIndex, starNumber, true);
 
             DOTween.Sequence()
                 .Insert(0, DOTween.To(s => currentRotateSpeed = s, rotateSpeed * 5f, 0f, 1f).SetEase(Ease.InCubic))

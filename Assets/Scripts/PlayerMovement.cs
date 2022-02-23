@@ -182,7 +182,10 @@ public class PlayerMovement : PhysicsObject
                 vVelocity = horizontalVelocity.magnitude * horizontalFactor / groundNormalUp.magnitude;
             else
                 vVelocity = 0;
-
+            
+            // snap onto the floor
+            vVelocity = vVelocity - groundDistance / Time.fixedDeltaTime;
+            
             Debug.DrawRay(transform.position, horizontalVelocity, Color.magenta, Time.fixedDeltaTime);
             Debug.DrawRay(transform.position + horizontalVelocity, new Vector3(0, vVelocity, 0), Color.magenta, Time.fixedDeltaTime);
         }
