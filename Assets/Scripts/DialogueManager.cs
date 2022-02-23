@@ -13,6 +13,8 @@ public class DialogueManager : MonoBehaviour
     public Text dialogueText;
     private bool pressed;
     private bool isRunning;
+    public List<GameObject> panelImages = new List<GameObject>();
+    private int currentPanel = -1;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +28,7 @@ public class DialogueManager : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             pressed = true;
+            DisplayNextSentence();
         }
         else
         {
@@ -58,6 +61,24 @@ public class DialogueManager : MonoBehaviour
             //dialogueText.text = sentence;
             StopAllCoroutines();
             StartCoroutine(TypeSentence(sentence));
+            DisplayNextPanel();
+        }
+    }
+
+    public void DisplayNextPanel()
+    {
+        currentPanel++;
+        if (currentPanel >= panelImages.Count)
+        {
+            currentPanel = panelImages.Count - 1;
+        }
+        panelImages[currentPanel].SetActive(true);
+        for (int i = 0; i < panelImages.Count; i++)
+        {
+            if (i != currentPanel)
+            {
+                panelImages[i].SetActive(false);
+            }
         }
     }
 
