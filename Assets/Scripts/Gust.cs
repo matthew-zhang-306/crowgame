@@ -76,7 +76,7 @@ public class Gust : MonoBehaviour
         {
 
             //acount for size of tornado prefab
-            thePosition = thePosition + Vector3.Scale(transform.forward, markerSize / 2);
+            thePosition = thePosition + Vector3.Scale(transform.forward, tornadoPrefab.transform.localScale / 2);
             Debug.Log("boxcast not hit");
         }
 
