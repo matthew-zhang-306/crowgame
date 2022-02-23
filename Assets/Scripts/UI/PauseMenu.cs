@@ -11,6 +11,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject PauseMenuUI;
     public GameObject settingsMenuUI;
     public GameObject levelsMenuUI;
+    public GameObject controlsMenuUI;
     public AudioMixer audioMixer;
 
     private GameObject currentMenu;
@@ -73,7 +74,14 @@ public class PauseMenu : MonoBehaviour
         currentMenu = levelsMenuUI;
 
     }
+    public void LoadControls()
+    {
+        //switch to the controls menu
+        PauseMenuUI.SetActive(false);
+        controlsMenuUI.SetActive(true);
+        currentMenu = controlsMenuUI;
 
+    }
     public void QuitGame()
     {
         Application.Quit();
