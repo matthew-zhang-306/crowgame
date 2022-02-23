@@ -8,6 +8,7 @@ public class PlayerMovement : PhysicsObject
     [Header("Parameters")]
     public float maxSpeed;
     public float acceleration;
+    public float tornadoSpawnDistance = 5;
 
     [Header("References")]
     public PlayerAnimation playerAnimation;
@@ -31,46 +32,67 @@ public class PlayerMovement : PhysicsObject
 
     private bool inCutscene;
 
+    //raycast vars
+    bool boxCastHit;
+    Collider objectHitCollider;
 
-    protected override void Awake() {
+    Collider m_Collider;
+    RaycastHit objectHit;
+
+
+    protected override void Awake()
+    {
         base.Awake();
         peckHitbox.SetActive(false);
+        tornadoMarker = GameObject.Instantiate(tornadoMarker, Vector3.zero, Quaternion.identity);
     }
 
-    protected override void OnEnable() {
+    protected override void OnEnable()
+    {
         base.OnEnable();
         WarpAltar.OnAltarWarp += PlayWarpAnimation;
     }
-    protected override void OnDisable() {
+    protected override void OnDisable()
+    {
         base.OnDisable();
         WarpAltar.OnAltarWarp -= PlayWarpAnimation;
     }
 
 
-    private void Update() {
+    private void Update()
+    {
         peckInput = Input.GetAxisRaw("Action1") > 0;
         gustInput = Input.GetAxisRaw("Action2") > 0;
+
+        CalculateTornadoPlacement();
     }
 
-    protected override void FixedUpdate() {
+    protected override void FixedUpdate()
+    {
         GetHorizontalInput();
         base.FixedUpdate();
 
         Debug.DrawRay(transform.position, rigidbody.velocity, Color.cyan, Time.fixedDeltaTime);
+        CalculateTornadoPlacement();
 
-        if (inCutscene) {
+
+        if (inCutscene)
+        {
             return;
         }
 
-        if (peckInput && !oldPeckInput && !peckHitbox.activeInHierarchy) {
+        if (peckInput && !oldPeckInput && !peckHitbox.activeInHierarchy)
+        {
             Peck();
         }
-        if (gustInput && !oldGustInput) {
+        //started holding down tornado button
+        if (gustInput && !oldGustInput)
+        {
             ChargeGust();
         }
 
         //just let go of tornado button
-        if(!gustInput && oldGustInput)
+        if (!gustInput && oldGustInput)
         {
             Gust();
         }
@@ -80,9 +102,11 @@ public class PlayerMovement : PhysicsObject
     }
 
 
-    private void GetHorizontalInput() {
+    private void GetHorizontalInput()
+    {
         horizontalInput = Vector3.zero;
-        if (inCutscene) {
+        if (inCutscene)
+        {
             return;
         }
 
@@ -94,22 +118,26 @@ public class PlayerMovement : PhysicsObject
         Debug.DrawRay(transform.position, Vector3.Cross(cameraDir, Vector3.up), Color.green, Time.fixedDeltaTime);
         horizontalInput = horizontalInput.x * -Vector3.Cross(cameraDir, Vector3.up) + horizontalInput.z * cameraDir;
         horizontalInput = horizontalInput.normalized;
-    
-        if (horizontalInput != Vector3.zero) {
+
+        if (horizontalInput != Vector3.zero)
+        {
             Vector3 hInputRounded = Quaternion.Euler(0, Helpers.RoundToNearest(Vector3.SignedAngle(Vector3.forward, horizontalInput, Vector3.up), 90f), 0) * Vector3.forward;
             rotateTransform.Rotate(0, Vector3.SignedAngle(rotateTransform.forward, hInputRounded, Vector3.up), 0);
         }
     }
 
 
-    protected override void CheckForGround() {
+    protected override void CheckForGround()
+    {
         groundNormal = Vector3.zero;
         groundRigidbody = null;
-        if (Physics.BoxCast(collider.bounds.center + Vector3.up * 0.1f, collider.bounds.extents, Vector3.down, out RaycastHit hit, Quaternion.identity, 0.25f, wallMask)) {
+        if (Physics.BoxCast(collider.bounds.center + Vector3.up * 0.1f, collider.bounds.extents, Vector3.down, out RaycastHit hit, Quaternion.identity, 0.25f, wallMask))
+        {
             Debug.DrawRay(hit.point, hit.normal * 2f, Color.red, Time.fixedDeltaTime);
-            
+
             // player requires extra check for slope angle
-            if (Vector3.Dot(Vector3.up, hit.normal) > 0.65f) {
+            if (Vector3.Dot(Vector3.up, hit.normal) > 0.65f)
+            {
                 groundY = hit.point.y;
                 groundDistance = hit.distance - 0.11f;
                 groundNormal = hit.normal;
@@ -118,10 +146,12 @@ public class PlayerMovement : PhysicsObject
         }
     }
 
-    protected override Vector3 HandleHorizontalMovement(Vector3 hVelocity) {
+    protected override Vector3 HandleHorizontalMovement(Vector3 hVelocity)
+    {
         hVelocity = Vector3.MoveTowards(hVelocity, horizontalInput * maxSpeed, acceleration * Time.deltaTime);
 
-        if (groundNormal != Vector3.zero) {
+        if (groundNormal != Vector3.zero)
+        {
             Vector3 groundNormalHorizontal = groundNormal.WithY(0);
             float horizontalFactor = -Vector3.Dot(groundNormalHorizontal, hVelocity.normalized);
             Vector3 groundNormalUp = groundNormal - groundNormalHorizontal;
@@ -129,7 +159,7 @@ public class PlayerMovement : PhysicsObject
                 hVelocity.y = hVelocity.magnitude * horizontalFactor / groundNormalUp.magnitude;
             else
                 hVelocity.y = 0;
-            
+
             Debug.DrawRay(transform.position, hVelocity, Color.magenta, Time.fixedDeltaTime);
             Debug.DrawRay(transform.position + hVelocity, new Vector3(0, hVelocity.y, 0), Color.magenta, Time.fixedDeltaTime);
         }
@@ -138,10 +168,12 @@ public class PlayerMovement : PhysicsObject
         return hVelocity;
     }
 
-    protected override float HandleVerticalMovement(float vVelocity) {
+    protected override float HandleVerticalMovement(float vVelocity)
+    {
         vVelocity = base.HandleVerticalMovement(vVelocity);
 
-        if (currentTornado == null && groundNormal != Vector3.zero) {
+        if (currentTornado == null && groundNormal != Vector3.zero)
+        {
             // we could be on a slope. aim velocity up or down the slope
             Vector3 groundNormalHorizontal = groundNormal.WithY(0);
             float horizontalFactor = -Vector3.Dot(groundNormalHorizontal, horizontalVelocity.normalized);
@@ -150,7 +182,7 @@ public class PlayerMovement : PhysicsObject
                 vVelocity = horizontalVelocity.magnitude * horizontalFactor / groundNormalUp.magnitude;
             else
                 vVelocity = 0;
-            
+
             Debug.DrawRay(transform.position, horizontalVelocity, Color.magenta, Time.fixedDeltaTime);
             Debug.DrawRay(transform.position + horizontalVelocity, new Vector3(0, vVelocity, 0), Color.magenta, Time.fixedDeltaTime);
         }
@@ -158,48 +190,42 @@ public class PlayerMovement : PhysicsObject
     }
 
 
-    public override void EnterTornado(Tornado tornado) {
+    public override void EnterTornado(Tornado tornado)
+    {
         base.EnterTornado(tornado);
         playerAnimation.isInsideTornado = true;
     }
-    public override void ExitTornado() {
+    public override void ExitTornado()
+    {
         base.ExitTornado();
         playerAnimation.isInsideTornado = false;
     }
 
 
-    public void Peck() {
+    public void Peck()
+    {
         Managers.AudioManager.PlaySound("Peck");
         peckHitbox.SetActive(true);
         this.Invoke(() => peckHitbox.SetActive(false), 0.2f);
     }
 
-    public void ChargeGust() {
-        Debug.Log("Sending out calc gust");
-        Object.Instantiate(gustPrefab, gustSpawnLocation.position, rotateTransform.rotation, null);
+    public void ChargeGust()
+    {
+        tornadoMarker.GetComponent<TornadoMarker>().activateMarker();
     }
 
-    public void Gust() {
-        //send out the tornado
+    public void Gust()
+    {
+        tornadoMarker.GetComponent<TornadoMarker>().deactivateMarker();
 
-        //cant keep reference to gust or error, so need to manually find the wc to destroy it
-        GameObject[] markers = GameObject.FindGameObjectsWithTag("WorldCanvas");
-
-        foreach (GameObject marker in markers)
-        {
-            Destroy(marker);
-        }
-        Debug.Log("Destroying WC");
-        GameObject wc = GameObject.Find("WorldCanvas(Clone)");
-        Destroy(wc);
-
-        Debug.Log("Sending out real gust");
+        //Debug.Log("Sending out real gust");
         Managers.AudioManager.PlaySound("Tornado");
         Instantiate(gustPrefab, gustSpawnLocation.position, rotateTransform.rotation, null);
     }
 
 
-    public void PlayWarpAnimation(WarpAltar _) {
+    public void PlayWarpAnimation(WarpAltar _)
+    {
         inCutscene = true;
 
         mainSprite.DOKill();
@@ -210,11 +236,42 @@ public class PlayerMovement : PhysicsObject
     }
 
 
-    private void OnDrawGizmos() {
-        if (peckHitbox != null) {
+    private void OnDrawGizmos()
+    {
+        if (peckHitbox != null)
+        {
             Gizmos.color = peckHitbox.activeInHierarchy ? Color.green : Color.yellow;
             Gizmos.DrawWireCube(peckHitbox.transform.position, Vector3.one * 0.5f);
         }
     }
+
+
+    private void CalculateTornadoPlacement()
+    {
+        boxCastHit = Physics.BoxCast(gustSpawnLocation.position, gustPrefab.transform.localScale, rotateTransform.forward, out objectHit, transform.rotation, tornadoSpawnDistance);
+        
+        //boxcast collided with something
+        if(boxCastHit)
+        {
+            Debug.DrawRay(gustSpawnLocation.position, rotateTransform.forward * objectHit.distance, Color.black, Time.fixedDeltaTime);
+            //set tornado's spawn point to be 1/2 tornado size away from the object it collided with (prevents from being inside walls)
+            //Debug.Log("Hit : " + objectHit.collider.name);
+
+            //tornadoMarker.GetComponent<TornadoMarker>().setTornadoMarker(objectHit.point );
+
+            Vector3 backward = -1 * rotateTransform.forward;
+            GameObject markerPrefab = tornadoMarker.GetComponent<TornadoMarker>().MarkerImage;
+            tornadoMarker.GetComponent<TornadoMarker>().setTornadoMarker(objectHit.point + Vector3.Scale(backward, markerPrefab.transform.localScale / 2)
+                + Vector3.Scale(backward, gustPrefab.transform.localScale / 2));
+        }
+        //did not collide
+        else
+        {
+            //set marker to be at max distance for tornado spawn
+            Debug.DrawRay(gustSpawnLocation.position, rotateTransform.forward * tornadoSpawnDistance, Color.black, Time.fixedDeltaTime);
+            tornadoMarker.GetComponent<TornadoMarker>().setTornadoMarker(gustSpawnLocation.position + rotateTransform.forward * tornadoSpawnDistance);
+        }
+    }
+
 
 }
