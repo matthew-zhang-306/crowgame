@@ -26,6 +26,7 @@ public class DialogueManager : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             pressed = true;
+            DisplayNextSentence();
         }
         else
         {
