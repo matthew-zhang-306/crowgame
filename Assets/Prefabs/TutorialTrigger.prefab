@@ -172,6 +172,7 @@ GameObject:
   - component: {fileID: 6538608569610368151}
   - component: {fileID: 1122464415294366}
   - component: {fileID: 2907344956023138437}
+  - component: {fileID: 6162762404300675688}
   m_Layer: 5
   m_Name: TutorialText
   m_TagString: Untagged
@@ -228,7 +229,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: a030ce3879d514d4cb567e440e49bc61, type: 3}
-    m_FontSize: 40
+    m_FontSize: 30
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
@@ -240,3 +241,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Tutorial
+--- !u!114 &6162762404300675688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5247414667258390417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
