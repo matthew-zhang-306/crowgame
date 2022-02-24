@@ -5,10 +5,21 @@ using DG.Tweening;
 
 public class PlayerMovement : PhysicsObject
 {
+    public enum PlayerState {
+        MOVE,
+        PECK,
+        CHARGE,
+        FLAP
+    }
+    private PlayerState playerState = PlayerState.MOVE;
+
     [Header("Parameters")]
     public float maxSpeed;
+    public float chargingMaxSpeed;
     public float acceleration;
-    public float tornadoSpawnDistance = 5;
+    public float tornadoSpawnDistance;
+    public float peckDuration;
+    public float flapDuration;
 
     [Header("References")]
     public PlayerAnimation playerAnimation;
@@ -73,19 +84,19 @@ public class PlayerMovement : PhysicsObject
 
         if (!inCutscene)
         {
-            if (peckInput && !oldPeckInput && !peckHitbox.activeInHierarchy)
+            if (playerState == PlayerState.MOVE && peckInput && !oldPeckInput)
             {
                 Peck();
             }
 
             //started holding down tornado button
-            if (gustInput && !oldGustInput)
+            if (playerState == PlayerState.MOVE && gustInput && !oldGustInput)
             {
                 ChargeGust();
             }
 
             //just let go of tornado button
-            if (!gustInput && oldGustInput)
+            if (playerState == PlayerState.CHARGE && !gustInput && oldGustInput)
             {
                 Gust();
             }
@@ -100,13 +111,13 @@ public class PlayerMovement : PhysicsObject
     // it also sets the player's facing angle for pecking/flapping
     private void GetHorizontalInput()
     {
-        Vector3 horizontalInputRaw = Vector3.zero;
-        if (inCutscene) {
-            // don't read any horizontal input when in a cutscene
+        if (inCutscene || (playerState != PlayerState.MOVE && playerState != PlayerState.CHARGE)) {
+            // don't read any horizontal input
+            horizontalInput = Vector3.zero;
             return;
         }
 
-        horizontalInputRaw = new Vector3(
+        Vector3 horizontalInputRaw = new Vector3(
             Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")
         );
 
@@ -157,8 +168,11 @@ public class PlayerMovement : PhysicsObject
 
     protected override Vector3 HandleHorizontalMovement(Vector3 hVelocity)
     {
+        // select max speed based on player state
+        float theMaxSpeed = playerState == PlayerState.CHARGE ? chargingMaxSpeed : maxSpeed;
+
         // accelerate towards our input direction
-        hVelocity = Vector3.MoveTowards(hVelocity, horizontalInput * maxSpeed, acceleration * Time.deltaTime);
+        hVelocity = Vector3.MoveTowards(hVelocity, horizontalInput * theMaxSpeed, acceleration * Time.deltaTime);
 
         // update this member variable so that HandleVerticalMovement knows how fast we're moving
         horizontalVelocity = hVelocity;
@@ -206,18 +220,30 @@ public class PlayerMovement : PhysicsObject
 
     public void Peck()
     {
+        Debug.Log("peck");
+        playerState = PlayerState.PECK;
+        
         Managers.AudioManager.PlaySound("Peck");
         peckHitbox.SetActive(true);
-        this.Invoke(() => peckHitbox.SetActive(false), 0.2f);
+        
+        // stop pecking after some time
+        this.Invoke(() => {
+            Debug.Log("stop peck");
+            playerState = PlayerState.MOVE;
+            peckHitbox.SetActive(false);
+        }, peckDuration);
     }
 
     public void ChargeGust()
     {
+        playerState = PlayerState.CHARGE;
         tornadoMarker.activateMarker();
     }
 
     public void Gust()
     {
+        playerState = PlayerState.FLAP;
+
         tornadoMarker.deactivateMarker();
 
         //Debug.Log("Sending out real gust");
@@ -225,6 +251,12 @@ public class PlayerMovement : PhysicsObject
         Gust gust = Instantiate(gustPrefab, gustSpawnLocation.position, rotateTransform.rotation, null)
             .GetComponent<Gust>();
         gust.SetPlayer(this);
+
+        // stop flapping after some time
+        this.Invoke(() => {
+            playerState = PlayerState.MOVE;
+            peckHitbox.SetActive(false);
+        }, flapDuration);
     }
 
 

@@ -46,7 +46,7 @@ public class PlayerAnimation : MonoBehaviour
         // pecking animation timer
         if (isPecking)
         {
-            myRB.velocity = Vector2.zero;
+            // myRB.velocity = Vector2.zero;
             peckCount -= Time.deltaTime;
             if (peckCount <= 0)
             {
@@ -65,7 +65,7 @@ public class PlayerAnimation : MonoBehaviour
         // Gust wind animation timer
         if (isGusting)
         {
-            myRB.velocity = Vector2.zero;
+            // myRB.velocity = Vector2.zero;
             gustCount -= Time.deltaTime;
             if (gustCount <= 0)
             {
