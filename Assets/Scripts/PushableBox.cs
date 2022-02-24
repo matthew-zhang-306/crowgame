@@ -8,12 +8,16 @@ public class PushableBox : PhysicsObject
     private float peckedTimer;
     public RideRegion rideRegion;
 
+    private Vector3 prevHVelocity;
+
     protected override void Awake() {
         base.Awake();
     }
 
     protected override void FixedUpdate() {
         base.FixedUpdate();
+        
+        prevHVelocity = rigidbody.velocity.WithY(0);
         
         peckedTimer = Mathf.Max(peckedTimer - Time.deltaTime, 0f);
         if (peckedTimer == 0f) {
@@ -29,7 +33,8 @@ public class PushableBox : PhysicsObject
             return hVelocity;
         }
 
-        return base.HandleHorizontalMovement(hVelocity);
+        hVelocity = base.HandleHorizontalMovement(hVelocity);
+        return hVelocity;
     }
 
 
