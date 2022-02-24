@@ -61,8 +61,6 @@ public class PlayerMovement : PhysicsObject
     {
         peckInput = Input.GetAxisRaw("Action1") > 0;
         gustInput = Input.GetAxisRaw("Action2") > 0;
-
-        CalculateTornadoPlacement();
     }
 
     protected override void FixedUpdate()
@@ -73,25 +71,24 @@ public class PlayerMovement : PhysicsObject
         Debug.DrawRay(transform.position, rigidbody.velocity, Color.cyan, Time.fixedDeltaTime);
         CalculateTornadoPlacement();
 
-        if (inCutscene)
+        if (!inCutscene)
         {
-            return;
-        }
+            if (peckInput && !oldPeckInput && !peckHitbox.activeInHierarchy)
+            {
+                Peck();
+            }
 
-        if (peckInput && !oldPeckInput && !peckHitbox.activeInHierarchy)
-        {
-            Peck();
-        }
-        //started holding down tornado button
-        if (gustInput && !oldGustInput)
-        {
-            ChargeGust();
-        }
+            //started holding down tornado button
+            if (gustInput && !oldGustInput)
+            {
+                ChargeGust();
+            }
 
-        //just let go of tornado button
-        if (!gustInput && oldGustInput)
-        {
-            Gust();
+            //just let go of tornado button
+            if (!gustInput && oldGustInput)
+            {
+                Gust();
+            }
         }
 
         oldPeckInput = peckInput;
@@ -99,40 +96,55 @@ public class PlayerMovement : PhysicsObject
     }
 
 
+    // fetches the player's directional input and rotates it so that it matches w the camera facing direction
+    // it also sets the player's facing angle for pecking/flapping
     private void GetHorizontalInput()
     {
-        horizontalInput = Vector3.zero;
-        if (inCutscene)
-        {
+        Vector3 horizontalInputRaw = Vector3.zero;
+        if (inCutscene) {
+            // don't read any horizontal input when in a cutscene
             return;
         }
 
-        horizontalInput = new Vector3(
+        horizontalInputRaw = new Vector3(
             Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")
         );
 
+        // rotate the input directions to point in the direction of the camera
         Vector3 cameraDir = cameraPosition.direction.WithY(0).normalized;
         Debug.DrawRay(transform.position, Vector3.Cross(cameraDir, Vector3.up), Color.green, Time.fixedDeltaTime);
-        horizontalInput = horizontalInput.x * -Vector3.Cross(cameraDir, Vector3.up) + horizontalInput.z * cameraDir;
+        horizontalInput = horizontalInputRaw.x * -Vector3.Cross(cameraDir, Vector3.up) + horizontalInputRaw.z * cameraDir;
         horizontalInput = horizontalInput.normalized;
 
         if (horizontalInput != Vector3.zero)
         {
-            Vector3 hInputRounded = Quaternion.Euler(0, Helpers.RoundToNearest(Vector3.SignedAngle(Vector3.forward, horizontalInput, Vector3.up), 90f), 0) * Vector3.forward;
-            rotateTransform.Rotate(0, Vector3.SignedAngle(rotateTransform.forward, hInputRounded, Vector3.up), 0);
+            // the player is moving, so update the facing direction for pecking/flapping by rounding it to the nearest axis
+            // get the eight-way direction of the camera
+            float cameraAngle = Vector3.SignedAngle(Vector3.forward, cameraDir, Vector3.up);
+            float cameraAngleRounded = Helpers.RoundToNearest(cameraAngle, 45f);
+            Vector3 cameraDirRounded = Quaternion.Euler(0, cameraAngleRounded, 0) * Vector3.forward;
+
+            // get the four-way angle of the input
+            float hInputAngle = Vector3.SignedAngle(Vector3.forward, horizontalInputRaw, Vector3.up);
+            float hInputAngleRounded = Helpers.RoundToNearest(hInputAngle, 90f);
+
+            // set our facing direction as the rounded camera direction rotated by the rounded input angle
+            Vector3 facingDir = Quaternion.Euler(0, hInputAngleRounded, 0) * cameraDirRounded;
+            rotateTransform.Rotate(0, Vector3.SignedAngle(rotateTransform.forward, facingDir, Vector3.up), 0);
         }
     }
 
 
     protected override void CheckForGround()
     {
+        // this is for the most part identical to PhysicsObject.CheckForGround()
         groundNormal = Vector3.zero;
         groundRigidbody = null;
         if (Physics.BoxCast(collider.bounds.center + Vector3.up * 0.1f, collider.bounds.extents, Vector3.down, out RaycastHit hit, Quaternion.identity, 0.25f, wallMask))
         {
             Debug.DrawRay(hit.point, hit.normal * 2f, Color.red, Time.fixedDeltaTime);
 
-            // player requires extra check for slope angle
+            // but the player requires an extra check for the slope angle
             if (Vector3.Dot(Vector3.up, hit.normal) > 0.65f)
             {
                 groundY = hit.point.y;
@@ -145,23 +157,12 @@ public class PlayerMovement : PhysicsObject
 
     protected override Vector3 HandleHorizontalMovement(Vector3 hVelocity)
     {
+        // accelerate towards our input direction
         hVelocity = Vector3.MoveTowards(hVelocity, horizontalInput * maxSpeed, acceleration * Time.deltaTime);
 
-        if (groundNormal != Vector3.zero)
-        {
-            Vector3 groundNormalHorizontal = groundNormal.WithY(0);
-            float horizontalFactor = -Vector3.Dot(groundNormalHorizontal, hVelocity.normalized);
-            Vector3 groundNormalUp = groundNormal - groundNormalHorizontal;
-            if (groundNormalUp.magnitude != 0)
-                hVelocity.y = hVelocity.magnitude * horizontalFactor / groundNormalUp.magnitude;
-            else
-                hVelocity.y = 0;
-
-            Debug.DrawRay(transform.position, hVelocity, Color.magenta, Time.fixedDeltaTime);
-            Debug.DrawRay(transform.position + hVelocity, new Vector3(0, hVelocity.y, 0), Color.magenta, Time.fixedDeltaTime);
-        }
-
+        // update this member variable so that HandleVerticalMovement knows how fast we're moving
         horizontalVelocity = hVelocity;
+
         return hVelocity;
     }
 
@@ -173,14 +174,15 @@ public class PlayerMovement : PhysicsObject
         {
             // we could be on a slope. aim velocity up or down the slope
             Vector3 groundNormalHorizontal = groundNormal.WithY(0);
-            float horizontalFactor = -Vector3.Dot(groundNormalHorizontal, horizontalVelocity.normalized);
             Vector3 groundNormalUp = groundNormal - groundNormalHorizontal;
-            if (groundNormalUp.magnitude != 0)
+            float horizontalFactor = -Vector3.Dot(groundNormalHorizontal, horizontalVelocity.normalized);
+            if (groundNormalUp.magnitude != 0) {
                 vVelocity = horizontalVelocity.magnitude * horizontalFactor / groundNormalUp.magnitude;
-            else
+            } else {
                 vVelocity = 0;
+            }
             
-            // snap onto the floor
+            // this will snap the player onto the floor if we are hovering slightl above it
             vVelocity = vVelocity - groundDistance / Time.fixedDeltaTime;
             
             Debug.DrawRay(transform.position, horizontalVelocity, Color.magenta, Time.fixedDeltaTime);

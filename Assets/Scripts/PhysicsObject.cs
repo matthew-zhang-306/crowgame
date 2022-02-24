@@ -4,8 +4,10 @@ using System.Linq;
 using UnityEngine;
 using DG.Tweening;
 
+// a physicsobject represents anything that moves and collides with things
 public class PhysicsObject : MonoBehaviour
 {
+
     [Header("Physics Parameters")]
     public float friction;
     public float maxFallSpeed;
@@ -16,18 +18,19 @@ public class PhysicsObject : MonoBehaviour
     public float tornadoStopAccel;
     public float tornadoRiseTime;
 
-    protected Vector3 groundNormal;
-    protected float groundY;
-    protected float groundDistance;
-    protected Rigidbody groundRigidbody;
-    protected Vector3 previousGroundVelocity;
-    protected int wallMask;
+    protected Vector3 groundNormal; // normal vector of the ground that the object is on. check this variable to see if we are on the ground or not
+    protected float groundY; // y level of the ground that the object is on
+    protected float groundDistance; // size of the gap between the object and the ground below it
+    protected Rigidbody groundRigidbody; // rigidbody attached to the ground that the object is on
+    protected Vector3 previousGroundVelocity; // the velocity of the ground when we last checked
+
+    protected int wallMask; // layer mask for raycasting for walls
     protected new Rigidbody rigidbody;
     protected new Collider collider;
     protected float currentGravity;
 
-    protected HashSet<PhysicsObject> allRiders;
-    protected HashSet<PhysicsObject> allCarriers;
+    protected HashSet<PhysicsObject> allRiders; // stores all objects that are riding this one
+    protected HashSet<PhysicsObject> allCarriers; // stores all objects that are carrying this one
     protected Tornado currentTornado;
     protected Coroutine tornadoRoutine;
     
@@ -45,6 +48,7 @@ public class PhysicsObject : MonoBehaviour
         // empty, for now
     }
     protected virtual void OnDisable() {
+        // let everyone know that they will no longer be colliding with this object
         foreach (PhysicsObject rider in allRiders.ToList()) {
             this.RemoveRider(rider);
         }
@@ -54,39 +58,47 @@ public class PhysicsObject : MonoBehaviour
     }
 
 
+    // sets the velocity of the object, relative to the object that is carrying it
     protected virtual void SetRelativeVelocity(Vector3 vel) {
         Vector3 velocity = rigidbody.velocity;
         velocity -= previousGroundVelocity;
         velocity = vel;
 
-        PhysicsObject ride = GetRide();
+        PhysicsObject ride = GetMainCarrier();
         previousGroundVelocity = ride != null ? ride.rigidbody.velocity : Vector3.zero;
         velocity += previousGroundVelocity;
         rigidbody.velocity = velocity;
 
+        // our velocity has changed so we update the velocity of everyone riding us to account for it
         foreach (PhysicsObject riding in allRiders) {
             riding.SetRelativeVelocity(riding.GetRelativeVelocity());
         }
     }
 
+    // gets the velocity of the object, relative to the object that is carrying it
     protected virtual Vector3 GetRelativeVelocity() {
         return rigidbody.velocity - previousGroundVelocity;
     }
+
 
     protected virtual void FixedUpdate() {
         CheckForGround();
         HandleMovement();
     }
 
+    // scan for ground below us and update groundNormal and all of the other variables
     protected virtual void CheckForGround() {
         groundNormal = Vector3.zero;
         groundRigidbody = null;
+
+        // boxcast down starting from a location raised by 0.1
         if (Physics.BoxCast(collider.bounds.center + Vector3.up * 0.1f, collider.bounds.extents - Vector3.one * 0.03f, Vector3.down, out RaycastHit hit, Quaternion.identity, 0.25f, wallMask)) {
             Debug.DrawRay(transform.position, hit.normal * 2f, Color.red, Time.fixedDeltaTime);
 
+            // we hit ground at this location
             groundY = hit.point.y;
             groundNormal = hit.normal;
-            groundDistance = hit.distance - 0.11f;
+            groundDistance = hit.distance - 0.11f; // 0.11 = 0.1 (the distance that the boxcast was raised by) + 0.01 (the minimum distance between adjacent colliders in unity)
         
             groundRigidbody = hit.rigidbody ?? hit.collider.GetComponentInParent<Rigidbody>();
         }
@@ -104,7 +116,7 @@ public class PhysicsObject : MonoBehaviour
 
     // calculates what the object's new horizontal velocity should be based on what it is currently
     protected virtual Vector3 HandleHorizontalMovement(Vector3 hVelocity) {
-        PhysicsObject theRide = GetRide();
+        PhysicsObject theRide = GetMainCarrier();
         if (allCarriers.Count > 0) {
             // we're riding something. snap towards its position
             Vector3 rideOffset = theRide.GetRidePoint().WithY(0) - transform.position.WithY(0);
@@ -121,6 +133,7 @@ public class PhysicsObject : MonoBehaviour
         return hVelocity;
     }
 
+    // calculates what the object's new vertical velocity should be based on what it is currently
     protected virtual float HandleVerticalMovement(float vVelocity) {
         if (currentTornado != null) {
             // do nothing! we have a coroutine handling this case
@@ -151,24 +164,28 @@ public class PhysicsObject : MonoBehaviour
         }
     }
 
+    // a coroutine responsible for setting the object's y velocity while it is being lifted by a tornado
     protected IEnumerator DoTornadoPhysics() {
         if (rigidbody.velocity.y <= 0f) {
-            // slow to 0
+            // the object is moving downward, so start by slowing it down to 0
             while (rigidbody.velocity.y < 0f) {
                 rigidbody.velocity = rigidbody.velocity.WithY(rigidbody.velocity.y + tornadoStopAccel * Time.fixedDeltaTime);
                 yield return new WaitForFixedUpdate();
             }
 
-            // raise w/ ease in/out
+            // then raise the object to the top over a fixed period of time
             float startY = transform.position.y;
             float timer = 0;
             while (true) {
+                // desiredY is where we want to go
                 float endY = currentTornado.Top.y;
                 float desiredY = DOVirtual.EasedValue(startY, endY, timer / tornadoRiseTime, Ease.InOutQuad);
+                
+                // set velocity correctly and wait for the next physics frame
                 rigidbody.velocity = rigidbody.velocity.WithY((desiredY - transform.position.y) / Time.fixedDeltaTime);
-
                 yield return new WaitForFixedUpdate();
 
+                // increment timer
                 if (timer == tornadoRiseTime) {
                     break;
                 }
@@ -176,31 +193,38 @@ public class PhysicsObject : MonoBehaviour
             }
         }
         else {
+            // the object is moving upward
             bool isSlowing = true;
 
-            // raise a ghost w/ ease in/out
+            // strategy: we slow the object down while simulating a "ghost" version of the object that gets raised to the top over a fixed period of time
+            // when the object is moving slower than the ghost version of the object, we switch over to the ghost
             float startY = transform.position.y;
-            float ghostY = transform.position.y;
+            float ghostY = transform.position.y; // this is where the ghost is currently located
             float timer = 0;
             while (timer < tornadoRiseTime) {
+                // find out how fast the ghost wants to move this frame
                 float endY = currentTornado.Top.y;
                 float desiredY = DOVirtual.EasedValue(startY, endY, timer / tornadoRiseTime, Ease.InOutQuad);
                 float desiredYVel = (desiredY - ghostY) / Time.fixedDeltaTime;
 
                 if (isSlowing) {
-                    // decrease velocity and check if we can switch to the ghost
+                    // decrease y velocity
                     rigidbody.velocity = rigidbody.velocity.WithY(rigidbody.velocity.y - tornadoStopAccel);
                     if (rigidbody.velocity.y <= desiredYVel) {
+                        // we're now slower than the ghost, so switch over
                         isSlowing = false;
                     } 
                 }
                 if (!isSlowing) {
+                    // set our velocity to match the ghost's velocity
                     rigidbody.velocity = rigidbody.velocity.WithY(desiredYVel);
                 }
 
+                // move and wait for the next physics frame
+                ghostY = desiredY;
                 yield return new WaitForFixedUpdate();
 
-                ghostY = desiredY;
+                // increment timer
                 if (timer == tornadoRiseTime) {
                     break;
                 }
@@ -224,12 +248,14 @@ public class PhysicsObject : MonoBehaviour
     }
 
 
+    // returns the position to which anything riding this object should snap to in order to stay on it
     public virtual Vector3 GetRidePoint() {
         return collider.bounds.center + Vector3.up * collider.bounds.extents.y;
     }
 
 
-    protected virtual PhysicsObject GetRide() {
+    // the physics object can be carried by many objects, but we need to pick one to move with. this method does that
+    protected virtual PhysicsObject GetMainCarrier() {
         if (allCarriers.Count == 0) {
             return null;
         }
