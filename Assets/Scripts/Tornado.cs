@@ -59,11 +59,13 @@ public class Tornado : PhysicsObject
         }
         previousBox = box;
 
-        cast = Physics.Raycast(
+        cast = Physics.BoxCast(
             transform.position - new Vector3(0, 0.05f, 0),
+            new Vector3(0.3f, 0.01f, 0.3f),
             Vector3.up,
             out hit,
-            cast ? hit.distance : topOffset,
+            Quaternion.identity,
+            cast ? hit.distance : topOffset + 0.1f,
             LayerMask.GetMask("Player")
         );
         PlayerMovement player = null;

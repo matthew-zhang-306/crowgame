@@ -14,8 +14,8 @@ public class CameraController : MonoBehaviour
     private bool oldRightInput;
 
     private void Update() {
-        leftInput = Input.GetAxisRaw("LeftShift") > 0;
-        rightInput = Input.GetAxisRaw("RightShift") > 0;
+        leftInput = Input.GetAxisRaw("CameraLeft") > 0;
+        rightInput = Input.GetAxisRaw("CameraRight") > 0;
     }
 
     private void FixedUpdate() {
