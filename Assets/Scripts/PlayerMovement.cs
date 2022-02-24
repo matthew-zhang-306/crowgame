@@ -19,7 +19,7 @@ public class PlayerMovement : PhysicsObject
     public Transform gustSpawnLocation;
     public GameObject gustPrefab;
     public GameObject tornadoPrefab;
-    public GameObject tornadoMarker;
+    public TornadoMarker tornadoMarker;
 
     public PositionSO cameraPosition;
 
@@ -43,7 +43,6 @@ public class PlayerMovement : PhysicsObject
     {
         base.Awake();
         peckHitbox.SetActive(false);
-        tornadoMarker = GameObject.Instantiate(tornadoMarker, Vector3.zero, Quaternion.identity);
     }
 
     protected override void OnEnable()
@@ -73,7 +72,6 @@ public class PlayerMovement : PhysicsObject
 
         Debug.DrawRay(transform.position, rigidbody.velocity, Color.cyan, Time.fixedDeltaTime);
         CalculateTornadoPlacement();
-
 
         if (inCutscene)
         {
@@ -213,16 +211,18 @@ public class PlayerMovement : PhysicsObject
 
     public void ChargeGust()
     {
-        tornadoMarker.GetComponent<TornadoMarker>().activateMarker();
+        tornadoMarker.activateMarker();
     }
 
     public void Gust()
     {
-        tornadoMarker.GetComponent<TornadoMarker>().deactivateMarker();
+        tornadoMarker.deactivateMarker();
 
         //Debug.Log("Sending out real gust");
         Managers.AudioManager.PlaySound("Tornado");
-        Instantiate(gustPrefab, gustSpawnLocation.position, rotateTransform.rotation, null);
+        Gust gust = Instantiate(gustPrefab, gustSpawnLocation.position, rotateTransform.rotation, null)
+            .GetComponent<Gust>();
+        gust.SetPlayer(this);
     }
 
 
@@ -245,12 +245,24 @@ public class PlayerMovement : PhysicsObject
             Gizmos.color = peckHitbox.activeInHierarchy ? Color.green : Color.yellow;
             Gizmos.DrawWireCube(peckHitbox.transform.position, Vector3.one * 0.5f);
         }
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireCube(gustSpawnLocation.position,
+            gustPrefab.transform.localScale);
     }
 
 
     private void CalculateTornadoPlacement()
     {
-        boxCastHit = Physics.BoxCast(gustSpawnLocation.position, gustPrefab.transform.localScale, rotateTransform.forward, out objectHit, transform.rotation, tornadoSpawnDistance);
+        boxCastHit = Physics.BoxCast(
+            gustSpawnLocation.position,
+            gustPrefab.transform.localScale,
+            rotateTransform.forward,
+            out objectHit,
+            transform.rotation,
+            tornadoSpawnDistance,
+            wallMask
+        );
         
         //boxcast collided with something
         if(boxCastHit)
@@ -258,28 +270,25 @@ public class PlayerMovement : PhysicsObject
             Debug.DrawRay(gustSpawnLocation.position, rotateTransform.forward * objectHit.distance, Color.black, Time.fixedDeltaTime);
             //set tornado's spawn point to be 1/2 tornado size away from the object it collided with (prevents from being inside walls)
             Vector3 backward = -1 * rotateTransform.forward;
-            GameObject markerPrefab = tornadoMarker.GetComponent<TornadoMarker>().MarkerImage;
-            tornadoMarker.GetComponent<TornadoMarker>().setTornadoMarker(objectHit.point 
+            tornadoMarker.setTornadoMarker(objectHit.point 
                 + Vector3.Scale(backward, tornadoPrefab.transform.localScale / 2));
         }
 
+        /*
+        // don't need this if we have the boxcast start from inside the player's collision
         //makes sure it is not touching the ground, just walls
         else if (GameObject.Find("wallCollider").GetComponent<WallCollisionCheck>().colliding)
         {
             //player is in a wall but cast is not
-            tornadoMarker.GetComponent<TornadoMarker>().setTornadoMarker(transform.position);
+            tornadoMarker.setTornadoMarker(transform.position);
         }
+        */
         else
         {
             //set marker to be at max distance for tornado spawn
             Debug.DrawRay(gustSpawnLocation.position, rotateTransform.forward * tornadoSpawnDistance, Color.black, Time.fixedDeltaTime);
-            tornadoMarker.GetComponent<TornadoMarker>().setTornadoMarker(gustSpawnLocation.position + rotateTransform.forward * tornadoSpawnDistance);
+            tornadoMarker.setTornadoMarker(gustSpawnLocation.position + rotateTransform.forward * tornadoSpawnDistance);
         }
     }
-
-
-   
-
-
 
 }

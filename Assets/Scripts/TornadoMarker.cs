@@ -9,7 +9,7 @@ public class TornadoMarker : MonoBehaviour
 
     public void Awake()
     {
-        MarkerImage.SetActive(false);
+        deactivateMarker();
     }
 
     public void setTornadoMarker(Vector3 position)

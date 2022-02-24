@@ -11,18 +11,25 @@ public class Gust : MonoBehaviour
 
     [Header("References")]
     public GameObject tornadoPrefab;
-    public GameObject Player;
-    public GameObject tornadoMarker;
+
+    private PlayerMovement player;
+    private TornadoMarker tornadoMarker;
 
     Vector3 startPosition;
     int wallMask;
     bool isMoving;
 
+
     private void Awake() {
         wallMask = LayerMask.GetMask("Wall", "Box");
         isMoving = true;
         startPosition = transform.position;
+    }
 
+    // note: i'm not sure whether SetPlayer gets called before or after Awake
+    public void SetPlayer(PlayerMovement player) {
+        this.player = player;
+        tornadoMarker = player.tornadoMarker;
     }
 
 
@@ -30,7 +37,9 @@ public class Gust : MonoBehaviour
         if (isMoving) {
             transform.position += transform.forward * moveSpeed * Time.deltaTime;
 
-            if (Vector3.Distance(startPosition, transform.position) > maxDistance) {
+            if (Vector3.Distance(startPosition, transform.position) >= maxDistance) {
+                // gust has gone as far as it should. snap position to exactly maxDistance away from the start position and stop
+                transform.position = startPosition + Vector3.ClampMagnitude(transform.position - startPosition, maxDistance);
                 Stop(null);
             }
         }
@@ -48,14 +57,15 @@ public class Gust : MonoBehaviour
 
     private void Stop(GameObject hitSurface) {
         isMoving = false;
-        Vector3 markerSize = tornadoMarker.GetComponent<TornadoMarker>().MarkerImage.transform.localScale;
+        Vector3 markerSize = tornadoMarker.MarkerImage.transform.localScale;
         Vector3 thePosition = transform.position;
 
         //use player from scene, not prefab
-        GameObject playerInScene = GameObject.Find("Player");
-        bool rayHit = playerInScene.GetComponent<PlayerMovement>().boxCastHit;
+        bool rayHit = player.boxCastHit;
+        /*
         GameObject wallCollider = GameObject.Find("wallCollider");
         bool playerColliding = wallCollider.GetComponent<WallCollisionCheck>().colliding;
+        */
 
         if (hitSurface != null && hitSurface.layer == LayerMask.NameToLayer("Box")) {
             // want to spawn the tornado inside the box
@@ -72,13 +82,14 @@ public class Gust : MonoBehaviour
 
             Debug.Log("boxcast hit");
         }
+        /*
         else if (!playerColliding)
         {
-
             //acount for size of tornado prefab
             thePosition = thePosition + Vector3.Scale(transform.forward, tornadoPrefab.transform.localScale / 2);
             Debug.Log("boxcast not hit");
         }
+        */
 
         GameObject.Instantiate(tornadoPrefab, thePosition, Quaternion.identity, null);
         Destroy(gameObject);
