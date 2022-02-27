@@ -26,11 +26,10 @@ public class PauseMenu : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && !isTelescopeOn)
+        if (Input.GetKeyDown(KeyCode.Escape) && !isTelescopeOn && !Managers.ScenesManager.IsTransitioning)
         {
             if(gamePaused)
             {
-
                 Resume();
             }
             else
@@ -42,7 +41,6 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
-
         currentMenu.SetActive(false);
         Time.timeScale = 1f;
         gamePaused = false;

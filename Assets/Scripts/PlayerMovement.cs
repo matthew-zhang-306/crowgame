@@ -9,7 +9,8 @@ public class PlayerMovement : PhysicsObject
         MOVE,
         PECK,
         CHARGE,
-        FLAP
+        FLAP,
+        DEAD
     }
     private PlayerState playerState = PlayerState.MOVE;
 
@@ -31,6 +32,11 @@ public class PlayerMovement : PhysicsObject
     public GameObject gustPrefab;
     public GameObject tornadoPrefab;
     public TornadoMarker tornadoMarker;
+
+    [Header("Materials")]
+    public Material whiteMaterial;
+    public Material dissolveMaterial;
+    private Material normalMaterial;
 
     public PositionSO cameraPosition;
 
@@ -54,52 +60,64 @@ public class PlayerMovement : PhysicsObject
     {
         base.Awake();
         peckHitbox.SetActive(false);
+        normalMaterial = mainSprite.material;
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
         WarpAltar.OnAltarWarp += PlayWarpAnimation;
+        ScenesManager.OnTransition += OnSceneTransition;
     }
     protected override void OnDisable()
     {
         base.OnDisable();
         WarpAltar.OnAltarWarp -= PlayWarpAnimation;
+        ScenesManager.OnTransition -= OnSceneTransition;
     }
 
 
     private void Update()
     {
-        peckInput = Input.GetAxisRaw("Action1") > 0;
-        gustInput = Input.GetAxisRaw("Action2") > 0;
+        if (!inCutscene) {
+            peckInput = Input.GetAxisRaw("Action1") > 0;
+            gustInput = Input.GetAxisRaw("Action2") > 0;
+        }
+        else {
+            peckInput = false;
+            gustInput = false;
+        }
     }
 
     protected override void FixedUpdate()
     {
+        if (playerState == PlayerState.DEAD) {
+            // stay stationary when dead
+            SetRelativeVelocity(Vector3.zero);
+            return;
+        }
+
         GetHorizontalInput();
         base.FixedUpdate();
 
         Debug.DrawRay(transform.position, rigidbody.velocity, Color.cyan, Time.fixedDeltaTime);
         CalculateTornadoPlacement();
 
-        if (!inCutscene)
+        if (playerState == PlayerState.MOVE && peckInput && !oldPeckInput)
         {
-            if (playerState == PlayerState.MOVE && peckInput && !oldPeckInput)
-            {
-                Peck();
-            }
+            Peck();
+        }
 
-            //started holding down tornado button
-            if (playerState == PlayerState.MOVE && gustInput && !oldGustInput)
-            {
-                ChargeGust();
-            }
+        //started holding down tornado button
+        if (playerState == PlayerState.MOVE && gustInput && !oldGustInput)
+        {
+            ChargeGust();
+        }
 
-            //just let go of tornado button
-            if (playerState == PlayerState.CHARGE && !gustInput && oldGustInput)
-            {
-                Gust();
-            }
+        //just let go of tornado button
+        if (playerState == PlayerState.CHARGE && !gustInput && oldGustInput)
+        {
+            Gust();
         }
 
         oldPeckInput = peckInput;
@@ -260,6 +278,22 @@ public class PlayerMovement : PhysicsObject
     }
 
 
+    public void Die() {
+        if (playerState == PlayerState.DEAD || inCutscene) {
+            return;
+        }
+
+        inCutscene = true;
+        playerState = PlayerState.DEAD;
+
+        DOTween.Sequence()
+            .InsertCallback(0, () => mainSprite.material = whiteMaterial) // white flash
+            .InsertCallback(0.1f, () => mainSprite.material = dissolveMaterial) // dissolve
+            .Insert(0.1f, DOTween.To(t => mainSprite.material.SetFloat("_Threshold", t), 1f, 0f, 0.7f).SetEase(Ease.InOutCubic))
+            .InsertCallback(1f, () => Managers.ScenesManager.ResetScene()); // reset
+    }
+
+
     public void PlayWarpAnimation(WarpAltar _)
     {
         inCutscene = true;
@@ -269,6 +303,10 @@ public class PlayerMovement : PhysicsObject
             .Append(mainSprite.transform.DOScaleX(0.05f, 0.4f).SetEase(Ease.InOutCubic))
             .Append(mainSprite.transform.DOLocalMoveY(10f, 0.4f).SetEase(Ease.InCubic))
             .SetLink(gameObject).SetTarget(mainSprite);
+    }
+
+    public void OnSceneTransition() {
+        inCutscene = true;
     }
 
 
@@ -307,16 +345,6 @@ public class PlayerMovement : PhysicsObject
             tornadoMarker.setTornadoMarker(objectHit.point 
                 + Vector3.Scale(backward, tornadoPrefab.transform.localScale / 2));
         }
-
-        /*
-        // don't need this if we have the boxcast start from inside the player's collision
-        //makes sure it is not touching the ground, just walls
-        else if (GameObject.Find("wallCollider").GetComponent<WallCollisionCheck>().colliding)
-        {
-            //player is in a wall but cast is not
-            tornadoMarker.setTornadoMarker(transform.position);
-        }
-        */
         else
         {
             //set marker to be at max distance for tornado spawn

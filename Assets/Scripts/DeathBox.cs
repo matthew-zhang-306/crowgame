@@ -9,6 +9,8 @@ public class DeathBox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (other.CompareTag("Player")) {
+            other.GetComponent<PlayerMovement>()?.Die();
+        }
     }
 }
