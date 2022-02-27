@@ -5,7 +5,6 @@ using UnityEngine;
 public class ProgressManager : MonoBehaviour
 {
     public LevelListSO levelList;
-    public StarTrackerSO starTracker;
     private bool[] starsCollected;
 
 
@@ -13,17 +12,6 @@ public class ProgressManager : MonoBehaviour
         starsCollected = PlayerPrefsX.GetBoolArray("StarsCollected", false, 0);
         if (starsCollected.Length != levelList.numStars) {
             ResetStarsCollected();
-        }
-        for (int i = 0; i < starTracker.levels.Length; i++)
-        {
-            for (int s = 0; s < levelList.starsPerLevel; s++)
-            {
-                Debug.Log("Stars State Scene: " + i + " StarIndex: " + s + " = " + starTracker.levels[i].starsCollected[s]);
-                if (IsStarCollected(i, s))
-                {
-                    starTracker.levels[i].starsCollected[s] = 1;
-                }
-            }
         }
     }
 
@@ -43,22 +31,16 @@ public class ProgressManager : MonoBehaviour
     private void ResetStarsCollected() {
         starsCollected = new bool[levelList.numStars];
         PlayerPrefsX.SetBoolArray("StarsCollected", starsCollected);
-        for (int i = 0; i < starTracker.levels.Length; i ++)
-        {
-            for (int s = 0; s < levelList.starsPerLevel; s++)
-            {
-                starTracker.levels[i].starsCollected[s] = 0;
-            }
+        
+        for (int i = 0; i < levelList.numLevels; i++) {
             // resets data for first time entering scene
-            PlayerPrefs.SetInt(starTracker.levels[i].sceneName, 0);
-            Debug.Log(PlayerPrefs.GetInt(starTracker.levels[i].sceneName));
-
-            //resets the bridges
-            PlayerPrefsX.SetBool("isBridgeOpened", false);
-
-            //resets playerposition
-            PlayerPrefsX.SetBool("FirstTime", false);
+            PlayerPrefs.SetInt(levelList.levels[i].sceneName, 0);
         }
+
+        //resets the bridges
+        PlayerPrefsX.SetBool("isBridgeOpened", false);
+        //resets playerposition
+        PlayerPrefsX.SetBool("FirstTime", false);
     }
 
 

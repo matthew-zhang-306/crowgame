@@ -53,15 +53,6 @@ public class ScenesManager : MonoBehaviour
         // debug reset
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.R)) {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            /*Debug.Log("Scene Reloaded");
-            if (!IsHubSceneLoaded())
-            {
-                for (int s = 0; s < levelList.starsPerLevel; s++)
-                {
-                    Managers.ProgressManager.starTracker.levels[levelNumber].starsCollected[s] = 0;
-                    Managers.ProgressManager.SetStarCollected(levelNumber, s, false);
-                }
-            }*/
         }
         // debug scene advance
         else if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Equals)) {

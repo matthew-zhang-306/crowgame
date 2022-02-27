@@ -4,16 +4,24 @@ using UnityEngine;
 
 public class ConstellationsManager : MonoBehaviour
 {
-    //[SerializeField]private bool isTelescopeOpened;
+    public Transform starContainer; // all of the stars are children of this object
     private Animator telescopeAnim;
-    // Start is called before the first frame update
+
     void Start()
     {
         //isTelescopeOpened = false;
         telescopeAnim = GetComponent<Animator>();
+    
+
+        LevelListSO levelList = Managers.ProgressManager.levelList;
+        for (int i = 0; i < starContainer.childCount; i++) {
+            Transform starT = starContainer.GetChild(i);
+            starT.GetChild(1).gameObject.SetActive(
+                Managers.ProgressManager.IsStarCollected(i / levelList.starsPerLevel, i % levelList.starsPerLevel)
+            );
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))

@@ -84,7 +84,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6076529612341988517}
-  - component: {fileID: 7429585896839522686}
   m_Layer: 5
   m_Name: StarOne
   m_TagString: Untagged
@@ -113,21 +112,6 @@ RectTransform:
   m_AnchoredPosition: {x: 118, y: -57}
   m_SizeDelta: {x: 1.1932983, y: 10.746002}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7429585896839522686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3666195071233199833}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b6830f9878e3d2499bbfc227ffcbe1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starTracker: {fileID: 11400000, guid: 11b5ff05d8279024992658eba27f7f2f, type: 2}
-  sceneIndex: 0
-  starNumber: 0
 --- !u!1 &4080872707733787715
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,6 +199,7 @@ GameObject:
   - component: {fileID: 4525744109313229582}
   - component: {fileID: 4525744109313229617}
   - component: {fileID: 4525744109313229616}
+  - component: {fileID: 2844723966783755977}
   m_Layer: 5
   m_Name: StarCanvas
   m_TagString: Untagged
@@ -304,6 +289,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2844723966783755977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4525744109313229619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8ec410993c0f24b926f4ddacf3929e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelList: {fileID: 11400000, guid: 74f62db2c2bbb124a903d398a2916aad, type: 2}
 --- !u!1 &5054536701174166493
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,7 +386,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2603435855852168217}
-  - component: {fileID: 6803601180848567214}
   m_Layer: 5
   m_Name: StarZero
   m_TagString: Untagged
@@ -417,21 +414,6 @@ RectTransform:
   m_AnchoredPosition: {x: 54, y: -57}
   m_SizeDelta: {x: 1.1932983, y: 10.746002}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6803601180848567214
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7744211198769149989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b6830f9878e3d2499bbfc227ffcbe1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starTracker: {fileID: 11400000, guid: 11b5ff05d8279024992658eba27f7f2f, type: 2}
-  sceneIndex: 0
-  starNumber: 0
 --- !u!1 &8291133730667343272
 GameObject:
   m_ObjectHideFlags: 0

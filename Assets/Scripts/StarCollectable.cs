@@ -5,8 +5,6 @@ using DG.Tweening;
 
 public class StarCollectable : MonoBehaviour
 {
-    //public StarCounterSO starCounter;
-    public StarTrackerSO starTracker;
     public  int sceneIndex;
     public int starNumber;
 
@@ -20,18 +18,7 @@ public class StarCollectable : MonoBehaviour
     private void Awake() {
         currentRotateSpeed = rotateSpeed;
 
-        /*if (Managers.ProgressManager.IsStarCollected(sceneIndex, starNumber) == true)
-        {
-            starTracker.levels[sceneIndex].starsCollected[starNumber] = 1;
-        }
-        else
-        {
-            starTracker.levels[sceneIndex].starsCollected[starNumber] = 0;
-        }*/
-        //starTracker.levels[sceneIndex].starsCollected[starNumber] = Managers.ProgressManager.checkStarCollection(sceneIndex, starNumber);
-
-        //Debug.Log(Managers.ProgressManager.IsStarCollected(sceneIndex, starNumber));
-        if (starTracker.levels[sceneIndex].starsCollected[starNumber] == 1)
+        if (Managers.ProgressManager.IsStarCollected(sceneIndex, starNumber))
         {
             this.gameObject.SetActive(false);
         }
@@ -43,10 +30,9 @@ public class StarCollectable : MonoBehaviour
         
         if (other.CompareTag("Player")) {
             collected = true;
-            //starCounter.currentCount += 1;
-            starTracker.levels[sceneIndex].starsCollected[starNumber] = 1;
             Managers.ProgressManager.SetStarCollected(sceneIndex, starNumber, true);
 
+            // animation
             DOTween.Sequence()
                 .Insert(0, DOTween.To(s => currentRotateSpeed = s, rotateSpeed * 5f, 0f, 1f).SetEase(Ease.InCubic))
                 .Insert(0, transform.DOMoveY(transform.position.y + 1f, 0.2f).SetEase(Ease.OutCubic))

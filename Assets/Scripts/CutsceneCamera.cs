@@ -6,18 +6,16 @@ public class CutsceneCamera : MonoBehaviour
 {
     public GameObject cutsceneCam;
     public GameObject bridge;
-    private StarTrackerSO starTracker;
-    // Start is called before the first frame update
-    void Start()
+    
+    private void Start()
     {
-        starTracker = Managers.ProgressManager.starTracker;
         if (PlayerPrefsX.GetBool("isBridgeOpened", false) == false)
         {
             Debug.Log("isBridgeOpened is false");
-            if ((starTracker.levels[0].starsCollected[0] == 1 || starTracker.levels[0].starsCollected[1] == 1) &&
-                (starTracker.levels[1].starsCollected[0] == 1 || starTracker.levels[1].starsCollected[1] == 1) &&
-                (starTracker.levels[2].starsCollected[0] == 1 || starTracker.levels[2].starsCollected[1] == 1))
-            {
+            if ((Managers.ProgressManager.IsStarCollected(0, 0) || Managers.ProgressManager.IsStarCollected(0, 1)) &&
+                (Managers.ProgressManager.IsStarCollected(1, 0) || Managers.ProgressManager.IsStarCollected(1, 1)) &&
+                (Managers.ProgressManager.IsStarCollected(2, 0) || Managers.ProgressManager.IsStarCollected(2, 1))
+            ) {
                 cutsceneCam.SetActive(true);
                 PlayerPrefsX.SetBool("isBridgeOpened", true);
                 Debug.Log("OpenBridge");
@@ -28,12 +26,5 @@ public class CutsceneCamera : MonoBehaviour
             bridge.SetActive(true);
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     
 }
