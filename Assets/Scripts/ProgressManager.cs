@@ -49,6 +49,9 @@ public class ProgressManager : MonoBehaviour
             {
                 starTracker.levels[i].starsCollected[s] = 0;
             }
+            // resets data for first time entering scene
+            PlayerPrefs.SetInt(starTracker.levels[i].sceneName, 0);
+            Debug.Log(PlayerPrefs.GetInt(starTracker.levels[i].sceneName));
         }
     }
 
