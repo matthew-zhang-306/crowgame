@@ -52,6 +52,12 @@ public class ProgressManager : MonoBehaviour
             // resets data for first time entering scene
             PlayerPrefs.SetInt(starTracker.levels[i].sceneName, 0);
             Debug.Log(PlayerPrefs.GetInt(starTracker.levels[i].sceneName));
+
+            //resets the bridges
+            PlayerPrefsX.SetBool("isBridgeOpened", false);
+
+            //resets playerposition
+            PlayerPrefsX.SetBool("FirstTime", false);
         }
     }
 
