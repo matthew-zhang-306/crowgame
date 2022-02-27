@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class ScenesManager : MonoBehaviour
 {
     [HideInInspector] public int levelNumber;
+    [HideInInspector] public string nameOfScene;
     public LevelListSO levelList;
     public SceneTransition sceneTransition;
     public bool IsTransitioning { get; private set; }
@@ -22,7 +23,13 @@ public class ScenesManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode) {
         levelNumber = levelList.levels.ToList().FindIndex(0, levelList.levels.Length, l => l.sceneName == scene.name);
-
+        if (levelNumber >= 0)
+        {
+            nameOfScene = levelList.levels[levelNumber].sceneName;
+            Debug.Log("Scene Name: " + nameOfScene);
+            PlayerPrefs.SetInt(nameOfScene, 1);
+            //Debug.Log("PlayerPrefs: " + PlayerPrefs.GetInt(sceneName, 0));
+        }
         // do stuff here
         IsTransitioning = false;
         if (didTransitionOut) {
