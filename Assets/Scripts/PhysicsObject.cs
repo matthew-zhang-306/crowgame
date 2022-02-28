@@ -12,6 +12,9 @@ public class PhysicsObject : MonoBehaviour
     public float friction;
     public float maxFallSpeed;
     public float gravity;
+
+    [Header("Ride Physics Parameters")]
+    public bool canRide = true;
     public float rideSnapSpeed;
 
     [Header("Tornado Physics Parameters")]
@@ -257,25 +260,32 @@ public class PhysicsObject : MonoBehaviour
     // the physics object can be carried by many objects, but we need to pick one to move with. this method does that
     protected virtual PhysicsObject GetMainCarrier() {
         if (allCarriers.Count == 0) {
+            // no carrier to select
             return null;
         }
 
-        PhysicsObject theRide = allCarriers.FirstOrDefault(p => p is Tornado t);
-        if (theRide != null) {
-            return theRide;
+        // prioritize tornadoes
+        PhysicsObject carrier = allCarriers.FirstOrDefault(p => p is Tornado t);
+        if (carrier != null) {
+            return carrier;
         }
 
-        foreach (PhysicsObject aRide in allCarriers) {
-            if (theRide == null || (transform.position - theRide.GetRidePoint()).sqrMagnitude >
-                (transform.position - aRide.GetRidePoint()).sqrMagnitude)
+        // otherwise, pick the closest one
+        foreach (PhysicsObject c in allCarriers) {
+            if (carrier == null || (transform.position - c.GetRidePoint()).sqrMagnitude >
+                (transform.position - c.GetRidePoint()).sqrMagnitude)
             {
-                theRide = aRide;
+                carrier = c;
             }
         }
-        return theRide;
+        return carrier;
     }
 
     public virtual void AddRider(PhysicsObject rider) {
+        if (!rider.canRide) {
+            return;
+        }
+
         allRiders.Add(rider);
         rider.allCarriers.Add(this);
     }
@@ -283,6 +293,17 @@ public class PhysicsObject : MonoBehaviour
     public virtual void RemoveRider(PhysicsObject rider) {
         allRiders.Remove(rider);
         rider.allCarriers.Remove(this);
+    }
+
+
+    protected virtual void OnDrawGizmosSelected() {
+        Gizmos.color = Color.white;
+        if (allCarriers != null) {
+            foreach (PhysicsObject carrier in allCarriers) {
+                Gizmos.DrawLine(transform.position, carrier.GetRidePoint());
+                Gizmos.DrawWireSphere(carrier.GetRidePoint(), 0.5f);
+            }
+        }
     }
 
 }
