@@ -105,13 +105,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3310963001069297123}
+  - component: {fileID: 1372349471}
+  - component: {fileID: 8612096105918039126}
   m_Layer: 0
   m_Name: Bridge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3310963001069297123
 Transform:
   m_ObjectHideFlags: 0
@@ -119,14 +121,46 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1895789472694786594}
-  m_LocalRotation: {x: -0, y: -0.16236182, z: -0, w: 0.98673135}
+  m_LocalRotation: {x: 0, y: -0.16236165, z: 0, w: 0.98673135}
   m_LocalPosition: {x: -1.2699661, y: 42.980824, z: 135.03004}
-  m_LocalScale: {x: 1.7000002, y: 1.8, z: 2.7}
+  m_LocalScale: {x: 1.7, y: 1.8, z: 2.7}
   m_Children:
   - {fileID: 2760483650435665760}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -18.688, z: 0}
+--- !u!95 &1372349471
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895789472694786594}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 57fe2f638230817479c5a3592f331f1d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8612096105918039126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895789472694786594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55004dc1f0b55544a07bfef30b076cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bridgeCam: {fileID: 0}
 --- !u!1 &4591116378470313203
 GameObject:
   m_ObjectHideFlags: 0
