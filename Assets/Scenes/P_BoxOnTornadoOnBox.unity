@@ -2517,6 +2517,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7443111172437208316, guid: fe3030f6edc425d41b4745920c01440e, type: 3}
   m_PrefabInstance: {fileID: 1916125830}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &553138239 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8369593887985166665, guid: fe3030f6edc425d41b4745920c01440e, type: 3}
+  m_PrefabInstance: {fileID: 1916125830}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553138238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82ca20676ec48c3409171183f67f2866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &570003575
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5268,7 +5279,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-258494
+  m_Name: pb_Mesh-4142
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10146,6 +10157,18 @@ PrefabInstance:
       propertyPath: door
       value: 
       objectReference: {fileID: 553138238}
+    - target: {fileID: 2893125497297935179, guid: c887cf2bafc51924785cc59453b9e8d6, type: 3}
+      propertyPath: targets.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2893125497297935179, guid: c887cf2bafc51924785cc59453b9e8d6, type: 3}
+      propertyPath: targets.Array.data[0]
+      value: 
+      objectReference: {fileID: 553138239}
+    - target: {fileID: 2893125497297935179, guid: c887cf2bafc51924785cc59453b9e8d6, type: 3}
+      propertyPath: targets.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c887cf2bafc51924785cc59453b9e8d6, type: 3}
 --- !u!1 &2146559975

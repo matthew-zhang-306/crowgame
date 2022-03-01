@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class DoorManager : MonoBehaviour
+public class DoorManager : BaseSwitchable
 {
-    public bool startsOpen = false;
-    private bool doorOpen = false;
-
     public Vector3 openOffset;
     private Vector3 closedPosition;
     private Vector3 openPosition;
@@ -19,21 +16,20 @@ public class DoorManager : MonoBehaviour
         closedPosition = transform.position;
         openPosition = transform.position + openOffset;
 
-        if (startsOpen) {
+        if (startingState) {
             // we set this here to have it start open without animating
+            // later, in Start(), Switch() will be called for real
             visualTransform.position = openPosition;
-
-            Switch();
         }
     }
 
 
-    public void Switch() {
-        doorOpen = !doorOpen;
+    public override void Switch() {
+        base.Switch();
 
-        collider.transform.position = doorOpen ? openPosition : closedPosition;
+        collider.transform.position = State ? openPosition : closedPosition;
         visualTransform.DOKill();
-        visualTransform.DOMove(doorOpen ? openPosition : closedPosition, 1.0f)
+        visualTransform.DOMove(State ? openPosition : closedPosition, 1.0f)
             .SetEase(Ease.InOutCubic);
     }
 
