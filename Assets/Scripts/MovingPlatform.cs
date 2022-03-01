@@ -12,12 +12,19 @@ public class MovingPlatform : PhysicsObject
     public float moveTime;
     public float moveDelay;
 
+    public bool isAutomatic = true;
+    private bool isTargettingDestination = false; // true while the platform is moving to or sitting at the end position
+    private Coroutine moveCoroutine;
+
     protected override void Awake() {
         base.Awake();
 
         startPosition = transform.position;
         endPosition = startPosition + destinationOffset;
-        StartCoroutine(DoMovement());
+
+        if (isAutomatic) {
+            StartCoroutine(DoMovement());
+        }
     }
 
     protected override void FixedUpdate()
@@ -34,16 +41,45 @@ public class MovingPlatform : PhysicsObject
         // do nothing
     }
 
+
+    public void Move() {
+        Move(!isTargettingDestination);
+    }
+
+    public void Move(bool shouldTargetDestination) {
+        if (isAutomatic) {
+            Debug.LogError("Cannot manually move an automatic moving platform");
+            return;
+        }
+
+        if (shouldTargetDestination == isTargettingDestination) {
+            // we're already moving there
+            return;
+        }
+
+        // cancel the previous movement, if any
+        if (moveCoroutine != null) {
+            StopCoroutine(moveCoroutine);
+        }
+
+        isTargettingDestination = shouldTargetDestination;
+        moveCoroutine = StartCoroutine(DoMove(transform.position, isTargettingDestination ? endPosition : startPosition));
+    }
+
+
     IEnumerator DoMovement() {
         while (true) {
             yield return new WaitForSeconds(moveDelay);
-            yield return StartCoroutine(Move(startPosition, endPosition));
+            isTargettingDestination = true;
+            yield return StartCoroutine(DoMove(startPosition, endPosition));
+            
             yield return new WaitForSeconds(moveDelay);
-            yield return StartCoroutine(Move(endPosition, startPosition));
+            isTargettingDestination = false;
+            yield return StartCoroutine(DoMove(endPosition, startPosition));
         }
     }
 
-    IEnumerator Move(Vector3 start, Vector3 end) {
+    IEnumerator DoMove(Vector3 start, Vector3 end) {
         float t = 0;
         while (t < moveTime) {
             // wait first to sync all movement to the fixed update cycle

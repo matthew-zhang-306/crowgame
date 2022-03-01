@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class Pinwheel : MonoBehaviour
+public class Pinwheel : BaseSwitch
 {
-    public DoorManager door;
-
     public SpriteRenderer spriteRenderer;
     public Color offColor;
     public Color onColor;
@@ -46,7 +44,7 @@ public class Pinwheel : MonoBehaviour
 
         if (isOn != oldIsOn) {
             // this is a change of state
-            door.Switch();
+            Switch();
 
             spriteRenderer.DOKill();
             spriteRenderer.DOColor(isOn ? onColor : offColor, 0.5f);
