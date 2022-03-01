@@ -32,6 +32,8 @@ public class StarCollectable : MonoBehaviour
             collected = true;
             Managers.ProgressManager.SetStarCollected(sceneIndex, starNumber, true);
 
+            Managers.AudioManager.PlaySound("star_collection");
+
             // animation
             DOTween.Sequence()
                 .Insert(0, DOTween.To(s => currentRotateSpeed = s, rotateSpeed * 5f, 0f, 1f).SetEase(Ease.InCubic))
