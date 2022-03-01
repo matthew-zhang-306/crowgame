@@ -38,6 +38,7 @@ public class Pinwheel : BaseSwitch
             Tornado tornado = hit.collider.GetComponent<Tornado>();
             if (tornado != null && tornado.Top.y > transform.position.y) {
                 isOn = true;
+                Managers.AudioManager.PlaySound("pinwheel");
             }
         }
 

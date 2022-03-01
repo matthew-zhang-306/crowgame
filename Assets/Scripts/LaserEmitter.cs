@@ -32,6 +32,7 @@ public class LaserEmitter : MonoBehaviour
             distance = hit.distance;   
             if (hit.collider.CompareTag("Player")) {
                 // player is getting hit with a laser
+                Managers.AudioManager.PlaySound("laser_hit");
                 hit.collider.GetComponent<PlayerMovement>()?.Die();
             }
         }

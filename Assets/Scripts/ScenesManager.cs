@@ -72,6 +72,10 @@ public class ScenesManager : MonoBehaviour
 
         IsTransitioning = true;
         if (transitionTime > 0f) {
+
+            //play scene transition sound
+            Managers.AudioManager.PlaySound("scene_transition");
+
             didTransitionOut = true;
             OnTransition?.Invoke();
 
