@@ -31,6 +31,8 @@ public class DoorManager : MonoBehaviour
     public void Switch() {
         doorOpen = !doorOpen;
 
+        Managers.AudioManager.PlaySound("door_open");
+
         collider.transform.position = doorOpen ? openPosition : closedPosition;
         visualTransform.DOKill();
         visualTransform.DOMove(doorOpen ? openPosition : closedPosition, 1.0f)
