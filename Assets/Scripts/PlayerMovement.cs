@@ -246,8 +246,10 @@ public class PlayerMovement : PhysicsObject
         
         // stop pecking after some time
         this.Invoke(() => {
-            Debug.Log("stop peck");
-            playerState = PlayerState.MOVE;
+            if (playerState == PlayerState.PECK) {
+                playerState = PlayerState.MOVE;
+            }
+
             peckHitbox.SetActive(false);
         }, peckDuration);
     }
@@ -272,7 +274,10 @@ public class PlayerMovement : PhysicsObject
 
         // stop flapping after some time
         this.Invoke(() => {
-            playerState = PlayerState.MOVE;
+            if (playerState == PlayerState.FLAP) {
+                playerState = PlayerState.MOVE;
+            }
+
             peckHitbox.SetActive(false);
         }, flapDuration);
     }
@@ -285,6 +290,8 @@ public class PlayerMovement : PhysicsObject
 
         inCutscene = true;
         playerState = PlayerState.DEAD;
+
+        Debug.Log("dead!");
 
         DOTween.Sequence()
             .InsertCallback(0, () => mainSprite.material = whiteMaterial) // white flash

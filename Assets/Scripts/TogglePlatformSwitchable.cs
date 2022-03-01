@@ -8,8 +8,8 @@ public class TogglePlatformSwitchable : BaseSwitchable
     public MeshRenderer tangibleMesh;
 
     private void Awake() {
-        // switch the platform off. if the starting state is on, it will get changed back in Start()
-        Switch();
+        tangibleMesh.enabled = false;
+        collider.enabled = false;
     }
 
     public override void Switch() {
