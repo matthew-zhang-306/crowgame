@@ -122,7 +122,7 @@ public class PhysicsObject : MonoBehaviour
         PhysicsObject theRide = GetMainCarrier();
         if (allCarriers.Count > 0) {
             // we're riding something. snap towards its position
-            Vector3 rideOffset = theRide.GetRidePoint().WithY(0) - transform.position.WithY(0);
+            Vector3 rideOffset = theRide.GetRidePoint(this).WithY(0) - transform.position.WithY(0);
             hVelocity = Vector3.ClampMagnitude(rideOffset, rideSnapSpeed * Time.deltaTime);
         }
         else {
@@ -252,7 +252,9 @@ public class PhysicsObject : MonoBehaviour
 
 
     // returns the position to which anything riding this object should snap to in order to stay on it
-    public virtual Vector3 GetRidePoint() {
+    public virtual Vector3 GetRidePoint(PhysicsObject rider) {
+        // rider is assumed to be inside allRiders
+
         return collider.bounds.center + Vector3.up * collider.bounds.extents.y;
     }
 
@@ -272,8 +274,8 @@ public class PhysicsObject : MonoBehaviour
 
         // otherwise, pick the closest one
         foreach (PhysicsObject c in allCarriers) {
-            if (carrier == null || (transform.position - c.GetRidePoint()).sqrMagnitude >
-                (transform.position - c.GetRidePoint()).sqrMagnitude)
+            if (carrier == null || (transform.position - c.GetRidePoint(this)).sqrMagnitude >
+                (transform.position - c.GetRidePoint(this)).sqrMagnitude)
             {
                 carrier = c;
             }
@@ -300,8 +302,8 @@ public class PhysicsObject : MonoBehaviour
         Gizmos.color = Color.white;
         if (allCarriers != null) {
             foreach (PhysicsObject carrier in allCarriers) {
-                Gizmos.DrawLine(transform.position, carrier.GetRidePoint());
-                Gizmos.DrawWireSphere(carrier.GetRidePoint(), 0.5f);
+                Gizmos.DrawLine(transform.position, carrier.GetRidePoint(this));
+                Gizmos.DrawWireSphere(carrier.GetRidePoint(this), 0.5f);
             }
         }
     }

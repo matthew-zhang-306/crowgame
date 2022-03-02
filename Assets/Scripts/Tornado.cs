@@ -83,7 +83,7 @@ public class Tornado : PhysicsObject
     }
 
 
-    public override Vector3 GetRidePoint() {
+    public override Vector3 GetRidePoint(PhysicsObject rider) {
         return Top;
     }
 

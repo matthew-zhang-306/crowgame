@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MovingPlatform : PhysicsObject
@@ -16,6 +17,8 @@ public class MovingPlatform : PhysicsObject
     private bool isTargettingDestination = false; // true while the platform is moving to or sitting at the end position
     private Coroutine moveCoroutine;
 
+    private RideRegion[] rideRegions;
+
     protected override void Awake() {
         base.Awake();
 
@@ -25,6 +28,8 @@ public class MovingPlatform : PhysicsObject
         if (isAutomatic) {
             StartCoroutine(DoMovement());
         }
+
+        rideRegions = GetComponentsInChildren<RideRegion>();
     }
 
     protected override void FixedUpdate()
@@ -96,6 +101,27 @@ public class MovingPlatform : PhysicsObject
         yield return new WaitForFixedUpdate();
         SetRelativeVelocity((end - transform.position) / Time.fixedDeltaTime);
     }
+
+
+    /*
+    public override Vector3 GetRidePoint(PhysicsObject rider) {
+        if (rideRegions.Length == 0) {
+            // a moving platform should have at least one ride region, but in case it doesn't, give the position of the moving platform
+            return base.GetRidePoint(rider);
+        }
+
+        // select the ride region that is closest to the object
+        RideRegion theRide = rideRegions[0];
+        foreach (RideRegion ride in rideRegions) {
+            if ((ride.transform.position - rider.transform.position).sqrMagnitude <
+                (theRide.transform.position - rider.transform.position).sqrMagnitude)
+            {
+                theRide = ride;
+            }
+        }
+        return theRide.transform.position;
+    }
+    */
 
 
     private void OnDrawGizmos() {
