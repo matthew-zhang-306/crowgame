@@ -7,11 +7,13 @@ public class LaserEmitter : MonoBehaviour
     
     public LineRenderer lineRenderer; // this object positioned where the laser starts
     private int hitMask;
+    private bool playingLaser;
 
     public float maxDistance;
 
 
     private void Start() {
+        playingLaser = false;
         hitMask = LayerMask.GetMask("Wall", "Box", "Player");
     }
 
@@ -32,7 +34,12 @@ public class LaserEmitter : MonoBehaviour
             distance = hit.distance;   
             if (hit.collider.CompareTag("Player")) {
                 // player is getting hit with a laser
-                Managers.AudioManager.PlaySound("laser_hit");
+                Debug.Log("Playing laser");
+                if (!playingLaser)
+                {
+                    Managers.AudioManager.PlaySound("laser_hit");
+                    playingLaser = true;
+                }
                 hit.collider.GetComponent<PlayerMovement>()?.Die();
             }
         }

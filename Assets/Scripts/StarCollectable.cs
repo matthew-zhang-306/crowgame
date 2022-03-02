@@ -25,14 +25,17 @@ public class StarCollectable : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
+
+        
+
         if (collected)
             return;
         
         if (other.CompareTag("Player")) {
             collected = true;
-            Managers.ProgressManager.SetStarCollected(sceneIndex, starNumber, true);
-
+            
             Managers.AudioManager.PlaySound("star_collection");
+            Managers.ProgressManager.SetStarCollected(sceneIndex, starNumber, true);
 
             // animation
             DOTween.Sequence()
