@@ -6,6 +6,7 @@ public class ConstellationsManager : MonoBehaviour
 {
     public Transform starContainer; // all of the stars are children of this object
     public Transform starContainerTwo;
+    public Transform ravenConstellation;
     private Animator telescopeAnim;
 
     void Start()
@@ -21,12 +22,21 @@ public class ConstellationsManager : MonoBehaviour
                 Managers.ProgressManager.IsStarCollected(i / levelList.starsPerLevel, i % levelList.starsPerLevel)
             );
         }
-        for (int i = 13; i < starContainer.childCount * 2; i++)
+        for (int i = 0; i < starContainer.childCount; i++)
         {
             Transform starT = starContainerTwo.GetChild(i);
             starT.GetChild(0).gameObject.SetActive(
-                Managers.ProgressManager.IsStarCollected(i / levelList.starsPerLevel, i % levelList.starsPerLevel)
+                Managers.ProgressManager.IsStarCollected((i + 12) / levelList.starsPerLevel, (i + 12) % levelList.starsPerLevel)
             );
+        }
+        for (int i = 0; i < ravenConstellation.childCount; i++)
+        {
+            Transform starT = ravenConstellation.GetChild(i);
+            if ((Managers.ProgressManager.IsStarCollected(i, 0)) &&
+                (Managers.ProgressManager.IsStarCollected(i, 1)))
+            {
+                starT.GetChild(1).gameObject.SetActive(true);
+            }
         }
     }
 
@@ -36,6 +46,15 @@ public class ConstellationsManager : MonoBehaviour
         {
             ChangeTelescopeState();
         }
+        /* button click set star for testing
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            Managers.ProgressManager.SetStarCollected(11, 0, true);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            Managers.ProgressManager.SetStarCollected(11, 1, true);
+        }*/
     }
 
     public void ChangeTelescopeState()
