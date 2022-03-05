@@ -5,6 +5,7 @@ using UnityEngine;
 public class ConstellationsManager : MonoBehaviour
 {
     public Transform starContainer; // all of the stars are children of this object
+    public Transform starContainerTwo;
     private Animator telescopeAnim;
 
     void Start()
@@ -16,7 +17,14 @@ public class ConstellationsManager : MonoBehaviour
         LevelListSO levelList = Managers.ProgressManager.levelList;
         for (int i = 0; i < starContainer.childCount; i++) {
             Transform starT = starContainer.GetChild(i);
-            starT.GetChild(1).gameObject.SetActive(
+            starT.GetChild(0).gameObject.SetActive(
+                Managers.ProgressManager.IsStarCollected(i / levelList.starsPerLevel, i % levelList.starsPerLevel)
+            );
+        }
+        for (int i = 13; i < starContainer.childCount * 2; i++)
+        {
+            Transform starT = starContainerTwo.GetChild(i);
+            starT.GetChild(0).gameObject.SetActive(
                 Managers.ProgressManager.IsStarCollected(i / levelList.starsPerLevel, i % levelList.starsPerLevel)
             );
         }
