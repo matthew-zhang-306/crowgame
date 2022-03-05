@@ -12,6 +12,7 @@ public class ZodiacController : MonoBehaviour
     public ZodiacDialogueSO zodiacDialogue;
     private int zodiacIndex;
     private bool isTalking;
+    private bool isRunning;
     // Start is called before the first frame update
     void Start()
     {
@@ -42,17 +43,23 @@ public class ZodiacController : MonoBehaviour
                 Debug.Log("Talk with " + this.gameObject.name);
                 if (!zodiacDialogue.zodiacs[zodiacIndex].haveTalkedTo)
                 {
-                    dialogueText.text = "";
-                    string dialogue = zodiacDialogue.zodiacs[zodiacIndex].firstDialogue;
-                    zodiacDialogue.zodiacs[zodiacIndex].haveTalkedTo = true;
-                    StartCoroutine(TypeDialogue(dialogue, 0.01f));
+                    if (!isRunning)
+                    {
+                        dialogueText.text = "";
+                        string dialogue = zodiacDialogue.zodiacs[zodiacIndex].firstDialogue;
+                        zodiacDialogue.zodiacs[zodiacIndex].haveTalkedTo = true;
+                        StartCoroutine(TypeDialogue(dialogue, 0.01f));
+                    }
                 }
                 else
                 {
-                    dialogueText.text = "";
-                    int dialogueIndex = Random.Range(0, zodiacDialogue.zodiacs[zodiacIndex].randomDialogues.Length);
-                    string dialogue = zodiacDialogue.zodiacs[zodiacIndex].randomDialogues[dialogueIndex];
-                    StartCoroutine(TypeDialogue(dialogue, 0.01f));
+                    if (!isRunning)
+                    {
+                        dialogueText.text = "";
+                        int dialogueIndex = Random.Range(0, zodiacDialogue.zodiacs[zodiacIndex].randomDialogues.Length);
+                        string dialogue = zodiacDialogue.zodiacs[zodiacIndex].randomDialogues[dialogueIndex];
+                        StartCoroutine(TypeDialogue(dialogue, 0.01f));
+                    }
                 }
             }
         }
@@ -60,11 +67,13 @@ public class ZodiacController : MonoBehaviour
 
     private IEnumerator TypeDialogue(string dialogue, float speed)
     {
+        isRunning = true;
         foreach (char letter in dialogue.ToCharArray())
         {
             dialogueText.text += letter;
             yield return new WaitForSeconds(speed);
         }
+        isRunning = false;
     }
 
     private void OnTriggerEnter(Collider other)
