@@ -55888,6 +55888,7 @@ GameObject:
   - component: {fileID: 1667681159}
   - component: {fileID: 1667681158}
   - component: {fileID: 1667681160}
+  - component: {fileID: 1667681161}
   m_Layer: 0
   m_Name: Pig
   m_TagString: Untagged
@@ -55937,6 +55938,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 6.1791906, y: 3.2344475, z: 4.4301453}
   m_Center: {x: -0.118545055, y: 0.6173382, z: -0.0041656494}
+--- !u!114 &1667681161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667681157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0759e53901e687d4dabf1aba0e850bb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueCamera: {fileID: 661321696}
+  dialogueCanvas: {fileID: 1324493746}
+  dialogueText: {fileID: 1676323155}
+  zodiacDialogue: {fileID: 11400000, guid: 8589f1b8fdd1cd64d82c46ab825ab671, type: 2}
 --- !u!43 &1667948715
 Mesh:
   m_ObjectHideFlags: 0
