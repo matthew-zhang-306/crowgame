@@ -13,6 +13,9 @@ public class ScenesManager : MonoBehaviour
     public bool IsTransitioning { get; private set; }
     bool didTransitionOut;
 
+    private bool resetInput;
+    private bool oldResetInput;
+
     // called whenever a scene transition takes place
     public static System.Action OnTransition;
 
@@ -44,8 +47,11 @@ public class ScenesManager : MonoBehaviour
 
 
     private void Update() {
+        oldResetInput = resetInput;
+        resetInput = Input.GetAxisRaw("Reset") > 0;
+
         // in-game reset
-        if (Input.GetKeyDown(KeyCode.R)) {
+        if (resetInput) {
             ResetScene();
         }
         

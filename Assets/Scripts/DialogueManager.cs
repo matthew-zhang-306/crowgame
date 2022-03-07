@@ -25,7 +25,7 @@ public class DialogueManager : MonoBehaviour
     private void Update()
     {
         // dialogue moves faster is space is pressed
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetAxisRaw("Action1") > 0)
         {
             pressed = true;
             DisplayNextSentence();

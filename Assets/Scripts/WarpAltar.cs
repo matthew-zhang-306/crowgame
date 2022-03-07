@@ -14,6 +14,7 @@ public class WarpAltar : MonoBehaviour
 
     public SavingSystem savingSystem;
     private PlayerMovement playerInside;
+    private bool isWarping;
 
     public delegate void AltarDelegate(WarpAltar altar);
     public static AltarDelegate OnAltarEnter;
@@ -29,7 +30,8 @@ public class WarpAltar : MonoBehaviour
 
 
     private void Update() {
-        if (playerInside != null && Input.GetAxisRaw("Action1") > 0) {
+        if (!isWarping && !PauseMenu.isTelescopeOn && !PauseMenu.gamePaused && playerInside != null && Input.GetAxisRaw("Action1") > 0) {
+            isWarping = true;
             OnAltarWarp?.Invoke(this);
             
             if (Managers.ScenesManager.IsHubSceneLoaded()) {

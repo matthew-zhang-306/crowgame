@@ -136,7 +136,7 @@ public class PlayerMovement : PhysicsObject
         }
 
         Vector3 horizontalInputRaw = new Vector3(
-            Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")
+            Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")
         );
 
         // rotate the input directions to point in the direction of the camera

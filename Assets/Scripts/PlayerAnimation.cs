@@ -33,14 +33,14 @@ public class PlayerAnimation : MonoBehaviour
     void Update()
     {
        //  Debug.Log("Axis: " + Input.GetAxisRaw("Horizontal") + Input.GetAxisRaw("Vertical") + Input.GetAxisRaw("Action1") + Input.GetAxisRaw("Action2"));
-        anim.SetFloat("MoveX", Input.GetAxisRaw("Horizontal"));
-        anim.SetFloat("MoveY", Input.GetAxisRaw("Vertical"));
+        anim.SetFloat("MoveX", Input.GetAxis("Horizontal"));
+        anim.SetFloat("MoveY", Input.GetAxis("Vertical"));
 
         // set the last move float to last input
-        if (Input.GetAxisRaw("Horizontal") == 1 || Input.GetAxisRaw("Horizontal") == -1 || Input.GetAxisRaw("Vertical") == 1 || Input.GetAxisRaw("Vertical") == -1)
+        if (Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("Vertical") > 0.5f || Input.GetAxis("Vertical") < -0.5f)
         {
-            anim.SetFloat("LastMoveX", Input.GetAxisRaw("Horizontal"));
-            anim.SetFloat("LastMoveY", Input.GetAxisRaw("Vertical"));
+            anim.SetFloat("LastMoveX", Input.GetAxis("Horizontal"));
+            anim.SetFloat("LastMoveY", Input.GetAxis("Vertical"));
         }
 
         // pecking animation timer
@@ -99,86 +99,5 @@ public class PlayerAnimation : MonoBehaviour
             anim.SetBool("isFalling", false);
         }
 
-
-        /*
-        Debug.Log("Velocity: " + GetComponentInParent<Rigidbody>().velocity);
-        if (Input.GetAxisRaw("Horizontal") < 0)
-        {
-            anim.SetBool("isFrontWalking", false);
-            anim.SetBool("isBackWalking", false);
-            anim.SetBool("isRightWalking", false);
-            anim.SetBool("isLeftWalking", true);
-            direction = 2;
-        }
-        if (Input.GetAxisRaw("Horizontal") > 0)
-        {
-            anim.SetBool("isFrontWalking", false);
-            anim.SetBool("isLeftWalking", false);
-            anim.SetBool("isBackWalking", false);
-            anim.SetBool("isRightWalking", true);
-            direction = 3;
-        }
-        if (Input.GetAxisRaw("Vertical") < 0)
-        {
-            anim.SetBool("isBackWalking", false);
-            anim.SetBool("isLeftWalking", false);
-            anim.SetBool("isRightWalking", false);
-            anim.SetBool("isFrontWalking", true);
-            direction = 1;
-        }
-        if (Input.GetAxisRaw("Vertical") > 0)
-        {
-            anim.SetBool("isFrontWalking", false);
-            anim.SetBool("isLeftWalking", false);
-            anim.SetBool("isRightWalking", false);
-            anim.SetBool("isBackWalking", true);
-            direction = 4;
-        }
-        if (Input.GetKeyDown(KeyCode.X) || (Input.GetKeyDown(KeyCode.K)))//Input.GetAxisRaw("Action1") > 0)
-        {
-            if (direction == 1)
-            {
-                anim.SetTrigger("FrontPeck");
-                Debug.Log("FrontPeck");
-            }
-            else if (direction == 2)
-            {
-                anim.SetTrigger("LeftPeck");
-                Debug.Log("LeftPeck");
-            }
-            else if (direction == 3)
-            {
-                anim.SetTrigger("RightPeck");
-                Debug.Log("RightPeck");
-            }
-            else if (direction == 4)
-            {
-                anim.SetTrigger("BackPeck");
-                Debug.Log("BackPeck");
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Z) || (Input.GetKeyDown(KeyCode.J)))//Input.GetAxisRaw("Action2") > 0)
-        {
-            if (direction == 1)
-            {
-                anim.SetTrigger("FrontGust");
-                Debug.Log("FrontGust");
-            }
-            else if (direction == 2)
-            {
-                anim.SetTrigger("LeftGust");
-                Debug.Log("LeftGust");
-            }
-            else if (direction == 3)
-            {
-                anim.SetTrigger("RightGust");
-                Debug.Log("RightGust");
-            }
-            else if (direction == 4)
-            {
-                anim.SetTrigger("BackGust");
-                Debug.Log("BackGust");
-            }
-        }*/
     }
 }

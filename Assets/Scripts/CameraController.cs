@@ -8,22 +8,22 @@ public class CameraController : MonoBehaviour
     private float intendedRotation;
     private float currentRotation;
 
-    private bool leftInput;
-    private bool oldLeftInput;
-    private bool rightInput;
-    private bool oldRightInput;
+    private int camInput;
+    private int oldCamInput;
 
     private void Update() {
-        leftInput = Input.GetAxisRaw("CameraLeft") > 0;
-        rightInput = Input.GetAxisRaw("CameraRight") > 0;
+        float camInputAnalog = Input.GetAxis("Camera");
+        if (Mathf.Abs(camInputAnalog) > 0.2f) {
+            camInput = (int)Mathf.Sign(camInputAnalog);
+        }
+        else {
+            camInput = 0;
+        }
     }
 
     private void FixedUpdate() {
-        if (leftInput && !oldLeftInput) {
-            intendedRotation += rotateIncrement;
-        }
-        if (rightInput && !oldRightInput) {
-            intendedRotation -= rotateIncrement;
+        if (camInput != oldCamInput && camInput != 0) {
+            intendedRotation += camInput * rotateIncrement;
         }
 
         currentRotation = Mathf.Lerp(currentRotation, intendedRotation, 0.2f);
@@ -33,8 +33,7 @@ public class CameraController : MonoBehaviour
             transform.rotation.eulerAngles.z
         );
 
-        oldLeftInput = leftInput;
-        oldRightInput = rightInput;
+        oldCamInput = camInput;
     }
 
 }

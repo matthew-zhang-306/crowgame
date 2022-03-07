@@ -13,6 +13,10 @@ public class ZodiacController : MonoBehaviour
     private int zodiacIndex;
     private bool isTalking;
     private bool isRunning;
+
+    private bool input;
+    private bool oldInput;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,9 +38,12 @@ public class ZodiacController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        oldInput = input;
+        input = Input.GetAxisRaw("Action1") > 0;
+
         if (isTalking)
         {
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.J))
+            if (input && !oldInput)
             {
                 dialogueCamera.SetActive(true);
                 dialogueCanvas.SetActive(true);

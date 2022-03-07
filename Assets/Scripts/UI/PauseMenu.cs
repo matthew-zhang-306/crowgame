@@ -1,20 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEngine.Audio;
 
 public class PauseMenu : MonoBehaviour
 {
     public static bool gamePaused = false;
     public static bool isTelescopeOn = false;
+    public AudioMixer audioMixer;
+
+    [Header("Menus")]
     public GameObject PauseMenuUI;
     public GameObject settingsMenuUI;
     public GameObject levelsMenuUI;
     public GameObject controlsMenuUI;
-    public AudioMixer audioMixer;
+
+    [Header("References to buttons, for navigation")]
+    public GameObject pauseFirstButton;
+    public GameObject settingsFirstButton;
+    public GameObject levelsFirstButton;
+    public GameObject controlsFirstButton;
 
     private GameObject currentMenu;
+
+    private bool pauseInput;
+    private bool oldPauseInput;
     
 
     // Update is called once per frame
@@ -26,7 +38,10 @@ public class PauseMenu : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !isTelescopeOn && !Managers.ScenesManager.IsTransitioning)
+        oldPauseInput = pauseInput;
+        pauseInput = Input.GetAxisRaw("Pause") > 0;
+
+        if (pauseInput && !oldPauseInput && !isTelescopeOn && !Managers.ScenesManager.IsTransitioning)
         {
             if(gamePaused)
             {
@@ -53,6 +68,9 @@ public class PauseMenu : MonoBehaviour
         currentMenu = PauseMenuUI;
         Time.timeScale = 0;
         gamePaused = true;
+
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(pauseFirstButton);
     }
 
     public void LoadSettings()
@@ -61,7 +79,9 @@ public class PauseMenu : MonoBehaviour
         PauseMenuUI.SetActive(false);
         settingsMenuUI.SetActive(true);
         currentMenu = settingsMenuUI;
-        
+
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(settingsFirstButton);   
     }
 
     public void LoadLevelSelect()
@@ -71,6 +91,8 @@ public class PauseMenu : MonoBehaviour
         levelsMenuUI.SetActive(true);
         currentMenu = levelsMenuUI;
 
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(levelsFirstButton);
     }
     public void LoadControls()
     {
@@ -79,6 +101,8 @@ public class PauseMenu : MonoBehaviour
         controlsMenuUI.SetActive(true);
         currentMenu = controlsMenuUI;
 
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(controlsFirstButton);
     }
     public void QuitGame()
     {

@@ -1,28 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ConstellationsManager : MonoBehaviour
 {
-    public Transform starContainer; // all of the stars are children of this object
+    public CanvasGroup telescopeGroup;
+    public Transform starContainerOne; // all of the stars are children of this object
     public Transform starContainerTwo;
+    public Button starPaperOne;
+    public Button starPaperTwo;
     public Transform ravenConstellation;
     private Animator telescopeAnim;
+
+    private bool menuInput;
+    private bool oldMenuInput;
+    private bool paperInput;
+    private bool oldPaperInput;
+
 
     void Start()
     {
         //isTelescopeOpened = false;
         telescopeAnim = GetComponent<Animator>();
-    
+        telescopeGroup.interactable = false;
 
         LevelListSO levelList = Managers.ProgressManager.levelList;
-        for (int i = 0; i < starContainer.childCount; i++) {
-            Transform starT = starContainer.GetChild(i);
+        for (int i = 0; i < starContainerOne.childCount; i++) {
+            Transform starT = starContainerOne.GetChild(i);
             starT.GetChild(0).gameObject.SetActive(
                 Managers.ProgressManager.IsStarCollected(i / levelList.starsPerLevel, i % levelList.starsPerLevel)
             );
         }
-        for (int i = 0; i < starContainer.childCount; i++)
+        for (int i = 0; i < starContainerOne.childCount; i++)
         {
             Transform starT = starContainerTwo.GetChild(i);
             starT.GetChild(0).gameObject.SetActive(
@@ -42,19 +52,20 @@ public class ConstellationsManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        oldMenuInput = menuInput;
+        menuInput = Input.GetAxisRaw("Submenu") > 0;
+
+        oldPaperInput = paperInput;
+        paperInput = Mathf.Abs(Input.GetAxis("Camera")) > 0.5f;
+
+        if (menuInput && !oldMenuInput)
         {
             ChangeTelescopeState();
         }
-        /* button click set star for testing
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            Managers.ProgressManager.SetStarCollected(11, 0, true);
+
+        if (PauseMenu.isTelescopeOn && paperInput && !oldPaperInput) {
+            ChangePaperState();
         }
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            Managers.ProgressManager.SetStarCollected(11, 1, true);
-        }*/
     }
 
     public void ChangeTelescopeState()
@@ -63,11 +74,26 @@ public class ConstellationsManager : MonoBehaviour
         {
             telescopeAnim.Play("CloseTelescope");
             PauseMenu.isTelescopeOn = false;
+            telescopeGroup.interactable = false;
         }
         else if (!PauseMenu.isTelescopeOn && !PauseMenu.gamePaused)
         {
             telescopeAnim.Play("OpenTelescope");
             PauseMenu.isTelescopeOn = true;
+            telescopeGroup.interactable = true;
         }
+    }
+
+    public void ChangePaperState() 
+    {
+        // swap sibling indexes to change sort order
+        int a = starPaperOne.transform.GetSiblingIndex();
+        int b = starPaperTwo.transform.GetSiblingIndex();
+        starPaperOne.transform.SetSiblingIndex(b);
+        starPaperTwo.transform.SetSiblingIndex(a);
+
+        // change interactability
+        starPaperOne.interactable = !starPaperOne.interactable;
+        starPaperTwo.interactable = !starPaperTwo.interactable;
     }
 }
