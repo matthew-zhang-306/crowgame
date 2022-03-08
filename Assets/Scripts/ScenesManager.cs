@@ -31,6 +31,7 @@ public class ScenesManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode) {
         // search the levelList for the level number that corresponds to this scene
         levelNumber = levelList.levels.ToList().FindIndex(0, levelList.levels.Length, l => l.sceneName == scene.name);
+        Debug.Log("Level Number: " + levelNumber);
         if (levelNumber >= 0)
         {
             nameOfScene = levelList.levels[levelNumber].sceneName;
