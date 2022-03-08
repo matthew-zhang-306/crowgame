@@ -14,6 +14,8 @@ public class PlayerMovement : PhysicsObject
     }
     private PlayerState playerState = PlayerState.MOVE;
 
+    public bool IsOnGround => groundNormal != Vector3.zero;
+
     [Header("Parameters")]
     public float maxSpeed;
     public float chargingMaxSpeed;
@@ -32,6 +34,7 @@ public class PlayerMovement : PhysicsObject
     public GameObject gustPrefab;
     public GameObject tornadoPrefab;
     public TornadoMarker tornadoMarker;
+    public PositionSO safePositionSO;
 
     [Header("Materials")]
     public Material whiteMaterial;
@@ -61,6 +64,10 @@ public class PlayerMovement : PhysicsObject
         base.Awake();
         peckHitbox.SetActive(false);
         normalMaterial = mainSprite.material;
+    }
+    
+    private void Start() {
+        safePositionSO.position = transform.position;
     }
 
     protected override void OnEnable()
@@ -282,6 +289,10 @@ public class PlayerMovement : PhysicsObject
         }, flapDuration);
     }
 
+
+    public void WarpToSafePosition() {
+        transform.position = safePositionSO.position;
+    }
 
     public void Die() {
         if (playerState == PlayerState.DEAD || inCutscene) {
