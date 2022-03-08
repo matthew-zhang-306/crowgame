@@ -181,7 +181,7 @@ public class PhysicsObject : MonoBehaviour
             float timer = 0;
             while (true) {
                 // desiredY is where we want to go
-                float endY = currentTornado.Top.y;
+                float endY = currentTornado.GetRidePoint(this).y;
                 float desiredY = DOVirtual.EasedValue(startY, endY, timer / tornadoRiseTime, Ease.InOutQuad);
                 
                 // set velocity correctly and wait for the next physics frame
@@ -206,7 +206,7 @@ public class PhysicsObject : MonoBehaviour
             float timer = 0;
             while (timer < tornadoRiseTime) {
                 // find out how fast the ghost wants to move this frame
-                float endY = currentTornado.Top.y;
+                float endY = currentTornado.GetRidePoint(this).y;
                 float desiredY = DOVirtual.EasedValue(startY, endY, timer / tornadoRiseTime, Ease.InOutQuad);
                 float desiredYVel = (desiredY - ghostY) / Time.fixedDeltaTime;
 
@@ -245,7 +245,7 @@ public class PhysicsObject : MonoBehaviour
         }
 
         while (true) {
-            rigidbody.velocity = rigidbody.velocity.WithY((currentTornado.Top.y - transform.position.y) / Time.fixedDeltaTime);
+            rigidbody.velocity = rigidbody.velocity.WithY((currentTornado.GetRidePoint(this).y - transform.position.y) / Time.fixedDeltaTime);
             yield return 0;
         }
     }
