@@ -12,6 +12,8 @@ public class ConstellationsManager : MonoBehaviour
     public Button starPaperTwo;
     public Transform ravenConstellation;
     private Animator telescopeAnim;
+    private PlayerMovement playerMovementScript;
+    private CameraController camControllerScript;
 
     private bool menuInput;
     private bool oldMenuInput;
@@ -21,6 +23,8 @@ public class ConstellationsManager : MonoBehaviour
 
     void Start()
     {
+        playerMovementScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        camControllerScript = GameObject.FindGameObjectWithTag("PlayerCam").GetComponent<CameraController>();
         //isTelescopeOpened = false;
         telescopeAnim = GetComponent<Animator>();
         telescopeGroup.interactable = false;
@@ -73,12 +77,17 @@ public class ConstellationsManager : MonoBehaviour
         if (PauseMenu.isTelescopeOn && !PauseMenu.gamePaused)
         {
             telescopeAnim.Play("CloseTelescope");
+            playerMovementScript.enabled = true;
+            camControllerScript.enabled = true;
             PauseMenu.isTelescopeOn = false;
             telescopeGroup.interactable = false;
         }
         else if (!PauseMenu.isTelescopeOn && !PauseMenu.gamePaused)
         {
             telescopeAnim.Play("OpenTelescope");
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>().velocity = Vector3.zero;
+            playerMovementScript.enabled = false;
+            camControllerScript.enabled = false;
             PauseMenu.isTelescopeOn = true;
             telescopeGroup.interactable = true;
         }
