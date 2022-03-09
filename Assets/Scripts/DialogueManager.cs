@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 // partial code credit to Brackeys on dialogue systems
 public class DialogueManager : MonoBehaviour
@@ -15,11 +16,13 @@ public class DialogueManager : MonoBehaviour
     private bool isRunning;
     public List<GameObject> panelImages = new List<GameObject>();
     private int currentPanel = -1;
+    public GameObject skipButton;
 
     // Start is called before the first frame update
     void Start()
     {
         sentences = new Queue<string>();
+        EventSystem.current.SetSelectedGameObject(skipButton);
     }
 
     private void Update()

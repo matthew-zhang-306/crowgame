@@ -109,6 +109,14 @@ public class PauseMenu : MonoBehaviour
         Application.Quit();
     }
 
+    public void ChangeScene()
+    {
+        gamePaused = false;
+        currentMenu.SetActive(false);
+        Time.timeScale = 1f;
+        currentMenu = null;
+        Managers.ScenesManager.ChangeScene("Menu");
+    }
 
     public void SetMusicVolume(float volume)
     {
