@@ -69,6 +69,7 @@ public class WarpAltarRock : MonoBehaviour
                 currentHeight = baseHeight;
                 currentVelocity = 0;
             }
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.identity, 0.1f);
         }
 
         transform.position = transform.position.WithY(currentHeight);
