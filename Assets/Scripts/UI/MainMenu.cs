@@ -44,35 +44,42 @@ public class MainMenu : MonoBehaviour
         animator.Play("OpenMainMenu");
 
         EventSystem.current.SetSelectedGameObject(playButton);
+        playButton.transform.localScale = new Vector3(1.1f, 1.1f, 1);
     }
 
     
     public void OpenOptions() {
-        mainPanel.SetActive(false);
-        optionsPanel.SetActive(true);
+        //mainPanel.SetActive(false);
+        //optionsPanel.SetActive(true);
+        animator.Play("OpenOptions");
         
         EventSystem.current.SetSelectedGameObject(optionsFirstSelected);
         onBackInput = CloseOptions;
     }
     public void CloseOptions() {
-        mainPanel.SetActive(true);
-        optionsPanel.SetActive(false);
+        //mainPanel.SetActive(true);
+        //optionsPanel.SetActive(false);
+        animator.Play("CloseOptions");
 
         EventSystem.current.SetSelectedGameObject(optionsButton);
+        optionsButton.transform.localScale = new Vector3(1.1f, 1.1f, 1);
         onBackInput = null;
     }
     public void OpenCredits() {
-        mainPanel.SetActive(false);
-        creditsPanel.SetActive(true);
+        //mainPanel.SetActive(false);
+        //creditsPanel.SetActive(true);
+        animator.Play("OpenCredits");
 
         EventSystem.current.SetSelectedGameObject(creditsFirstSelected);
         onBackInput = CloseCredits;
     }
     public void CloseCredits() {
-        mainPanel.SetActive(true);
-        creditsPanel.SetActive(false);
+        //mainPanel.SetActive(true);
+        //creditsPanel.SetActive(false);
+        animator.Play("CloseCredits");
 
         EventSystem.current.SetSelectedGameObject(creditsButton);
+        creditsButton.transform.localScale = new Vector3(1.1f, 1.1f, 1);
         onBackInput = null;
     }
 

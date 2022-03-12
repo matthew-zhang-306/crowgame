@@ -14,4 +14,14 @@ public class FloatingButtons : MonoBehaviour
     {
         transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f);
     }
+
+    public void OnEnter()
+    {
+        transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f);
+    }
+
+    public void KillDOTween()
+    {
+        DOTween.KillAll();
+    }
 }
