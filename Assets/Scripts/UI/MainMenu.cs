@@ -17,7 +17,8 @@ public class MainMenu : MonoBehaviour
     public GameObject mainPanel;
     public GameObject optionsPanel;
     public GameObject creditsPanel;
-    
+
+    private Animator animator;
     private bool backInput;
     private bool oldBackInput;
     private System.Action onBackInput;
@@ -27,6 +28,7 @@ public class MainMenu : MonoBehaviour
     }
 
     private void Update() {
+        animator = this.gameObject.GetComponent<Animator>();
         oldBackInput = backInput;
         backInput = Input.GetAxisRaw("Cancel") > 0;
 
@@ -37,8 +39,9 @@ public class MainMenu : MonoBehaviour
 
     public void OpenMainMenu()
     {
-        startPanel.SetActive(false);
-        mainPanel.SetActive(true);
+        //startPanel.SetActive(false);
+        //mainPanel.SetActive(true);
+        animator.Play("OpenMainMenu");
 
         EventSystem.current.SetSelectedGameObject(playButton);
     }
