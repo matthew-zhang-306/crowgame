@@ -7,21 +7,23 @@ using UnityEngine.EventSystems;
 public class MainMenu : MonoBehaviour
 {
     [Header("I goddamn love UI programming")]
+    public GameObject startButton;
     public GameObject playButton;
     public GameObject optionsButton;
     public GameObject creditsButton;
     public GameObject optionsFirstSelected;
     public GameObject creditsFirstSelected;
+    public GameObject startPanel;
     public GameObject mainPanel;
     public GameObject optionsPanel;
     public GameObject creditsPanel;
-
+    
     private bool backInput;
     private bool oldBackInput;
     private System.Action onBackInput;
 
     private void Start() {
-        EventSystem.current.SetSelectedGameObject(playButton);
+        EventSystem.current.SetSelectedGameObject(startButton);
     }
 
     private void Update() {
@@ -31,6 +33,14 @@ public class MainMenu : MonoBehaviour
         if (backInput && !oldBackInput) {
             onBackInput?.Invoke();
         }
+    }
+
+    public void OpenMainMenu()
+    {
+        startPanel.SetActive(false);
+        mainPanel.SetActive(true);
+
+        EventSystem.current.SetSelectedGameObject(playButton);
     }
 
     
