@@ -38,20 +38,6 @@ public class AudioManager : MonoBehaviour
     public void Init() {
         audioSource = GetComponent<AudioSource>();
         musicSources = musicObj.GetComponents<AudioSource>().ToList();
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-    private void OnDestroy() {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode loadMode) {
-        if (Managers.ScenesManager.IsHubSceneLoaded()) {
-            SwitchVersion(0);
-        }
-        else if (Managers.ScenesManager.IsPuzzleSceneLoaded()) {
-            SwitchVersion(1);
-        }
     }
 
 
@@ -90,7 +76,12 @@ public class AudioManager : MonoBehaviour
     public void SetSong(SongSO song, int version = 0) {
         switch (state) {
             case MusicState.PLAYING:
-                if (song != currentSong) {
+                if (song == currentSong) {
+                    // we only need to switch versions
+                    currentVersion = version;
+                    SwitchVersion(currentVersion);
+                }
+                else {
                     // queue up this song to be played next
                     nextSong = song;
                     nextVersion = version;
@@ -101,6 +92,7 @@ public class AudioManager : MonoBehaviour
                 if (song == currentSong) {
                     // stop the current fade prematurely and allow the current song to continue
                     // (but if there is a version change we need to swap that over)
+                    currentVersion = version;
                     SwitchVersion(currentVersion);
                     PlaySong(song);
                 }
