@@ -31,28 +31,39 @@ public class ProgressManager : MonoBehaviour
     private void ResetStarsCollected() {
         starsCollected = new bool[levelList.numStars];
         PlayerPrefsX.SetBoolArray("StarsCollected", starsCollected);
-        
-        for (int i = 0; i < levelList.numLevels; i++) {
-            // resets data for first time entering scene
-            PlayerPrefs.SetInt(levelList.levels[i].sceneName, 0);
-        }
+
+        ResetPreviousLevel();
+        ResetVisitedLevels();
 
         //resets the bridges
         PlayerPrefsX.SetBool("isBridgeOpened", false);
-        //resets playerposition
-        ResetPreviousLevel();
     }
 
 
     public int GetPreviousLevel() {
-        Debug.Log("GetPreviousLevel " + PlayerPrefs.GetInt("PreviousLevel", -1));
         return PlayerPrefs.GetInt("PreviousLevel", -1);
     }
     public void SetPreviousLevel(int level) {
-        Debug.Log("SetPreviousLevel " + level);
         PlayerPrefs.SetInt("PreviousLevel", level);
     }
 
     [ContextMenu("Reset Previous Level")]
     public void ResetPreviousLevel() => SetPreviousLevel(-1);
+
+
+    public bool GetLevelVisited(int level) {
+        Debug.Log("Level " + level+ " is visited? " + PlayerPrefsX.GetBool("Visited" + level, false));
+        return PlayerPrefsX.GetBool("Visited" + level, false);
+    }
+    public void SetLevelVisited(int level, bool visited) {
+        Debug.Log("Setting level " + level + " to visited? " + visited);
+        PlayerPrefsX.SetBool("Visited" + level, visited);        
+    }
+
+    [ContextMenu("Reset Visited Levels")]
+    public void ResetVisitedLevels() {
+        for (int i = 0; i < levelList.numLevels; i++) {
+            SetLevelVisited(i, false);
+        }
+    }
 }

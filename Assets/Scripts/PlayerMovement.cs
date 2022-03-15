@@ -74,12 +74,14 @@ public class PlayerMovement : PhysicsObject
     {
         base.OnEnable();
         WarpAltar.OnAltarWarp += PlayWarpAnimation;
+        LevelSelect.OnLevelSelect += PlayWarpAnimation;
         ScenesManager.OnTransition += OnSceneTransition;
     }
     protected override void OnDisable()
     {
         base.OnDisable();
         WarpAltar.OnAltarWarp -= PlayWarpAnimation;
+        LevelSelect.OnLevelSelect -= PlayWarpAnimation;
         ScenesManager.OnTransition -= OnSceneTransition;
     }
 
@@ -312,7 +314,7 @@ public class PlayerMovement : PhysicsObject
     }
 
 
-    public void PlayWarpAnimation(WarpAltar _)
+    public void PlayWarpAnimation()
     {
         inCutscene = true;
 
@@ -322,6 +324,8 @@ public class PlayerMovement : PhysicsObject
             .Append(mainSprite.transform.DOLocalMoveY(10f, 0.4f).SetEase(Ease.InCubic))
             .SetLink(gameObject).SetTarget(mainSprite);
     }
+
+    public void PlayWarpAnimation(WarpAltar _) => PlayWarpAnimation();
 
     public void OnSceneTransition() {
         inCutscene = true;

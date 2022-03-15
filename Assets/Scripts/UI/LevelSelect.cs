@@ -2,30 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class LevelSelect : MonoBehaviour
 {
     private Button button;
-    public string nameOfScene;
-    // Start is called before the first frame update
-    void Start()
-    {
-        // set button interactable only if the scene was visited before
-        button = this.gameObject.GetComponent<Button>();
-    }
+    
+    public LevelListSO levelList;
+    public int levelIndex;
+    public LevelDef targetLevel => levelList.levels[levelIndex];
 
-    // Update is called once per frame
-    void Update()
+    public static System.Action OnLevelSelect;
+
+
+    private void OnEnable()
     {
-        if (PlayerPrefs.GetInt(nameOfScene, 0) == 1)
+        button = GetComponent<Button>();
+
+        if (Managers.ProgressManager.GetLevelVisited(levelIndex))
         {
             button.interactable = true;
-            //Debug.Log("PlayerPrefs: " + nameOfScene + PlayerPrefs.GetInt(nameOfScene, 0));
         }
         else
         {
             button.interactable = false;
         }
+    }
+
+    public void PlayLevel() {
+        Managers.PauseMenu.Resume();
+        OnLevelSelect?.Invoke();
+        DOTween.Sequence().InsertCallback(
+            1.0f, () => Managers.ScenesManager.ChangeScene(targetLevel.sceneName));
     }
 }

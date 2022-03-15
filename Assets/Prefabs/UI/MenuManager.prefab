@@ -686,8 +686,8 @@ RectTransform:
   m_Father: {fileID: 602083264874679806}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 5.055}
-  m_AnchorMin: {x: 0.8, y: 0}
-  m_AnchorMax: {x: 0.8, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 2, y: 21.999985}
   m_SizeDelta: {x: 88.5625, y: -3.6488}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2384,7 +2384,7 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: -80
   m_MaxValue: 0
-  m_WholeNumbers: 1
+  m_WholeNumbers: 0
   m_Value: -56
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2508,8 +2508,8 @@ RectTransform:
   m_Father: {fileID: 3016739923280929885}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 5.055}
-  m_AnchorMin: {x: 0.3, y: 0}
-  m_AnchorMax: {x: 0.3, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 2, y: 21.999985}
   m_SizeDelta: {x: 88.5625, y: -3.6488}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2674,7 +2674,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3876891574203472397}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
-        m_MethodName: QuitGame
+        m_MethodName: ChangeScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2825,7 +2825,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.8, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4597,10 +4597,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 153519691348082037, guid: 792693fb510d0474cb9886e79debe676, type: 3}
-        m_TargetAssemblyTypeName: WarpAltar, Assembly-CSharp
-        m_MethodName: SceneTrans
-        m_Mode: 5
+      - m_Target: {fileID: 246493527}
+        m_TargetAssemblyTypeName: LevelSelect, Assembly-CSharp
+        m_MethodName: PlayLevel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4621,7 +4621,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f27e7bbfb1cbc9e4cbcbe36fbd40a437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameOfScene: Puzzle10
+  levelList: {fileID: 11400000, guid: 74f62db2c2bbb124a903d398a2916aad, type: 2}
+  levelIndex: 9
 --- !u!1 &6754080813218835153
 GameObject:
   m_ObjectHideFlags: 0
@@ -4744,10 +4745,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 153519691348082037, guid: 792693fb510d0474cb9886e79debe676, type: 3}
-        m_TargetAssemblyTypeName: WarpAltar, Assembly-CSharp
-        m_MethodName: SceneTrans
-        m_Mode: 5
+      - m_Target: {fileID: 651165315}
+        m_TargetAssemblyTypeName: LevelSelect, Assembly-CSharp
+        m_MethodName: PlayLevel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4768,7 +4769,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f27e7bbfb1cbc9e4cbcbe36fbd40a437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameOfScene: P_SimpleBoxes
+  levelList: {fileID: 11400000, guid: 74f62db2c2bbb124a903d398a2916aad, type: 2}
+  levelIndex: 0
 --- !u!1 &6754080813234895409
 GameObject:
   m_ObjectHideFlags: 0
@@ -4970,10 +4972,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 153519691348082037, guid: 792693fb510d0474cb9886e79debe676, type: 3}
-        m_TargetAssemblyTypeName: WarpAltar, Assembly-CSharp
-        m_MethodName: SceneTrans
-        m_Mode: 5
+      - m_Target: {fileID: 319730830}
+        m_TargetAssemblyTypeName: LevelSelect, Assembly-CSharp
+        m_MethodName: PlayLevel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4994,7 +4996,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f27e7bbfb1cbc9e4cbcbe36fbd40a437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameOfScene: Puzzle9
+  levelList: {fileID: 11400000, guid: 74f62db2c2bbb124a903d398a2916aad, type: 2}
+  levelIndex: 8
 --- !u!1 &6754080813382260906
 GameObject:
   m_ObjectHideFlags: 0
@@ -5117,10 +5120,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 153519691348082037, guid: 792693fb510d0474cb9886e79debe676, type: 3}
-        m_TargetAssemblyTypeName: WarpAltar, Assembly-CSharp
-        m_MethodName: SceneTrans
-        m_Mode: 5
+      - m_Target: {fileID: 1411980158}
+        m_TargetAssemblyTypeName: LevelSelect, Assembly-CSharp
+        m_MethodName: PlayLevel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5141,7 +5144,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f27e7bbfb1cbc9e4cbcbe36fbd40a437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameOfScene: Puzzle7
+  levelList: {fileID: 11400000, guid: 74f62db2c2bbb124a903d398a2916aad, type: 2}
+  levelIndex: 6
 --- !u!1 &6754080813435906547
 GameObject:
   m_ObjectHideFlags: 0
@@ -5343,10 +5347,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 153519691348082037, guid: 792693fb510d0474cb9886e79debe676, type: 3}
-        m_TargetAssemblyTypeName: WarpAltar, Assembly-CSharp
-        m_MethodName: SceneTrans
-        m_Mode: 5
+      - m_Target: {fileID: 76374691}
+        m_TargetAssemblyTypeName: LevelSelect, Assembly-CSharp
+        m_MethodName: PlayLevel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5367,7 +5371,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f27e7bbfb1cbc9e4cbcbe36fbd40a437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameOfScene: Puzzle11
+  levelList: {fileID: 11400000, guid: 74f62db2c2bbb124a903d398a2916aad, type: 2}
+  levelIndex: 10
 --- !u!1 &6754080813648370616
 GameObject:
   m_ObjectHideFlags: 0
@@ -5490,10 +5495,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 153519691348082037, guid: 792693fb510d0474cb9886e79debe676, type: 3}
-        m_TargetAssemblyTypeName: WarpAltar, Assembly-CSharp
-        m_MethodName: SceneTrans
-        m_Mode: 5
+      - m_Target: {fileID: 179787878}
+        m_TargetAssemblyTypeName: LevelSelect, Assembly-CSharp
+        m_MethodName: PlayLevel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5514,7 +5519,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f27e7bbfb1cbc9e4cbcbe36fbd40a437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameOfScene: P_OneBlockBridge
+  levelList: {fileID: 11400000, guid: 74f62db2c2bbb124a903d398a2916aad, type: 2}
+  levelIndex: 2
 --- !u!1 &6754080813652553947
 GameObject:
   m_ObjectHideFlags: 0
@@ -6300,10 +6306,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 153519691348082037, guid: 792693fb510d0474cb9886e79debe676, type: 3}
-        m_TargetAssemblyTypeName: WarpAltar, Assembly-CSharp
-        m_MethodName: SceneTrans
-        m_Mode: 5
+      - m_Target: {fileID: 1744543728}
+        m_TargetAssemblyTypeName: LevelSelect, Assembly-CSharp
+        m_MethodName: PlayLevel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6324,7 +6330,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f27e7bbfb1cbc9e4cbcbe36fbd40a437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameOfScene: P_TwoStackThreeStack
+  levelList: {fileID: 11400000, guid: 74f62db2c2bbb124a903d398a2916aad, type: 2}
+  levelIndex: 5
 --- !u!1 &6754080814142335124
 GameObject:
   m_ObjectHideFlags: 0
@@ -6605,10 +6612,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 153519691348082037, guid: 792693fb510d0474cb9886e79debe676, type: 3}
-        m_TargetAssemblyTypeName: WarpAltar, Assembly-CSharp
-        m_MethodName: SceneTrans
-        m_Mode: 5
+      - m_Target: {fileID: 239213965}
+        m_TargetAssemblyTypeName: LevelSelect, Assembly-CSharp
+        m_MethodName: PlayLevel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6629,7 +6636,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f27e7bbfb1cbc9e4cbcbe36fbd40a437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameOfScene: Puzzle8
+  levelList: {fileID: 11400000, guid: 74f62db2c2bbb124a903d398a2916aad, type: 2}
+  levelIndex: 7
 --- !u!1 &6754080814364710265
 GameObject:
   m_ObjectHideFlags: 0
@@ -6752,10 +6760,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 153519691348082037, guid: 792693fb510d0474cb9886e79debe676, type: 3}
-        m_TargetAssemblyTypeName: WarpAltar, Assembly-CSharp
-        m_MethodName: SceneTrans
-        m_Mode: 5
+      - m_Target: {fileID: 1748083847}
+        m_TargetAssemblyTypeName: LevelSelect, Assembly-CSharp
+        m_MethodName: PlayLevel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6776,7 +6784,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f27e7bbfb1cbc9e4cbcbe36fbd40a437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameOfScene: P_LargeHole
+  levelList: {fileID: 11400000, guid: 74f62db2c2bbb124a903d398a2916aad, type: 2}
+  levelIndex: 3
 --- !u!1 &6754080814552971522
 GameObject:
   m_ObjectHideFlags: 0
@@ -6899,10 +6908,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 153519691348082037, guid: 792693fb510d0474cb9886e79debe676, type: 3}
-        m_TargetAssemblyTypeName: WarpAltar, Assembly-CSharp
-        m_MethodName: SceneTrans
-        m_Mode: 5
+      - m_Target: {fileID: 1255514575}
+        m_TargetAssemblyTypeName: LevelSelect, Assembly-CSharp
+        m_MethodName: PlayLevel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6923,7 +6932,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f27e7bbfb1cbc9e4cbcbe36fbd40a437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameOfScene: P_BoxOnTornadoOnBox
+  levelList: {fileID: 11400000, guid: 74f62db2c2bbb124a903d398a2916aad, type: 2}
+  levelIndex: 4
 --- !u!1 &6754080814557027498
 GameObject:
   m_ObjectHideFlags: 0
@@ -7305,10 +7315,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 153519691348082037, guid: 792693fb510d0474cb9886e79debe676, type: 3}
-        m_TargetAssemblyTypeName: WarpAltar, Assembly-CSharp
-        m_MethodName: SceneTrans
-        m_Mode: 5
+      - m_Target: {fileID: 53489717}
+        m_TargetAssemblyTypeName: LevelSelect, Assembly-CSharp
+        m_MethodName: PlayLevel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -7329,7 +7339,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f27e7bbfb1cbc9e4cbcbe36fbd40a437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameOfScene: Puzzle12
+  levelList: {fileID: 11400000, guid: 74f62db2c2bbb124a903d398a2916aad, type: 2}
+  levelIndex: 11
 --- !u!1 &6754080814901698532
 GameObject:
   m_ObjectHideFlags: 0
@@ -7452,10 +7463,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 153519691348082037, guid: 792693fb510d0474cb9886e79debe676, type: 3}
-        m_TargetAssemblyTypeName: WarpAltar, Assembly-CSharp
-        m_MethodName: SceneTrans
-        m_Mode: 5
+      - m_Target: {fileID: 1723858719}
+        m_TargetAssemblyTypeName: LevelSelect, Assembly-CSharp
+        m_MethodName: PlayLevel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -7476,7 +7487,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f27e7bbfb1cbc9e4cbcbe36fbd40a437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameOfScene: P_SimpleTornados
+  levelList: {fileID: 11400000, guid: 74f62db2c2bbb124a903d398a2916aad, type: 2}
+  levelIndex: 1
 --- !u!1 &6754080815084436109
 GameObject:
   m_ObjectHideFlags: 0
@@ -8205,7 +8217,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.3, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8921,7 +8933,7 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: -80
   m_MaxValue: 0
-  m_WholeNumbers: 1
+  m_WholeNumbers: 0
   m_Value: -16
   m_OnValueChanged:
     m_PersistentCalls:

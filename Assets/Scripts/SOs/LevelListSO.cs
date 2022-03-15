@@ -12,6 +12,8 @@ public class LevelListSO : ScriptableObject
 
     public int numLevels => levels.Length;
     public int numStars => levels.Length * starsPerLevel;
+
+    public SongSO[] levelSongs;
 }
 
 [Serializable]
@@ -21,4 +23,5 @@ public class LevelDef
     public string displayName;
     public string zodiacAnimal;
     public int difficulty;
+    public int musicIndex;
 }

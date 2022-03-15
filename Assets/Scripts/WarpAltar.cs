@@ -34,11 +34,6 @@ public class WarpAltar : MonoBehaviour
         if (!isWarping && !PauseMenu.isTelescopeOn && !PauseMenu.gamePaused && playerInside != null && Input.GetAxisRaw("Action1") > 0) {
             isWarping = true;
             OnAltarWarp?.Invoke(this);
-            
-            if (Managers.ScenesManager.IsHubSceneLoaded()) {
-                Managers.ProgressManager.SetPreviousLevel(levelIndex);
-            }
-
             DOTween.Sequence().InsertCallback(
                 1.0f, () => Managers.ScenesManager.ChangeScene(targetLevel.sceneName));
         }
@@ -62,16 +57,6 @@ public class WarpAltar : MonoBehaviour
                 rock.IsLifted = false;
             }
         }
-    }
-
-    public void SceneTrans(string target)
-    {
-        Managers.PauseMenu.Resume();
-        
-        OnAltarWarp?.Invoke(this);
-        
-        DOTween.Sequence().InsertCallback(
-            1.0f, () => Managers.ScenesManager.ChangeScene(target));
     }
 
 
