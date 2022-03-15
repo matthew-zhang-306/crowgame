@@ -40,8 +40,19 @@ public class ProgressManager : MonoBehaviour
         //resets the bridges
         PlayerPrefsX.SetBool("isBridgeOpened", false);
         //resets playerposition
-        PlayerPrefsX.SetBool("FirstTime", false);
+        ResetPreviousLevel();
     }
 
 
+    public int GetPreviousLevel() {
+        Debug.Log("GetPreviousLevel " + PlayerPrefs.GetInt("PreviousLevel", -1));
+        return PlayerPrefs.GetInt("PreviousLevel", -1);
+    }
+    public void SetPreviousLevel(int level) {
+        Debug.Log("SetPreviousLevel " + level);
+        PlayerPrefs.SetInt("PreviousLevel", level);
+    }
+
+    [ContextMenu("Reset Previous Level")]
+    public void ResetPreviousLevel() => SetPreviousLevel(-1);
 }

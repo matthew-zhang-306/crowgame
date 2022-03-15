@@ -10,6 +10,25 @@ public class SongSO : ScriptableObject
 
     public AudioClip[] versions;
     public AudioClip[] layers;
+
+
+    public AudioClip GetClip(int index) {
+        if (index < 0 || index >= versions.Length + layers.Length) {
+            Debug.LogError("SongSO.GetClip() index out of bounds (" + index + ")");
+            return null;
+        }
+
+        if (index < versions.Length) {
+            return versions[index];
+        }
+        else {
+            return layers[index - versions.Length];
+        }
+    }
+
+    public int GetNumClips() {
+        return versions.Length + layers.Length;
+    }
 }
 
 public enum SongVersion {

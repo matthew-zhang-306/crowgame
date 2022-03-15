@@ -12,7 +12,8 @@ public class WarpAltar : MonoBehaviour
 
     public LevelDef targetLevel => levelIndex >= 0 ? levelList.levels[levelIndex] : levelList.hub;
 
-    public SavingSystem savingSystem;
+    public Vector3 playerSpawnPosOffset;
+    public Vector3 PlayerPosition => transform.position + playerSpawnPosOffset;
     private PlayerMovement playerInside;
     private bool isWarping;
 
@@ -35,7 +36,7 @@ public class WarpAltar : MonoBehaviour
             OnAltarWarp?.Invoke(this);
             
             if (Managers.ScenesManager.IsHubSceneLoaded()) {
-                savingSystem.SavePlayerPosition();
+                Managers.ProgressManager.SetPreviousLevel(levelIndex);
             }
 
             DOTween.Sequence().InsertCallback(
@@ -66,8 +67,16 @@ public class WarpAltar : MonoBehaviour
     public void SceneTrans(string target)
     {
         Managers.PauseMenu.Resume();
+        
         OnAltarWarp?.Invoke(this);
+        
         DOTween.Sequence().InsertCallback(
             1.0f, () => Managers.ScenesManager.ChangeScene(target));
+    }
+
+
+    private void OnDrawGizmosSelected() {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(PlayerPosition, 0.2f);
     }
 }

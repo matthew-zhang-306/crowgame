@@ -10,7 +10,9 @@ public class ScenesManager : MonoBehaviour
     [HideInInspector] public string nameOfScene;
     public LevelListSO levelList;
     public SceneTransition sceneTransition;
-    public bool IsTransitioning { get; private set; }
+
+    public bool HasChangedScenes { get; private set; } // true if a scene change has taken place
+    public bool IsTransitioning { get; private set; } // true if we are in the process of changing scenes
     bool didTransitionOut;
 
     private bool resetInput;
@@ -59,6 +61,10 @@ public class ScenesManager : MonoBehaviour
 #if UNITY_EDITOR
         // debug reset
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.R)) {
+            if (IsHubSceneLoaded()) {
+                // resetting in the hub world? we probably want to warp the player back to the very beginning
+                Managers.ProgressManager.ResetPreviousLevel();
+            }
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
         // debug scene advance
@@ -78,6 +84,7 @@ public class ScenesManager : MonoBehaviour
         }
 
         IsTransitioning = true;
+        HasChangedScenes = true;
         if (transitionTime > 0f) {
 
             //play scene transition sound

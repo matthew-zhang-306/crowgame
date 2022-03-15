@@ -5,36 +5,25 @@ using UnityEngine.SceneManagement;
 
 public class SavingSystem : MonoBehaviour
 {
-    private float playerXPos;
-    private float playerYPos;
-    private float playerZPos;
     public GameObject player;
-    private bool isMoved;
-    private bool isSaved;
+    public Transform warpAltarContainer;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        isMoved = false;
-        //SavePlayerPosition();
-        if (Managers.ScenesManager.IsHubSceneLoaded() && !PlayerPrefsX.GetBool("FirstTime", false)){
-            SavePlayerPosition();
-            PlayerPrefsX.SetBool("FirstTime", true);
-        }
-    }
+        if (Managers.ScenesManager.IsHubSceneLoaded() && Managers.ProgressManager.GetPreviousLevel() >= 0) {
+#if UNITY_EDITOR
+            if (!Managers.ScenesManager.HasChangedScenes) {
+                // nine times out of ten, when we press play in the unity editor, we don't want the player to spawn at their previous save
+                // so we avoid doing so
+                return;
+            }
+#endif
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            // count as first time playing again
-            PlayerPrefsX.SetBool("FirstTime", false);
-        }
-
-        if (Managers.ScenesManager.IsHubSceneLoaded() && !isMoved)
-        {
-            SetPlayerPosition();
-            isMoved = true;
+            // warp to the corresponding altar
+            Transform warp = warpAltarContainer.GetChild(Managers.ProgressManager.GetPreviousLevel());
+            player.transform.position = warp.GetComponent<WarpAltar>().PlayerPosition;
         }
     }
 
