@@ -13,18 +13,27 @@ using DG.Tweening;
 
 public class AudioManager : MonoBehaviour
 {
+    public enum MusicState {
+        UNLOADED,
+        STOPPED,
+        FADING,
+        PLAYING
+    }
+    private MusicState state = MusicState.UNLOADED;
+
     public AudioClip[] sounds;
     AudioSource audioSource;
-
-    public SongSO mainSong;
 
     public GameObject musicObj;
     public float musicVolume;
     private List<AudioSource> musicSources;
+
+    private bool[] shouldClipPlay;
     private SongSO currentSong;
     private int currentVersion;
-    private bool isPlaying; // this gets set to false immediately when the music starts fading out
-                                // so its value does not necessarily equal musicSources[0].isPlaying
+    private SongSO nextSong;
+    private int nextVersion;
+
 
     public void Init() {
         audioSource = GetComponent<AudioSource>();
@@ -33,10 +42,6 @@ public class AudioManager : MonoBehaviour
     }
     private void OnDestroy() {
         SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void Start() {
-        PlaySong(mainSong);
     }
 
 
@@ -81,69 +86,127 @@ public class AudioManager : MonoBehaviour
         // todo
     }
 
-    public void PlaySong(SongSO song, float fadeInTime = 0f) {
+
+    public void SetSong(SongSO song, int version = 0) {
+        switch (state) {
+            case MusicState.PLAYING:
+                if (song != currentSong) {
+                    // queue up this song to be played next
+                    nextSong = song;
+                    nextVersion = version;
+                    StopSong();
+                }
+                break;
+            case MusicState.FADING:
+                if (song == currentSong) {
+                    // stop the current fade prematurely and allow the current song to continue
+                    // (but if there is a version change we need to swap that over)
+                    SwitchVersion(currentVersion);
+                    PlaySong(song);
+                }
+                else {
+                    // change the song that is currently queued
+                    nextSong = song;
+                    nextVersion = version;
+                }
+                break;
+            case MusicState.STOPPED:
+            case MusicState.UNLOADED:
+                currentVersion = version;
+                PlaySong(song);
+                break;
+        }
+    }
+
+    private void PlaySong(SongSO song, float fadeInTime = 2f) {
         if (song.versions.Length == 0) {
             Debug.LogError("Trying to play a song that doesn't have any primary audio!");
             return;
         }
         
         if (song == currentSong) {
-            return;
-        }
-        currentSong = song;
-        isPlaying = true;
+            state = MusicState.PLAYING;
 
-        // ensure we have the right number of audio sources for this song
-        while (musicSources.Count > song.versions.Length + song.layers.Length) {
-            // delete audio sources
-            AudioSource s = musicSources[musicSources.Count - 1];
-            musicSources.RemoveAt(musicSources.Count - 1);
-            Destroy(s);
+            // fade the current song back in
+            var seq = DOTween.Sequence();
+            for (int m = 0; m < currentSong.GetNumClips(); m++) {
+                musicSources[m].DOKill();
+                seq.Insert(0, GetFadeTween(musicSources[m], shouldClipPlay[m], fadeInTime, false));
+            }
+            seq.SetTarget(this).SetLink(gameObject);
         }
-        while (musicSources.Count < song.versions.Length + song.layers.Length) {
-            // create audio sources
-            AudioSource s = musicObj.AddComponent<AudioSource>();
-            s.outputAudioMixerGroup = musicSources[0].outputAudioMixerGroup;
-            musicSources.Add(s);
-        }
+        else {
+            state = MusicState.PLAYING;
 
-        foreach (AudioSource musicSource in musicSources) {
-            if (musicSource.isPlaying)
-                musicSource.Stop();
-            musicSource.volume = 0;
-        }
+            // perform an immediate song switch
+            currentSong = song;
 
-        int m = 0;
-        foreach (AudioClip clip in currentSong.versions) {
-            musicSources[m].clip = clip;
-            m++;
-        }
-        foreach (AudioClip clip in currentSong.layers) {
-            musicSources[m].clip = clip;
-            m++;
-        }
-        musicSources[0].volume = musicVolume;
+            // ensure we have enough audio sources for this song
+            while (musicSources.Count < song.GetNumClips()) {
+                // create audio sources
+                AudioSource s = musicObj.AddComponent<AudioSource>();
+                s.outputAudioMixerGroup = musicSources[0].outputAudioMixerGroup;
+                musicSources.Add(s);
+            }
 
-        foreach (AudioSource musicSource in musicSources) {
-            musicSource.Play();
+            // force stop all existing audio sources
+            foreach (AudioSource musicSource in musicSources) {
+                if (musicSource.isPlaying)
+                    musicSource.Stop();
+                musicSource.volume = 0;
+            }
+
+            // set whether clips should be playing
+            shouldClipPlay = new bool[currentSong.GetNumClips()];
+            shouldClipPlay[currentVersion] = true;
+
+            // switch clips to the current song and set everything playing
+            for (int m = 0; m < song.GetNumClips(); m++) {
+                musicSources[m].clip = song.GetClip(m);
+                musicSources[m].volume = shouldClipPlay[m] ? musicVolume : 0;
+                musicSources[m].Play();
+            }
         }
     }
 
-    public void StopMusic(string musicName, float fadeOutTime = 2f) {
-        if (!isPlaying)
+    public void StopSong(float fadeOutTime = 2f) {
+        if (state != MusicState.PLAYING)
             return;
-        isPlaying = false;
+        state = MusicState.FADING;
 
+        // fade out all of the music
+        // note that this doesn't actually stop running the audio sources, so that the song can fade back in if we want
         var seq = DOTween.Sequence();
-        foreach (AudioSource source in musicSources) {
-            source.DOKill();
-            seq.Insert(0, GetFadeTween(source, false, fadeOutTime, false));
+        for (int m = 0; m < currentSong.GetNumClips(); m++) {
+            musicSources[m].DOKill();
+            seq.Insert(0, GetFadeTween(musicSources[m], false, fadeOutTime, false));
         }
         seq.SetTarget(this).SetLink(gameObject);
+        
+        seq.OnComplete(() => {
+            // check if there is a next song we should switch to
+            if (nextSong != null) {
+                currentVersion = nextVersion;
+                PlaySong(nextSong);
+                nextSong = null;
+            }
+            else {
+                state = MusicState.STOPPED;
+            }
+        });
     }
 
     public void SwitchVersion(int version, float fadeTime = 2f) {
-        if (!isPlaying)
+        if (state == MusicState.UNLOADED)
+            return;
+
+        // set the version in the shouldClipPlay list
+        for (int v = 0; v < currentSong.versions.Length; v++) {
+            shouldClipPlay[v] = v == version;
+        }
+
+        // don't change volumes of any audio sources if we're not supposed to be playing music
+        if (state != MusicState.PLAYING)
             return;
         
         var seq = DOTween.Sequence();
@@ -154,7 +217,14 @@ public class AudioManager : MonoBehaviour
     }
 
     public void EnableLayer(int layer, float fadeTime = 1f) {
-        if (!isPlaying)
+        if (state == MusicState.UNLOADED)
+            return;
+        
+        // set the layer in the shouldClipPlay list
+        shouldClipPlay[currentSong.versions.Length + layer] = true;
+
+        // don't change volumes of any audio sources if we're not supposed to be playing music
+        if (state != MusicState.PLAYING)
             return;
         
         AudioSource source = musicSources[currentSong.versions.Length + layer];
@@ -163,7 +233,14 @@ public class AudioManager : MonoBehaviour
     }
 
     public void DisableLayer(int layer, float fadeTime = 1f) {
-        if (!isPlaying)
+        if (state == MusicState.UNLOADED)
+            return;
+        
+        // set the layer in the shouldClipPlay list
+        shouldClipPlay[currentSong.versions.Length + layer] = false;
+
+        // don't change volumes of any audio sources if we're not supposed to be playing music
+        if (state != MusicState.PLAYING)
             return;
 
         AudioSource source = musicSources[currentSong.versions.Length + layer];
