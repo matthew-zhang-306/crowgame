@@ -146,6 +146,7 @@ public class AudioManager : MonoBehaviour
                 if (musicSource.isPlaying)
                     musicSource.Stop();
                 musicSource.volume = 0;
+                musicSource.time = 0;
             }
 
             // set whether clips should be playing
