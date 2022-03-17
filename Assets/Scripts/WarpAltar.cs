@@ -43,6 +43,7 @@ public class WarpAltar : MonoBehaviour
         if (other.CompareTag("Player")) {
             OnAltarEnter?.Invoke(this);
             playerInside = other.GetComponent<PlayerMovement>();
+            playerInside.actionIndicator.Show("Space", "Warp to " + targetLevel.displayName);
             foreach (var rock in rocks) {
                 rock.IsLifted = true;
             }
@@ -52,6 +53,7 @@ public class WarpAltar : MonoBehaviour
     private void OnTriggerExit(Collider other) {
         if (other.CompareTag("Player")) {
             OnAltarExit?.Invoke(this);
+            playerInside.actionIndicator.Hide();
             playerInside = null;
             foreach (var rock in rocks) {
                 rock.IsLifted = false;

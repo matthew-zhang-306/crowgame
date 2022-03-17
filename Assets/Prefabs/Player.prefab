@@ -12,10 +12,12 @@ GameObject:
   - component: {fileID: 1684390023508061202}
   - component: {fileID: 6012306277293553810}
   - component: {fileID: 8405657875115909047}
-  - component: {fileID: 6992943023084857726}
   - component: {fileID: 8402608986835745801}
+  - component: {fileID: 6992943023084857726}
+  - component: {fileID: 3334479388307998990}
+  - component: {fileID: 2015640934566050535}
   m_Layer: 5
-  m_Name: Actionindicator
+  m_Name: ActionIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,6 +106,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &8402608986835745801
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95426292614961331}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!114 &6992943023084857726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,22 +131,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   desiredUIComparison: 8
-  uiElementsToApplyTo:
-  - {fileID: 6725717295646091283}
-  - {fileID: 337342922704009450}
-  - {fileID: 1774469840606250163}
---- !u!225 &8402608986835745801
-CanvasGroup:
+  uiElementsToApplyTo: []
+--- !u!114 &3334479388307998990
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 95426292614961331}
   m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 0
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e2e140833ac971439ae31bbb315aa6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shouldRoll: 1
+  cameraPositionSO: {fileID: 11400000, guid: 84bdca8a8afb61247bdb17c8adbcbf89, type: 2}
+--- !u!114 &2015640934566050535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95426292614961331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aff2315c81c7b744f9bda5ac26d4eefa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonText: {fileID: 7419740161887203566}
+  sideText: {fileID: 7130865010474794873}
+  sidePanel: {fileID: 3505730838204895590}
 --- !u!1 &1604580046593186894
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,8 +228,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: WASD
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: cc2557cd878f63c4884c509378e6be20, type: 2}
-  m_sharedMaterial: {fileID: 874537880396014430, guid: cc2557cd878f63c4884c509378e6be20, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 056a64694da19b54181bb362e40e8766, type: 2}
+  m_sharedMaterial: {fileID: 874537880396014430, guid: 056a64694da19b54181bb362e40e8766, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -409,8 +437,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Move
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: cc2557cd878f63c4884c509378e6be20, type: 2}
-  m_sharedMaterial: {fileID: 874537880396014430, guid: cc2557cd878f63c4884c509378e6be20, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 056a64694da19b54181bb362e40e8766, type: 2}
+  m_sharedMaterial: {fileID: 874537880396014430, guid: 056a64694da19b54181bb362e40e8766, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1577,6 +1605,7 @@ MonoBehaviour:
   peckDuration: 0.3
   flapDuration: 0.3
   playerAnimation: {fileID: 253836169}
+  actionIndicator: {fileID: 2015640934566050535}
   cameraFacingTransform: {fileID: 7523748966877298913}
   rotateTransform: {fileID: 5760937828559660949}
   mainSprite: {fileID: 5760937829642705366}
@@ -1863,6 +1892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e2e140833ac971439ae31bbb315aa6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldRoll: 0
   cameraPositionSO: {fileID: 11400000, guid: 84bdca8a8afb61247bdb17c8adbcbf89, type: 2}
 --- !u!1 &7867552710333599833
 GameObject:

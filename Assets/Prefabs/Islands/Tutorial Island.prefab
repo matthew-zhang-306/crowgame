@@ -12828,7 +12828,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelList: {fileID: 0}
   levelIndex: 0
-  savingSystem: {fileID: 0}
+  playerSpawnPosOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &8882374404911542650
 GameObject:
   m_ObjectHideFlags: 0
@@ -14858,7 +14858,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelList: {fileID: 0}
   levelIndex: 0
-  savingSystem: {fileID: 0}
+  playerSpawnPosOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &8882374405229837650
 GameObject:
   m_ObjectHideFlags: 0
@@ -23477,8 +23477,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3670543100894362447, guid: facb050560a44ff4fa4645da2954b2f6, type: 3}
+      propertyPath: button
+      value: F
+      objectReference: {fileID: 0}
+    - target: {fileID: 3670543100894362447, guid: facb050560a44ff4fa4645da2954b2f6, type: 3}
       propertyPath: message
-      value: Press Z or K to release a tornado
+      value: Tornado
       objectReference: {fileID: 0}
     - target: {fileID: 4664561823876994489, guid: facb050560a44ff4fa4645da2954b2f6, type: 3}
       propertyPath: m_Name
@@ -23518,7 +23522,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8458483668345370785, guid: facb050560a44ff4fa4645da2954b2f6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.23082352
+      value: -0.7308235
       objectReference: {fileID: 0}
     - target: {fileID: 8458483668345370785, guid: facb050560a44ff4fa4645da2954b2f6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -26939,8 +26943,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3670543100894362447, guid: facb050560a44ff4fa4645da2954b2f6, type: 3}
+      propertyPath: button
+      value: Space
+      objectReference: {fileID: 0}
+    - target: {fileID: 3670543100894362447, guid: facb050560a44ff4fa4645da2954b2f6, type: 3}
       propertyPath: message
-      value: Press X or J to peck
+      value: Peck
       objectReference: {fileID: 0}
     - target: {fileID: 4664561823876994489, guid: facb050560a44ff4fa4645da2954b2f6, type: 3}
       propertyPath: m_Name

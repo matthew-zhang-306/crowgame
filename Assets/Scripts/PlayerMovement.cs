@@ -26,6 +26,7 @@ public class PlayerMovement : PhysicsObject
 
     [Header("References")]
     public PlayerAnimation playerAnimation;
+    public PlayerActionIndicator actionIndicator;
     public Transform cameraFacingTransform;
     public Transform rotateTransform;
     public SpriteRenderer mainSprite;

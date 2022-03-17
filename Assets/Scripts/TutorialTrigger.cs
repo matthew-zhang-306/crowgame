@@ -8,29 +8,25 @@ using TMPro;
 public class TutorialTrigger : MonoBehaviour
 {
 
-    [Header("References")]
-    public GameObject TutorialCanvas;
-    public GameObject TutorialText;
-
     [Header("Parameters")]
+    public string button;
     public string message;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
-            Debug.Log("collided with player");
-            TutorialCanvas.SetActive(true);
-            TutorialText.GetComponent<Text>().text = message;
+            var indicator = other.GetComponent<PlayerMovement>()?.actionIndicator;
+            indicator?.Show(button, message);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("player left collider");
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
-            TutorialCanvas.SetActive(false);
+            var indicator = other.GetComponent<PlayerMovement>()?.actionIndicator;
+            indicator?.Hide();
         }
     }
 }

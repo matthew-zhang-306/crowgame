@@ -88,6 +88,7 @@ public class ZodiacController : MonoBehaviour
         if (other.tag == "Player")
         {
             isTalking = true;
+            other.GetComponent<PlayerMovement>().actionIndicator.Show("Space", "Talk");
         }
     }
 
@@ -97,6 +98,7 @@ public class ZodiacController : MonoBehaviour
         {
             Debug.Log("Exited " + this.gameObject.name + " space.");
             isTalking = false;
+            other.GetComponent<PlayerMovement>().actionIndicator.Hide();
             dialogueCamera.SetActive(false);
             dialogueCanvas.SetActive(false);
             dialogueText.text = "";
