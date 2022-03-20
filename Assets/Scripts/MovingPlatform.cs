@@ -12,6 +12,7 @@ public class MovingPlatform : PhysicsObject
 
     public float moveTime;
     public float moveDelay;
+    public bool shouldReturnImmediately;
 
     public bool isAutomatic = true;
     private bool isTargettingDestination = false; // true while the platform is moving to or sitting at the end position
@@ -68,7 +69,11 @@ public class MovingPlatform : PhysicsObject
         }
 
         isTargettingDestination = shouldTargetDestination;
-        moveCoroutine = StartCoroutine(DoMove(transform.position, isTargettingDestination ? endPosition : startPosition));
+        float theMoveTime = moveTime;
+        if (!isTargettingDestination && shouldReturnImmediately) {
+            theMoveTime = 0.5f;
+        }
+        moveCoroutine = StartCoroutine(DoMove(transform.position, isTargettingDestination ? endPosition : startPosition, theMoveTime));
     }
 
 
@@ -76,23 +81,29 @@ public class MovingPlatform : PhysicsObject
         while (true) {
             yield return new WaitForSeconds(moveDelay);
             isTargettingDestination = true;
-            yield return StartCoroutine(DoMove(startPosition, endPosition));
+            yield return StartCoroutine(DoMove(startPosition, endPosition, moveTime));
             
             yield return new WaitForSeconds(moveDelay);
             isTargettingDestination = false;
-            yield return StartCoroutine(DoMove(endPosition, startPosition));
+            if (shouldReturnImmediately) {
+                yield return StartCoroutine(DoMove(endPosition, startPosition, 0.5f));   
+            }
+            else {
+                yield return StartCoroutine(DoMove(endPosition, startPosition, moveTime));
+            }
+            
         }
     }
 
-    IEnumerator DoMove(Vector3 start, Vector3 end) {
+    IEnumerator DoMove(Vector3 start, Vector3 end, float time) {
         float t = 0;
-        while (t < moveTime) {
+        while (t < time) {
             // wait first to sync all movement to the fixed update cycle
             yield return new WaitForFixedUpdate();
              t += Time.fixedDeltaTime;
 
             // set velocity such that the platform will move to where it wants to be
-            Vector3 desiredPos = Vector3.Lerp(start, end, t / moveTime);
+            Vector3 desiredPos = Vector3.Lerp(start, end, t / time);
             SetRelativeVelocity((desiredPos - transform.position) / Time.fixedDeltaTime);
             transform.position = desiredPos;
         }

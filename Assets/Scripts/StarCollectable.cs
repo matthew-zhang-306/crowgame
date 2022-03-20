@@ -5,7 +5,10 @@ using DG.Tweening;
 
 public class StarCollectable : MonoBehaviour
 {
-    public  int sceneIndex;
+    public int sceneIndex { get {
+        return Managers.ScenesManager.levelNumber;
+    }}
+
     public int starNumber;
 
     private bool collected;
