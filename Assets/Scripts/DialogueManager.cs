@@ -17,6 +17,7 @@ public class DialogueManager : MonoBehaviour
     public List<GameObject> panelImages = new List<GameObject>();
     private int currentPanel = -1;
     public GameObject skipButton;
+    public string nextSceneName;
 
     // Start is called before the first frame update
     void Start()
@@ -108,7 +109,7 @@ public class DialogueManager : MonoBehaviour
     public void EndDialogue()
     {
         //Debug.Log("End of Conversation");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        Managers.ScenesManager.ChangeScene(nextSceneName);
     }
 }
 
