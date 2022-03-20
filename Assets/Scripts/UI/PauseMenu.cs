@@ -27,7 +27,10 @@ public class PauseMenu : MonoBehaviour
 
     private bool pauseInput;
     private bool oldPauseInput;
-    
+    private bool backInput;
+    private bool oldBackInput;
+    private System.Action onBackInput;
+
 
     // Update is called once per frame
 
@@ -40,6 +43,14 @@ public class PauseMenu : MonoBehaviour
     {
         oldPauseInput = pauseInput;
         pauseInput = Input.GetAxisRaw("Pause") > 0;
+
+        oldBackInput = backInput;
+        backInput = Input.GetAxisRaw("Cancel") > 0;
+
+        if (backInput && !oldBackInput)
+        {
+            onBackInput?.Invoke();
+        }
 
         if (pauseInput && !oldPauseInput && !isTelescopeOn && !Managers.ScenesManager.IsTransitioning)
         {
@@ -81,7 +92,18 @@ public class PauseMenu : MonoBehaviour
         currentMenu = settingsMenuUI;
 
         EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(settingsFirstButton);   
+        EventSystem.current.SetSelectedGameObject(settingsFirstButton);
+        onBackInput = CloseSettings;
+    }
+
+    public void CloseSettings()
+    {
+        settingsMenuUI.SetActive(false);
+        PauseMenuUI.SetActive(true);
+        currentMenu = PauseMenuUI;
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(pauseFirstButton);
+        onBackInput = null;
     }
 
     public void LoadLevelSelect()
@@ -93,7 +115,19 @@ public class PauseMenu : MonoBehaviour
 
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(levelsFirstButton);
+        onBackInput = CloseSelect;
     }
+
+    public void CloseSelect()
+    {
+        levelsMenuUI.SetActive(false);
+        PauseMenuUI.SetActive(true);
+        currentMenu = PauseMenuUI;
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(pauseFirstButton);
+        onBackInput = null;
+    }
+
     public void LoadControls()
     {
         //switch to the controls menu
@@ -103,7 +137,19 @@ public class PauseMenu : MonoBehaviour
 
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(controlsFirstButton);
+        onBackInput = CloseControls;
     }
+
+    public void CloseControls()
+    {
+        controlsMenuUI.SetActive(false);
+        PauseMenuUI.SetActive(true);
+        currentMenu = PauseMenuUI;
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(pauseFirstButton);
+        onBackInput = null;
+    }
+
     public void QuitGame()
     {
         Application.Quit();
