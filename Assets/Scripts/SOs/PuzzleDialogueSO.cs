@@ -12,14 +12,17 @@ public class PuzzleDialogueSO : ScriptableObject
     [Serializable]
     public class Zodiacs
     {
-        public String zodiacName;
-        public Boolean firstStarCollected;
-        public Boolean secondStarCollected;
-        [TextArea]
-        public String[] IntroDialogue;
-        [TextArea]
-        public String[] OneStarDialogue;
-        [TextArea]
-        public String[] TwoStarDialogue;
+        public String zodiacOneName;
+        public String zodiacTwoName;
+        public Sprite zodiacOneSprite;
+        public Sprite zodiacTwoSprite;
+        [TextArea (5, 10)]
+        public String IntroDialogueOne;
+        [TextArea (5, 10)]
+        public String IntroDialogueTwo;
+        [TextArea (5, 10)]
+        public String OneStarDialogue;
+        [TextArea (5, 10)]
+        public String TwoStarDialogue;
     }
 }
