@@ -61,6 +61,7 @@ public class ProgressManager : MonoBehaviour
     public void ResetVisitedLevels() {
         for (int i = 0; i < levelList.numLevels; i++) {
             SetLevelVisited(i, false);
+            PlayerPrefsX.SetBool(i.ToString(), false);
         }
     }
 }

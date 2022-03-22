@@ -32,8 +32,8 @@ public class PuzzleDialogueControl : MonoBehaviour
         introActive = false;
         triggeredDialogue = false;
         Debug.Log(levelNumber);
-        Debug.Log(Managers.ProgressManager.GetLevelVisited(levelNumber));
-        if (Managers.ProgressManager.GetLevelVisited(levelNumber))
+        Debug.Log(PlayerPrefsX.GetBool(levelNumber.ToString(), false));
+        if (!(PlayerPrefsX.GetBool(levelNumber.ToString(), false)))
         {
             introActive = true;
             DialogueCanvas.SetActive(true);
@@ -41,8 +41,9 @@ public class PuzzleDialogueControl : MonoBehaviour
             dialogueImage.sprite = puzzleSO.zodiacs[levelNumber].zodiacOneSprite;
             zodiacDialogue.text = "";
             string dialogue = puzzleSO.zodiacs[levelNumber].IntroDialogueOne;
-            StartCoroutine(TypeDialogue(dialogue, 0.001f));
+            StartCoroutine(TypeDialogue(dialogue));
         }
+        PlayerPrefsX.SetBool(levelNumber.ToString(), true);
     }
 
     private void DisplayNextSentence()
@@ -55,7 +56,7 @@ public class PuzzleDialogueControl : MonoBehaviour
             dialogueImage.sprite = puzzleSO.zodiacs[levelNumber].zodiacTwoSprite;
             zodiacDialogue.text = "";
             string nextDialogue = puzzleSO.zodiacs[levelNumber].IntroDialogueTwo;
-            StartCoroutine(TypeDialogue(nextDialogue, 0.001f));
+            StartCoroutine(TypeDialogue(nextDialogue));
             finishedIntro = true;
         }
         else
@@ -67,6 +68,11 @@ public class PuzzleDialogueControl : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetAxisRaw("Pause") > 0)
+        {
+            StayInPuzzle();
+        }
+
         if (!isRunning && Input.GetAxisRaw("Action1") > 0 && introActive)
         {
             DisplayNextSentence();
@@ -96,7 +102,7 @@ public class PuzzleDialogueControl : MonoBehaviour
             dialogueImage.sprite = puzzleSO.zodiacs[levelNumber].zodiacTwoSprite;
             zodiacDialogue.text = "";
             string dialogue = puzzleSO.zodiacs[levelNumber].TwoStarDialogue;
-            StartCoroutine(TypeDialogue(dialogue, 0.001f));
+            StartCoroutine(TypeDialogue(dialogue));
             Invoke("ShowButtons", 1);
         }
         else if (Managers.ProgressManager.IsStarCollected(levelNumber, 0) || Managers.ProgressManager.IsStarCollected(levelNumber, 1))
@@ -108,7 +114,7 @@ public class PuzzleDialogueControl : MonoBehaviour
             dialogueImage.sprite = puzzleSO.zodiacs[levelNumber].zodiacOneSprite;
             zodiacDialogue.text = "";
             string dialogue = puzzleSO.zodiacs[levelNumber].OneStarDialogue;
-            StartCoroutine(TypeDialogue(dialogue, 0.001f));
+            StartCoroutine(TypeDialogue(dialogue));
             Invoke("ShowButtons", 1);
         }
         else if (!Managers.ProgressManager.IsStarCollected(levelNumber, 0) && !Managers.ProgressManager.IsStarCollected(levelNumber, 1))
@@ -117,7 +123,7 @@ public class PuzzleDialogueControl : MonoBehaviour
             LeaveToHub();
         }
     }
-    private IEnumerator TypeDialogue(string dialogue, float speed)
+    private IEnumerator TypeDialogue(string dialogue, float speed = 0.000001f)
     {
         isRunning = true;
         foreach (char letter in dialogue.ToCharArray())
