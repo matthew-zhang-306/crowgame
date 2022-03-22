@@ -24,7 +24,6 @@ public class WarpAltar : MonoBehaviour
 
     private WarpAltarRock[] rocks;
 
-
     private void Awake() {
         rocks = GetComponentsInChildren<WarpAltarRock>();
     }
@@ -32,10 +31,23 @@ public class WarpAltar : MonoBehaviour
 
     private void Update() {
         if (!isWarping && !PauseMenu.isTelescopeOn && !PauseMenu.gamePaused && playerInside != null && Input.GetAxisRaw("Action1") > 0) {
-            isWarping = true;
-            OnAltarWarp?.Invoke(this);
-            DOTween.Sequence().InsertCallback(
-                1.0f, () => Managers.ScenesManager.ChangeScene(targetLevel.sceneName));
+            if (Managers.ScenesManager.IsPuzzleSceneLoaded())
+            {
+                GameObject puzzleControlGo = GameObject.FindGameObjectWithTag("PuzzleDialogue");
+                PuzzleDialogueControl puzzleControlScript = puzzleControlGo.GetComponent<PuzzleDialogueControl>();
+                if (!puzzleControlScript.triggeredDialogue)
+                {
+                    puzzleControlScript.triggeredDialogue = true;
+                    puzzleControlScript.ExitPuzzle();
+                }
+            }
+            else
+            {
+                isWarping = true;
+                OnAltarWarp?.Invoke(this);
+                DOTween.Sequence().InsertCallback(
+                    1.0f, () => Managers.ScenesManager.ChangeScene(targetLevel.sceneName));
+            }
         }
     }
 
