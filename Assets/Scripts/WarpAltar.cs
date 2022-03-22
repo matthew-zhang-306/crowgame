@@ -55,7 +55,14 @@ public class WarpAltar : MonoBehaviour
         if (other.CompareTag("Player")) {
             OnAltarEnter?.Invoke(this);
             playerInside = other.GetComponent<PlayerMovement>();
-            playerInside.actionIndicator.Show("Space", "Warp to " + targetLevel.displayName);
+
+            string WarpButton = "Space";
+            #if UNITY_WSA
+                //set xbox version of text
+                WarpButton = "A";
+            #endif
+            playerInside.actionIndicator.Show(WarpButton, "Warp to " + targetLevel.displayName);
+
             foreach (var rock in rocks) {
                 rock.IsLifted = true;
             }

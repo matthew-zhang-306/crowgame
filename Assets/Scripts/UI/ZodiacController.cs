@@ -87,8 +87,14 @@ public class ZodiacController : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+
+            string TalkButton = "Space";
+            #if UNITY_WSA
+                //xbox version of control
+                TalkButton = "A";
+            #endif
             isTalking = true;
-            other.GetComponent<PlayerMovement>().actionIndicator.Show("Space", "Talk");
+            other.GetComponent<PlayerMovement>().actionIndicator.Show(TalkButton, "Talk");
         }
     }
 

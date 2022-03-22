@@ -9,6 +9,8 @@ public class TutorialTrigger : MonoBehaviour
 {
 
     [Header("Parameters")]
+    public string XboxButton;
+
     public string button;
     public string message;
 
@@ -17,7 +19,14 @@ public class TutorialTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             var indicator = other.GetComponent<PlayerMovement>()?.actionIndicator;
+
+            #if UNITY_WSA
+                //xbox version of text
+                button = XboxButton;
+            #endif
+
             indicator?.Show(button, message);
+
         }
     }
 
