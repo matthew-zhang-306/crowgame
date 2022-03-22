@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Audio;
+using TMPro;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class PauseMenu : MonoBehaviour
     public GameObject levelsFirstButton;
     public GameObject controlsFirstButton;
 
+    public TextMeshProUGUI controlsText;
+
     private GameObject currentMenu;
 
     private bool pauseInput;
@@ -37,6 +40,7 @@ public class PauseMenu : MonoBehaviour
     private void Start()
     {
         currentMenu = null;
+        SetControls();
     }
 
     void Update()
@@ -172,5 +176,29 @@ public class PauseMenu : MonoBehaviour
     public void SetSFXVolume(float volume)
     {
         audioMixer.SetFloat("sfxVolume", volume);
+    }
+
+    // set the control description based on which platform we are using
+    public void SetControls()
+    {
+        string ControlDescription = "Arrows/WASD - Movement\n" +
+                                    "L / R Shift - Camera\n" +
+                                    "X, J - Pecking\n" +
+                                    "Z, K - Tornado\n" +
+                                    "R - Restart Scene\n" +
+                                    "T - Open Telescope(HUB ONLY)\n" +
+                                    "ESC - Pause";
+        //using xbox
+        #if UNITY_WSA
+            ControlDescription =    "Joystick - Movement\n" +
+                                    "LB / RB - Camera\n" +
+                                    "A - Pecking\n" +
+                                    "X - Tornado\n" +
+                                    "Y - Restart Scene\n" +
+                                    "[] - Open Telescope(HUB ONLY)\n" +
+                                    "= - Pause";
+        #endif
+
+        controlsText.text = ControlDescription;
     }
 }
