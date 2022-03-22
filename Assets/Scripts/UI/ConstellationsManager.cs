@@ -7,9 +7,9 @@ public class ConstellationsManager : MonoBehaviour
 {
     public CanvasGroup telescopeGroup;
     public Transform starContainerOne; // all of the stars are children of this object
-    public Transform starContainerTwo;
+    //public Transform starContainerTwo;
     public Button starPaperOne;
-    public Button starPaperTwo;
+    //public Button starPaperTwo;
     public Transform ravenConstellation;
     private Animator telescopeAnim;
     private PlayerMovement playerMovementScript;
@@ -17,8 +17,8 @@ public class ConstellationsManager : MonoBehaviour
 
     private bool menuInput;
     private bool oldMenuInput;
-    private bool paperInput;
-    private bool oldPaperInput;
+    //private bool paperInput;
+    //private bool oldPaperInput;
 
 
     void Start()
@@ -36,20 +36,24 @@ public class ConstellationsManager : MonoBehaviour
                 Managers.ProgressManager.IsStarCollected(i / levelList.starsPerLevel, i % levelList.starsPerLevel)
             );
         }
-        for (int i = 0; i < starContainerOne.childCount; i++)
-        {
-            Transform starT = starContainerTwo.GetChild(i);
-            starT.GetChild(0).gameObject.SetActive(
-                Managers.ProgressManager.IsStarCollected((i + 12) / levelList.starsPerLevel, (i + 12) % levelList.starsPerLevel)
-            );
-        }
-        for (int i = 0; i < ravenConstellation.childCount; i++)
+        //for (int i = 0; i < starContainerOne.childCount; i++)
+        //{
+        //    Transform starT = starContainerTwo.GetChild(i);
+        //    starT.GetChild(0).gameObject.SetActive(
+        //        Managers.ProgressManager.IsStarCollected((i + 12) / levelList.starsPerLevel, (i + 12) % levelList.starsPerLevel)
+        //    );
+        //}
+        for (int i = 0; i < ravenConstellation.childCount - 2; i += 2)
         {
             Transform starT = ravenConstellation.GetChild(i);
-            if ((Managers.ProgressManager.IsStarCollected(i, 0)) &&
-                (Managers.ProgressManager.IsStarCollected(i, 1)))
+            Transform starTwo = ravenConstellation.GetChild(i + 1);
+            if (Managers.ProgressManager.IsStarCollected(i/2, 0))
             {
                 starT.GetChild(1).gameObject.SetActive(true);
+            }
+            if (Managers.ProgressManager.IsStarCollected(i/2, 1))
+            {
+                starTwo.GetChild(1).gameObject.SetActive(true);
             }
         }
     }
@@ -59,17 +63,17 @@ public class ConstellationsManager : MonoBehaviour
         oldMenuInput = menuInput;
         menuInput = Input.GetAxisRaw("Submenu") > 0;
 
-        oldPaperInput = paperInput;
-        paperInput = Mathf.Abs(Input.GetAxis("Camera")) > 0.5f;
+        //oldPaperInput = paperInput;
+        //paperInput = Mathf.Abs(Input.GetAxis("Camera")) > 0.5f;
 
         if (menuInput && !oldMenuInput)
         {
             ChangeTelescopeState();
         }
 
-        if (PauseMenu.isTelescopeOn && paperInput && !oldPaperInput) {
-            ChangePaperState();
-        }
+        //if (PauseMenu.isTelescopeOn && paperInput && !oldPaperInput) {
+        //    ChangePaperState();
+        //}
     }
 
     public void ChangeTelescopeState()
@@ -93,16 +97,16 @@ public class ConstellationsManager : MonoBehaviour
         }
     }
 
-    public void ChangePaperState() 
-    {
-        // swap sibling indexes to change sort order
-        int a = starPaperOne.transform.GetSiblingIndex();
-        int b = starPaperTwo.transform.GetSiblingIndex();
-        starPaperOne.transform.SetSiblingIndex(b);
-        starPaperTwo.transform.SetSiblingIndex(a);
+    //public void ChangePaperState()
+    //{
+    //    // swap sibling indexes to change sort order
+    //    int a = starPaperOne.transform.GetSiblingIndex();
+    //    int b = starPaperTwo.transform.GetSiblingIndex();
+    //    starPaperOne.transform.SetSiblingIndex(b);
+    //    starPaperTwo.transform.SetSiblingIndex(a);
 
-        // change interactability
-        starPaperOne.interactable = !starPaperOne.interactable;
-        starPaperTwo.interactable = !starPaperTwo.interactable;
-    }
+    //    // change interactability
+    //    starPaperOne.interactable = !starPaperOne.interactable;
+    //    starPaperTwo.interactable = !starPaperTwo.interactable;
+    //}
 }

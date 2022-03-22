@@ -92,8 +92,8 @@ public class PuzzleDialogueControl : MonoBehaviour
         {
             Debug.Log("Trigger Two Star Dialogue");
             DialogueCanvas.SetActive(true);
-            zodiacName.text = puzzleSO.zodiacs[levelNumber].zodiacOneName;
-            dialogueImage.sprite = puzzleSO.zodiacs[levelNumber].zodiacOneSprite;
+            zodiacName.text = puzzleSO.zodiacs[levelNumber].zodiacTwoName;
+            dialogueImage.sprite = puzzleSO.zodiacs[levelNumber].zodiacTwoSprite;
             zodiacDialogue.text = "";
             string dialogue = puzzleSO.zodiacs[levelNumber].TwoStarDialogue;
             StartCoroutine(TypeDialogue(dialogue, 0.001f));
@@ -104,8 +104,8 @@ public class PuzzleDialogueControl : MonoBehaviour
             Debug.Log("Trigger One Star Dialogue");
             //triggeredDialogue = true;
             DialogueCanvas.SetActive(true);
-            zodiacName.text = puzzleSO.zodiacs[levelNumber].zodiacTwoName;
-            dialogueImage.sprite = puzzleSO.zodiacs[levelNumber].zodiacTwoSprite;
+            zodiacName.text = puzzleSO.zodiacs[levelNumber].zodiacOneName;
+            dialogueImage.sprite = puzzleSO.zodiacs[levelNumber].zodiacOneSprite;
             zodiacDialogue.text = "";
             string dialogue = puzzleSO.zodiacs[levelNumber].OneStarDialogue;
             StartCoroutine(TypeDialogue(dialogue, 0.001f));
