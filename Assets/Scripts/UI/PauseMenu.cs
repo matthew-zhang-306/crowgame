@@ -183,8 +183,8 @@ public class PauseMenu : MonoBehaviour
     {
         string ControlDescription = "Arrows/WASD - Movement\n" +
                                     "L / R Shift - Camera\n" +
-                                    "X, J - Pecking\n" +
-                                    "Z, K - Tornado\n" +
+                                    "Space - Pecking\n" +
+                                    "F - Tornado\n" +
                                     "R - Restart Scene\n" +
                                     "T - Open Telescope(HUB ONLY)\n" +
                                     "ESC - Pause";
