@@ -5,9 +5,7 @@ using DG.Tweening;
 
 public class StarCollectable : MonoBehaviour
 {
-    public int sceneIndex { get {
-        return Managers.ScenesManager.levelNumber;
-    }}
+    public int sceneIndex;
 
     public int starNumber;
 
@@ -18,9 +16,10 @@ public class StarCollectable : MonoBehaviour
 
     public SpriteRenderer starSR;
 
-    private void Awake() {
+    private void Start() {
         currentRotateSpeed = rotateSpeed;
-
+        sceneIndex = Managers.ScenesManager.levelNumber;
+        Debug.Log("SceneIndex " + sceneIndex);
         if (Managers.ProgressManager.IsStarCollected(sceneIndex, starNumber))
         {
             this.gameObject.SetActive(false);
@@ -28,8 +27,6 @@ public class StarCollectable : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
-
-        
 
         if (collected)
             return;

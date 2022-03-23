@@ -31,8 +31,8 @@ public class PuzzleDialogueControl : MonoBehaviour
         finishedIntro = false;
         introActive = false;
         triggeredDialogue = false;
-        Debug.Log(levelNumber);
-        Debug.Log(PlayerPrefsX.GetBool(levelNumber.ToString(), false));
+        //Debug.Log(levelNumber);
+        //Debug.Log(PlayerPrefsX.GetBool(levelNumber.ToString(), false));
         if (!(PlayerPrefsX.GetBool(levelNumber.ToString(), false)))
         {
             introActive = true;

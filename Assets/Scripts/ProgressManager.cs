@@ -10,6 +10,12 @@ public class ProgressManager : MonoBehaviour
 
     public void Init() {
         starsCollected = PlayerPrefsX.GetBoolArray("StarsCollected", false, 0);
+        string stars = "";
+        foreach (bool star in starsCollected)
+        {
+            stars += star.ToString();
+        }
+        Debug.Log(stars);
         if (starsCollected.Length != levelList.numStars) {
             ResetStarsCollected();
         }
