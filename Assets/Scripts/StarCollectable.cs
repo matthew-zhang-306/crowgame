@@ -43,12 +43,17 @@ public class StarCollectable : MonoBehaviour
                 .Insert(0, transform.DOMoveY(transform.position.y + 1f, 0.2f).SetEase(Ease.OutCubic))
                 .Insert(0.3f, transform.DOMoveY(transform.position.y - 1f, 0.7f).SetEase(Ease.InOutQuad))
                 .Insert(0.5f, starSR.DOFade(0f, 0.5f))
-                .Insert(0.5f, transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InExpo));
+                .Insert(0.5f, transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InExpo)).OnComplete(SetStarInactive);
         }
     }
 
 
     private void FixedUpdate() {
         transform.Rotate(new Vector3(0, currentRotateSpeed * Time.deltaTime, 0));
+    }
+
+    private void SetStarInactive()
+    {
+        this.gameObject.SetActive(false);
     }
 }
