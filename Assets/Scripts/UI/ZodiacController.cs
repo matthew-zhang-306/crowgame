@@ -16,6 +16,7 @@ public class ZodiacController : MonoBehaviour
 
     private bool input;
     private bool oldInput;
+    private bool currentTalk;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,7 @@ public class ZodiacController : MonoBehaviour
         dialogueCamera.SetActive(false);
         dialogueCanvas.SetActive(false);
         isTalking = false;
+        currentTalk = false;
         dialogueText.text = "";
         for(int i = 0; i < zodiacDialogue.zodiacs.Length; i++)
         {
@@ -52,22 +54,40 @@ public class ZodiacController : MonoBehaviour
                 {
                     if (!isRunning)
                     {
-                        dialogueText.text = "";
-                        string dialogue = zodiacDialogue.zodiacs[zodiacIndex].firstDialogue;
-                        zodiacDialogue.zodiacs[zodiacIndex].haveTalkedTo = true;
-                        StartCoroutine(TypeDialogue(dialogue, 0.01f));
+                        if (!currentTalk)
+                        {
+                            dialogueText.text = "";
+                            string dialogue = zodiacDialogue.zodiacs[zodiacIndex].firstDialogue;
+                            zodiacDialogue.zodiacs[zodiacIndex].haveTalkedTo = true;
+                            StartCoroutine(TypeDialogue(dialogue, 0.01f));
+                            currentTalk = true;
+                        }
+                        else
+                        {
+                            EndTalk();
+                        }
+
                     }
                 }
                 else
                 {
                     if (!isRunning)
                     {
-                        dialogueText.text = "";
-                        int dialogueIndex = Random.Range(0, zodiacDialogue.zodiacs[zodiacIndex].randomDialogues.Length);
-                        string dialogue = zodiacDialogue.zodiacs[zodiacIndex].randomDialogues[dialogueIndex];
-                        StartCoroutine(TypeDialogue(dialogue, 0.01f));
+                        if (!currentTalk)
+                        {
+                            dialogueText.text = "";
+                            int dialogueIndex = Random.Range(0, zodiacDialogue.zodiacs[zodiacIndex].randomDialogues.Length);
+                            string dialogue = zodiacDialogue.zodiacs[zodiacIndex].randomDialogues[dialogueIndex];
+                            StartCoroutine(TypeDialogue(dialogue, 0.01f));
+                            currentTalk = true;
+                        }
+                        else
+                        {
+                            EndTalk();
+                        }
                     }
                 }
+                Debug.Log("Current Talk: " + currentTalk);
             }
         }
     }
@@ -102,12 +122,18 @@ public class ZodiacController : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            Debug.Log("Exited " + this.gameObject.name + " space.");
             isTalking = false;
+            EndTalk();
             other.GetComponent<PlayerMovement>().actionIndicator.Hide();
-            dialogueCamera.SetActive(false);
-            dialogueCanvas.SetActive(false);
-            dialogueText.text = "";
         }
+    }
+
+    private void EndTalk()
+    {
+        Debug.Log("Exited " + this.gameObject.name + " space.");
+        dialogueCamera.SetActive(false);
+        dialogueCanvas.SetActive(false);
+        dialogueText.text = "";
+        currentTalk = false;
     }
 }
