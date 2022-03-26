@@ -9,9 +9,11 @@ public class PushableBox : PhysicsObject
     public RideRegion rideRegion;
 
     private Vector3 prevHVelocity;
+    private Vector3 lastPosition;
 
     protected override void Awake() {
         base.Awake();
+        lastPosition = transform.position;
     }
 
     protected override void FixedUpdate() {
@@ -43,20 +45,33 @@ public class PushableBox : PhysicsObject
     }
 
 
-    protected void OnTriggerEnter(Collider other) {
+    protected void OnTriggerEnter(Collider other)
+    {
         // base.OnTriggerEnter(other);
 
-        if (peckedTimer == 0f && other.CompareTag("Peck") && (groundNormal != Vector3.zero || currentTornado != null)) {
+        if (peckedTimer == 0f && other.CompareTag("Peck") && (groundNormal != Vector3.zero || currentTornado != null))
+        {
             Vector3 pushDirection = other.transform.forward;
             Debug.DrawRay(collider.bounds.center, other.transform.forward * 1f, Color.yellow, 0.2f);
-            
+
             // move
             rigidbody.velocity = (pushDirection * pushSpeed).WithY(rigidbody.velocity.y);
             peckedTimer = 0.18f;
             rigidbody.mass = 10f;
+
+            //set last position on each peck
+            lastPosition = transform.position;
+        }
+
+        else if (other.CompareTag("DeathBox"))
+        {
+            ResetBoxPosition();
         }
     }
 
-
-    
+    //sets box's position to the position of the last time it was pecked
+    private void ResetBoxPosition()
+    {
+        transform.position = lastPosition;
+    }
 }
