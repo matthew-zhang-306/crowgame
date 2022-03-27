@@ -43,7 +43,7 @@ public class ConstellationsManager : MonoBehaviour
         //        Managers.ProgressManager.IsStarCollected((i + 12) / levelList.starsPerLevel, (i + 12) % levelList.starsPerLevel)
         //    );
         //}
-        for (int i = 0; i < ravenConstellation.childCount - 2; i += 2)
+        for (int i = 0; i < ravenConstellation.childCount - 1; i += 2)
         {
             Transform starT = ravenConstellation.GetChild(i);
             Transform starTwo = ravenConstellation.GetChild(i + 1);
