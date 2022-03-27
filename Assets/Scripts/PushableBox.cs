@@ -60,7 +60,7 @@ public class PushableBox : PhysicsObject
             rigidbody.mass = 10f;
 
             //set last position on each peck
-            lastPosition = transform.position;
+            //lastPosition = transform.position;
         }
 
         else if (other.CompareTag("DeathBox"))
@@ -70,7 +70,7 @@ public class PushableBox : PhysicsObject
     }
 
     //sets box's position to the position of the last time it was pecked
-    private void ResetBoxPosition()
+    public void ResetBoxPosition()
     {
         transform.position = lastPosition;
     }
