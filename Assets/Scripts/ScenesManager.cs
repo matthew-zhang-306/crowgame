@@ -53,9 +53,9 @@ public class ScenesManager : MonoBehaviour
         resetInput = Input.GetAxisRaw("Reset") > 0;
 
         // in-game reset
-        if (resetInput) {
-            ResetScene();
-        }
+        //if (resetInput) {
+        //    ResetScene();
+        //}
         
 #if UNITY_EDITOR
         // debug reset
