@@ -38,6 +38,14 @@ public class ScenesManager : MonoBehaviour
             Managers.ProgressManager.SetPreviousLevel(levelNumber);
             Managers.ProgressManager.SetLevelVisited(levelNumber, true);
         }
+        if (IsHubSceneLoaded() || IsPuzzleSceneLoaded() || IsTutorialSceneLoaded())
+        {
+            Managers.PauseMenu.enabled = true;
+        }
+        else
+        {
+            Managers.PauseMenu.enabled = false;
+        }
 
         IsTransitioning = false;
         if (didTransitionOut) {
@@ -112,6 +120,12 @@ public class ScenesManager : MonoBehaviour
     // returns true if the hub is currently loaded
     public bool IsHubSceneLoaded() {
         return SceneManager.GetActiveScene().name == levelList.hub.sceneName;
+    }
+
+    // returns true if the tutorial is currently loaded
+    public bool IsTutorialSceneLoaded()
+    {
+        return SceneManager.GetActiveScene().name == "Tutorial";
     }
 
     // returns true if some level scene is currently loaded
