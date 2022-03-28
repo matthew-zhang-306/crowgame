@@ -38,27 +38,31 @@ public class TileEditorWindow : EditorWindow
         }
 
         Ray mouseRay = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
-        if (Physics.Raycast(mouseRay, out RaycastHit hit)) {
-            if (hit.collider.GetComponentInParent<TileEditor>() != null) {
+        if (Physics.Raycast(mouseRay, out RaycastHit hit, LayerMask.GetMask("Tile"))) {
+            TileParameters tile = hit.collider.GetComponent<TileParameters>();
+            if (tile != null) {
                 // this is a tile and we should look next to it
                 Vector3 adjPos = hit.point + hit.normal * 0.5f;
                 adjPos = new Vector3(Mathf.Round(adjPos.x), Mathf.Round(adjPos.y), Mathf.Round(adjPos.z));
                 Handles.DrawWireCube(adjPos, Vector3.one);
 
+                Debug.Log("hitting");
+
                 if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Space) {
                     // place the object here
                     if (selectedTile == null) {
+                        Debug.Log("no selected tile");
                         return;
                     }
 
-                    GameObject tile = (GameObject)PrefabUtility.InstantiatePrefab(selectedTile, hit.collider.GetComponentInParent<TileEditor>().transform);
-                    Undo.RegisterCreatedObjectUndo(tile, tile.name);
-                    tile.transform.position = adjPos;
+                    GameObject newTile = (GameObject)PrefabUtility.InstantiatePrefab(selectedTile, hit.collider.GetComponentInParent<TileEditor>().transform);
+                    Undo.RegisterCreatedObjectUndo(newTile, newTile.name);
+                    newTile.transform.position = adjPos;
                 }
 
                 if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.X) {
                     // delete this tile
-                    Undo.DestroyObjectImmediate(hit.collider.gameObject);
+                    Undo.DestroyObjectImmediate(tile.parent.gameObject);
                 }
             }
         }
@@ -67,15 +71,19 @@ public class TileEditorWindow : EditorWindow
     private void OnGUI() {
         so.Update();
         EditorGUILayout.PropertyField(selectedTileProp);
-        foreach (GameObject tilePrefab in tilePrefabs) {
-            if (GUILayout.Button(tilePrefab.name)) {
-                selectedTileProp.objectReferenceValue = tilePrefab;
-            }
-        }
 
         if (GUILayout.Button("Refresh Tile List")) {
             RefreshTiles();
             selectedTileProp.objectReferenceValue = null;
+        }
+
+        foreach (GameObject tilePrefab in tilePrefabs) {
+            if (tilePrefab == null) {
+                GUILayout.Label("Invalid prefab");
+            }
+            if (GUILayout.Button(tilePrefab.name)) {
+                selectedTileProp.objectReferenceValue = tilePrefab;
+            }
         }
 
         if (so.ApplyModifiedProperties()) {
