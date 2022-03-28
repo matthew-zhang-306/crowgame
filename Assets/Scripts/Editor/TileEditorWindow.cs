@@ -13,14 +13,17 @@ public class TileEditorWindow : EditorWindow
 
 
     public List<GameObject> tilePrefabs;
+    public bool isEditorActive = true;
     public GameObject selectedTile;
 
     SerializedObject so;
+    SerializedProperty isEditorActiveProp;
     SerializedProperty selectedTileProp;
     
     private void OnEnable() {
         so = new SerializedObject(this);
         RefreshTiles();
+        isEditorActiveProp = so.FindProperty("isEditorActive");
         selectedTileProp = so.FindProperty("selectedTile");
 
         SceneView.duringSceneGui += DuringSceneGUI;
@@ -37,8 +40,15 @@ public class TileEditorWindow : EditorWindow
             sceneView.Repaint();
         }
 
+        if (!isEditorActive) {
+            return;
+        }
+
+        DrawTileSelect();
+
+        // do the actual tile editing stuff in the main scene
         Ray mouseRay = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
-        if (Physics.Raycast(mouseRay, out RaycastHit hit, LayerMask.GetMask("Tile"))) {
+        if (Physics.Raycast(mouseRay, out RaycastHit hit, 999, LayerMask.GetMask("Tile"))) {
             TileParameters tile = hit.collider.GetComponent<TileParameters>();
             if (tile != null) {
                 // this is a tile and we should look next to it
@@ -68,22 +78,46 @@ public class TileEditorWindow : EditorWindow
         }
     }
 
+    private void DrawTileSelect() {
+        Handles.BeginGUI();
+        Rect rect = new Rect(8, 8, 64, 64);
+
+        foreach (GameObject tilePrefab in tilePrefabs) {
+            if (tilePrefab == null) {
+                // can't draw anything for this tile
+                GUI.Label(rect, "Invalid prefab");
+            }
+            else {
+                var content = new GUIContent(AssetPreview.GetAssetPreview(tilePrefab), tilePrefab.name);
+                GUI.backgroundColor = tilePrefab == selectedTile ? Color.green : Color.white;
+                
+                if (GUI.Button(rect, content)) {
+                    selectedTile = tilePrefab;
+                }
+            }
+
+            // advance to the next rectangle
+            if (rect.x + rect.width + 2 > 200) {
+                rect.x = 8;
+                rect.y += rect.height + 2;
+            }
+            else {
+                rect.x += rect.width + 2;
+            }
+        }
+
+        GUI.backgroundColor = Color.white;
+        Handles.EndGUI();
+    }
+
     private void OnGUI() {
         so.Update();
+        EditorGUILayout.PropertyField(isEditorActiveProp);
         EditorGUILayout.PropertyField(selectedTileProp);
 
         if (GUILayout.Button("Refresh Tile List")) {
             RefreshTiles();
             selectedTileProp.objectReferenceValue = null;
-        }
-
-        foreach (GameObject tilePrefab in tilePrefabs) {
-            if (tilePrefab == null) {
-                GUILayout.Label("Invalid prefab");
-            }
-            if (GUILayout.Button(tilePrefab.name)) {
-                selectedTileProp.objectReferenceValue = tilePrefab;
-            }
         }
 
         if (so.ApplyModifiedProperties()) {
