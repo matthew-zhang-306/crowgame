@@ -17,23 +17,28 @@ public class Tornado : PhysicsObject
     protected override void Awake() {
         base.Awake();
         OnTornadoSpawned?.Invoke(this);
+        OnTornadoSpawned += TornadoSpawned;
     }
 
     protected override void OnEnable() {
         base.OnEnable();
-        OnTornadoSpawned += TornadoSpawned;
+        
     }
     protected override void OnDisable() {
         base.OnDisable();
 
         previousPlayer?.ExitTornado();
         previousPlayer = null;
+    }
 
+    private void OnDestroy()
+    {
         OnTornadoSpawned -= TornadoSpawned;
     }
 
 
     private void TornadoSpawned(Tornado otherTornado) {
+        OnTornadoSpawned -= TornadoSpawned;
         Destroy(gameObject);
     }
 

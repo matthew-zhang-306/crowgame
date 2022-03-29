@@ -130,6 +130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1662273658, guid: 0e378ed9887ca9d42a351ba13c986822, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1357999678824818998, guid: 0e378ed9887ca9d42a351ba13c986822, type: 3}
       propertyPath: m_Name
       value: Managers
@@ -237,7 +241,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2288d6acf77db46b09d3923f2c5af355, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e9d4f009138b24aca934e7fbd13b0da1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -445,7 +449,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6631920d9db0a4b04aa97146e133d0b9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e9d4f009138b24aca934e7fbd13b0da1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -661,6 +665,7 @@ MonoBehaviour:
   - {fileID: 338018039}
   - {fileID: 930785694}
   - {fileID: 743584056}
+  - {fileID: 1912989015}
   skipButton: {fileID: 1158987689}
   nextSceneName: Tutorial
 --- !u!4 &556028713
@@ -734,7 +739,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 141085f0e35894f7094a6035519e3321, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ceaf288ddf4dc436db602207f29a9c98, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -846,7 +851,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 62225a315fc0b460abb9bb8459766ab8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 272c5302157ab4101a0ffbf5fdc8633d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1202,6 +1207,7 @@ RectTransform:
   - {fileID: 338018040}
   - {fileID: 930785695}
   - {fileID: 743584057}
+  - {fileID: 1912989016}
   m_Father: {fileID: 843951511}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1447,6 +1453,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1878495680}
+  m_CullTransparentMesh: 1
+--- !u!1 &1912989015
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1912989016}
+  - component: {fileID: 1912989018}
+  - component: {fileID: 1912989017}
+  m_Layer: 5
+  m_Name: Panel_5
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1912989016
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912989015}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1478221272}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 26}
+  m_SizeDelta: {x: 1831.1001, y: 1016.9247}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1912989017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912989015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 47dd095427545483c93fd1f7c479625f, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1912989018
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912989015}
   m_CullTransparentMesh: 1
 --- !u!1 &2051557970
 GameObject:
@@ -1721,22 +1802,25 @@ MonoBehaviour:
   dialogue:
     name: Mr Zodiac
     sentences:
-    - "The stars have aligned, the days have grown longer, and the Emperor realizes
-      he needs a 13th Zodiac to fill the void. The Emperor issues a challenge to
-      all animals across the lands to compete for the 13th Zodiac and become an everlasting
-      constellation.\r"
-    - "While working his measly job, Corvus the Raven hears about the challenge on
-      the radio and decides to turn his life around. He begins extensive training
-      with his good friends Nyan the Cat and Oon the Raccoon. \r"
-    - "Emperor looks out over the crowd of animals before him. \u201CI\u2019ve gathered
-      you all to decide which amongst you is worthy to ascend to the divine realm.\u201D
-      The other zodiac animals step out, bowing to the Emperor. \u201CHowever, this
-      year we shall commence with not a feat of strength but\u2026a battle of the
-      mind!\u201D"
-    - "The other animals look confused and concerned. The Emperor waves his hands
-      and a portal appears.  \u201CIf you wish to participate, enter this portal
-      and face a challenge worthy of my 12 Zodiacs. Pass them and you shall join
-      us and become eternal!\u201D\r"
+    - "A magical rift has opened in space and time, creating a frenzy among the animals
+      of the Emperor\u2019s Kingdom. Mysterious events have started to occur across
+      the lands\u2026 the days have grown longer, and Cerco the Monkey has discovered
+      new stars appearing in the night sky!\r"
+    - "The Emperor realizes he needs a 13th Zodiac to close the void and fill the
+      gap in time. He issues a royal challenge to all of his subjects to participate
+      in a contest! The prize\u2026.? A chance to become an eternal hero and have
+      a place in the sky as a constellation!"
+    - While working his ordinary job, Corvus the Raven hears about the challenge
+      on the radio and decides to turn his life around! He begins extensive training
+      with his good friends Mao the Cat and Oon the Raccoon.
+    - "On the day of the contest, the Emperor addresses the challengers before him,
+      \u201CA great honor awaits whoever may win! However\u2026\u201D The 12 Zodiacs
+      appear behind him. \u201CThis year\u2019s challenge shall not be a feat of
+      strength, but a battle of the mind!\u201D"
+    - "Corvus looks around at his friends, puzzled. The Emperor gestures, and a portal
+      materializes. \u201CIf you wish to participate, enter here and face a challenge
+      worthy of the 12 Zodiacs. Pass them and you shall join them as everlasting
+      legends!\u201D"
 --- !u!4 &2146671266
 Transform:
   m_ObjectHideFlags: 0

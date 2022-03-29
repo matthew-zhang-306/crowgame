@@ -33,7 +33,7 @@ public class ProgressManager : MonoBehaviour
 
 
     [ContextMenu("Reset Stars Collected")]
-    private void ResetStarsCollected() {
+    public void ResetStarsCollected() {
         starsCollected = new bool[levelList.numStars];
         PlayerPrefsX.SetBoolArray("StarsCollected", starsCollected);
 

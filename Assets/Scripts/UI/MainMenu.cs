@@ -13,10 +13,12 @@ public class MainMenu : MonoBehaviour
     public GameObject creditsButton;
     public GameObject optionsFirstSelected;
     public GameObject creditsFirstSelected;
+    public GameObject confirmationFirstSelected;
     public GameObject startPanel;
     public GameObject mainPanel;
     public GameObject optionsPanel;
     public GameObject creditsPanel;
+    public GameObject confirmationPanel;
 
     private Animator animator;
     private bool backInput;
@@ -83,4 +85,23 @@ public class MainMenu : MonoBehaviour
         onBackInput = null;
     }
 
+    public void OpenConfirmation()
+    {
+        confirmationPanel.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(confirmationFirstSelected);
+        onBackInput = CloseConfirmation;
+    }
+
+    public void CloseConfirmation()
+    {
+        confirmationPanel.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(optionsFirstSelected);
+    }
+
+    public void ResetData()
+    {
+        Managers.ProgressManager.ResetPreviousLevel();
+        Managers.ProgressManager.ResetStarsCollected();
+        Managers.ScenesManager.ResetScene();
+    }
 }
