@@ -153,8 +153,7 @@ public class PhysicsObject : MonoBehaviour
     // calculates what the object's new vertical velocity should be based on what it is currently
     protected virtual float HandleVerticalMovement(float vVelocity) {
         if (currentTornado != null) {
-            // do nothing! we have a coroutine handling this case
-            
+            Mathf.SmoothDamp(transform.position.y, currentTornado.GetRidePoint(this).y, ref vVelocity, 0.1f, 8f);
         }
         else if (groundNormal == Vector3.zero) {
             // apply gravity while in the air
@@ -173,15 +172,18 @@ public class PhysicsObject : MonoBehaviour
 
     public virtual void EnterTornado(Tornado tornado) {
         currentTornado = tornado;
-        tornadoRoutine = StartCoroutine(DoTornadoPhysics());
+        // tornadoRoutine = StartCoroutine(DoTornadoPhysics());
     }
     public virtual void ExitTornado() {
         currentTornado = null;
+        /*
         if (tornadoRoutine != null) {
             StopCoroutine(tornadoRoutine);
         }
+        */
     }
 
+    /*
     // a coroutine responsible for setting the object's y velocity while it is being lifted by a tornado
     protected IEnumerator DoTornadoPhysics() {
         if (rigidbody.velocity.y <= 0f) {
@@ -264,6 +266,7 @@ public class PhysicsObject : MonoBehaviour
             yield return 0;
         }
     }
+    */
 
 
     // returns the position to which anything riding this object should snap to in order to stay on it

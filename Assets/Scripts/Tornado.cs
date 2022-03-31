@@ -16,6 +16,7 @@ public class Tornado : PhysicsObject
 
     protected override void Awake() {
         base.Awake();
+
         OnTornadoSpawned?.Invoke(this);
         OnTornadoSpawned += TornadoSpawned;
     }
@@ -48,10 +49,10 @@ public class Tornado : PhysicsObject
         
         // lift any boxes in the tornado
         bool cast = Physics.Raycast(
-            transform.position - new Vector3(0, 0.05f, 0),
+            collider.bounds.center - new Vector3(0, 0.05f, 0),
             Vector3.up,
             out RaycastHit hit,
-            topOffset + 0.1f, // cast slightly higher than the top so that any boxes that move slightly above can still be caught
+            topOffset + 0.2f, // cast slightly higher than the top so that any boxes that move slightly above can still be caught
             LayerMask.GetMask("Box")
         );
         PushableBox box = null;
@@ -67,12 +68,12 @@ public class Tornado : PhysicsObject
 
         // lift any player in the tornado, provided they're under any boxes in the tornado
         cast = Physics.BoxCast(
-            transform.position - new Vector3(0, 0.05f, 0),
+            collider.bounds.center - new Vector3(0, 0.05f, 0),
             new Vector3(0.3f, 0.01f, 0.3f),
             Vector3.up,
             out hit,
             Quaternion.identity,
-            cast ? hit.distance : topOffset + 0.1f,
+            cast ? hit.distance : topOffset + 0.2f,
             LayerMask.GetMask("Player")
         );
         PlayerMovement player = null;
@@ -89,10 +90,12 @@ public class Tornado : PhysicsObject
 
 
     public override Vector3 GetRidePoint(PhysicsObject rider) {
+        /*
         if (rider is PlayerMovement player) {
             // lift the player up less
             return Top - new Vector3(0, 0.5f, 0);
         }
+        */
 
         return Top;
     }

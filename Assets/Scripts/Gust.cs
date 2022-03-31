@@ -75,6 +75,7 @@ public class Gust : MonoBehaviour
         bool rayHit = player.boxCastHit;
 
         if (hitSurface != null && hitSurface.layer == LayerMask.NameToLayer("Box")) {
+            Debug.Log("tornado hit box");
             // want to spawn the tornado inside the box
             thePosition = hitSurface.transform.position;
             
@@ -152,7 +153,6 @@ public class Gust : MonoBehaviour
             return Vector3.positiveInfinity;
         }
 
-        Debug.Log("CalculateTornadoPlacement(" + gustPosition + ", " + direction + ", " + maxDistance + ") = " + thePosition);
         return thePosition;
     }
 
