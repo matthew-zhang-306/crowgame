@@ -54,6 +54,12 @@ public class PushableBox : PhysicsObject
             Vector3 pushDirection = other.transform.forward;
             Debug.DrawRay(collider.bounds.center, other.transform.forward * 1f, Color.yellow, 0.2f);
 
+            // check if the grid space is open
+            if (Physics.BoxCast(transform.position, Vector3.one * 0.3f, pushDirection, Quaternion.identity, 1f, wallMask)) {
+                // can't move there
+                return;
+            }
+
             // move
             rigidbody.velocity = (pushDirection * pushSpeed).WithY(rigidbody.velocity.y);
             peckedTimer = 0.18f;

@@ -111,7 +111,10 @@ public class PlayerMovement : PhysicsObject
         base.FixedUpdate();
 
         Debug.DrawRay(transform.position, rigidbody.velocity, Color.cyan, Time.fixedDeltaTime);
-        CalculateTornadoPlacement();
+
+        if (playerState == PlayerState.CHARGE) {
+            tornadoMarker.UpdatePosition(this);
+        }
 
         if (playerState == PlayerState.MOVE && peckInput && !oldPeckInput)
         {
@@ -127,7 +130,7 @@ public class PlayerMovement : PhysicsObject
         //just let go of tornado button
         if (playerState == PlayerState.CHARGE && !gustInput && oldGustInput)
         {
-            Gust();
+            EmitGust();
         }
 
         oldPeckInput = peckInput;
@@ -267,10 +270,12 @@ public class PlayerMovement : PhysicsObject
     public void ChargeGust()
     {
         playerState = PlayerState.CHARGE;
-        tornadoMarker.activateMarker();
+        
+        // we actually don't need to update the marker at all here
+        // because this is handled in fixedupdate
     }
 
-    public void Gust()
+    public void EmitGust()
     {
         playerState = PlayerState.FLAP;
 
@@ -346,34 +351,5 @@ public class PlayerMovement : PhysicsObject
             gustPrefab.transform.localScale);
     }
 
-
-    private void CalculateTornadoPlacement()
-    {
-        boxCastHit = Physics.BoxCast(
-            gustSpawnLocation.position,
-            gustPrefab.transform.localScale,
-            rotateTransform.forward,
-            out objectHit,
-            transform.rotation,
-            tornadoSpawnDistance,
-            wallMask
-        );
-        
-        //boxcast collided with something
-        if(boxCastHit)
-        {
-            Debug.DrawRay(gustSpawnLocation.position, rotateTransform.forward * objectHit.distance, Color.black, Time.fixedDeltaTime);
-            //set tornado's spawn point to be 1/2 tornado size away from the object it collided with (prevents from being inside walls)
-            Vector3 backward = -1 * rotateTransform.forward;
-            tornadoMarker.setTornadoMarker(objectHit.point 
-                + Vector3.Scale(backward, tornadoPrefab.transform.localScale / 2));
-        }
-        else
-        {
-            //set marker to be at max distance for tornado spawn
-            Debug.DrawRay(gustSpawnLocation.position, rotateTransform.forward * tornadoSpawnDistance, Color.black, Time.fixedDeltaTime);
-            tornadoMarker.setTornadoMarker(gustSpawnLocation.position + rotateTransform.forward * tornadoSpawnDistance);
-        }
-    }
 
 }

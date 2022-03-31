@@ -17,11 +17,13 @@ public class Gust : MonoBehaviour
 
     Vector3 startPosition;
     int wallMask;
+    int wallNoBoxMask;
     bool isMoving;
 
 
     private void Awake() {
         wallMask = LayerMask.GetMask("Wall", "Box");
+        wallNoBoxMask = LayerMask.GetMask("Wall");
         isMoving = true;
         startPosition = transform.position;
     }
@@ -35,6 +37,15 @@ public class Gust : MonoBehaviour
 
     private void FixedUpdate() {
         if (isMoving) {
+            // check the grid position in front of us
+            Vector3 positionInFront = transform.position + transform.forward * 0.6f;
+            Vector3 gridPositionInFront = positionInFront.RoundToNearest(Vector3.one);
+            var colliders = Physics.OverlapBox(gridPositionInFront, Vector3.one * 0.3f, Quaternion.identity, wallNoBoxMask);
+            if (colliders.Length > 0) {
+                // there's stuff in the way in front of us. let's not go further
+                Stop(colliders[0].gameObject);
+            }
+
             transform.position += transform.forward * moveSpeed * Time.deltaTime;
 
             if (Vector3.Distance(startPosition, transform.position) >= maxDistance) {
@@ -62,10 +73,6 @@ public class Gust : MonoBehaviour
 
         //use player from scene, not prefab
         bool rayHit = player.boxCastHit;
-        /*
-        GameObject wallCollider = GameObject.Find("wallCollider");
-        bool playerColliding = wallCollider.GetComponent<WallCollisionCheck>().colliding;
-        */
 
         if (hitSurface != null && hitSurface.layer == LayerMask.NameToLayer("Box")) {
             // want to spawn the tornado inside the box
@@ -73,6 +80,7 @@ public class Gust : MonoBehaviour
             
         }
 
+        /*
         else if(rayHit)
         {
             Vector3 backward = -1 * transform.forward;
@@ -82,6 +90,7 @@ public class Gust : MonoBehaviour
 
             Debug.Log("boxcast hit");
         }
+        */
         /*
         else if (!playerColliding)
         {
@@ -91,8 +100,60 @@ public class Gust : MonoBehaviour
         }
         */
 
+        thePosition = thePosition.RoundToNearest(Vector3.one);
+
         GameObject.Instantiate(tornadoPrefab, thePosition, Quaternion.identity, null);
         Destroy(gameObject);
+    }
+
+
+    // Given an initial position and a direction, figure out where the tornado will end up if a gust was launched out.
+    // Returns Vector3.positiveInfinity if there is no place to put the tornado
+    // this is equivalent to what the actual gust object is doing, but all of the checks happen in one frame
+    public static Vector3 CalculateTornadoPlacement(Vector3 gustPosition, Vector3 direction, float maxDistance, int wallMask) {
+        Collider[] colliders = null;
+        Vector3 thePosition = gustPosition;
+
+        // guard against infinite loops
+        int numLoops = 0;
+
+        // check in front of the gust each half unit until we reach maximum distance
+        while (Vector3.Distance(thePosition, gustPosition) < maxDistance) {
+            numLoops++;
+            if (numLoops > 100) {
+                Debug.LogError("Infinite loop detected in CalculateTornadoPlacement(" + gustPosition + ", " + direction + ", " + maxDistance + ")");
+                break;
+            }
+
+            Vector3 nextPosition = thePosition + direction * 0.5f;
+            nextPosition = nextPosition.RoundToNearest(Vector3.one);
+
+            // check if the next position is open
+            colliders = Physics.OverlapBox(nextPosition, Vector3.one * 0.3f, Quaternion.identity, wallMask);
+            if (colliders.Length > 0) {
+                // there's stuff in the way, so the gust can't move forward
+                break;
+            }
+
+            // good to go
+            thePosition += direction * 0.5f;
+        }
+
+        if (Vector3.Distance(thePosition, gustPosition) > maxDistance) {
+            // ensure thePosition isn't too far away
+            thePosition = gustPosition + direction * maxDistance;
+        }
+        thePosition = thePosition.RoundToNearest(Vector3.one);
+
+        // do one more final check to see if thePosition is actually open
+        colliders = Physics.OverlapBox(thePosition, Vector3.one * 0.3f, Quaternion.identity, wallMask);
+        if (colliders.Length > 0) {
+            // we can't put a tornado here unfortunately
+            return Vector3.positiveInfinity;
+        }
+
+        Debug.Log("CalculateTornadoPlacement(" + gustPosition + ", " + direction + ", " + maxDistance + ") = " + thePosition);
+        return thePosition;
     }
 
 }

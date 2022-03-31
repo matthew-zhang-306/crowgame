@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3417433062189594528}
-  - component: {fileID: 7867435304913881620}
   m_Layer: 6
   m_Name: Ramp
   m_TagString: Untagged
@@ -33,21 +32,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7867435304913881620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4753965762895407143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85dd201544bbca2448c376825b91c446, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 0}
-  rotateMode: 0
-  size: {x: 1, y: 1, z: 1}
 --- !u!1 &5112374919115192105
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,7 +390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 3417433062189594528}
-  rotateMode: 0
+  rotateMode: 1
   size: {x: 1, y: 1, z: 1}
 --- !u!65 &2988385666042311150
 BoxCollider:

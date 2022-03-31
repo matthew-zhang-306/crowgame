@@ -114,12 +114,25 @@ public class PhysicsObject : MonoBehaviour
         hVelocity = HandleHorizontalMovement(hVelocity);
         vVelocity = HandleVerticalMovement(vVelocity);
 
-        SetRelativeVelocity(hVelocity.WithY(vVelocity));
+        SetRelativeVelocity(hVelocity.WithY(vVelocity));                    
     }
 
     // calculates what the object's new horizontal velocity should be based on what it is currently
     protected virtual Vector3 HandleHorizontalMovement(Vector3 hVelocity) {
         PhysicsObject theRide = GetMainCarrier();
+
+        if (theRide != null) {
+            // check for theRide's local grid
+            Vector3 gridPosition = transform.position.RoundToNearest(Vector3.one, theRide.transform.position.WithY(0));
+            Vector3.SmoothDamp(transform.position, gridPosition, ref hVelocity, 0.1f, 999f);
+        }
+        else if (groundNormal != Vector3.zero) {
+            // align to the world grid while on the ground
+            Vector3 gridPosition = transform.position.RoundToNearest(Vector3.one);
+            Vector3.SmoothDamp(transform.position, gridPosition, ref hVelocity, 0.1f, 999f);
+        }
+
+        /*
         if (allCarriers.Count > 0) {
             // we're riding something. snap towards its position
             Vector3 rideOffset = theRide.GetRidePoint(this).WithY(0) - transform.position.WithY(0);
@@ -132,6 +145,7 @@ public class PhysicsObject : MonoBehaviour
                 hVelocity = Vector3.zero;
             }
         }
+        */
 
         return hVelocity;
     }
@@ -140,6 +154,7 @@ public class PhysicsObject : MonoBehaviour
     protected virtual float HandleVerticalMovement(float vVelocity) {
         if (currentTornado != null) {
             // do nothing! we have a coroutine handling this case
+            
         }
         else if (groundNormal == Vector3.zero) {
             // apply gravity while in the air

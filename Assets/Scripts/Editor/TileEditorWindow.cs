@@ -74,6 +74,20 @@ public class TileEditorWindow : EditorWindow
                     // delete this tile
                     Undo.DestroyObjectImmediate(tile.parent.gameObject);
                 }
+
+                if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.C) {
+                    // rotate this tile
+                    
+                    if (tile.rotateMode == TileParameters.RotateMode.AROUNDY) {
+                        tile.parent.transform.RotateAround(tile.parent.transform.position, Vector3.up, 90);
+                    }
+                    else if (tile.rotateMode == TileParameters.RotateMode.SIXDIRECTIONAL) {
+                        Vector2 currentFacing = tile.transform.forward;
+                        // todo: implement
+                    }
+
+
+                }
             }
         }
     }

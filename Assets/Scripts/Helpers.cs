@@ -9,10 +9,6 @@ public static class Helpers {
         return (Mathf.Round((value - offset) / unit) * unit) + offset;
     }
 
-    public static Vector2 RoundToNearest(this Vector2 vector, Vector2 unit, Vector2 offset) {
-        return new Vector2(vector.x.RoundToNearest(unit.x, offset.x), vector.y.RoundToNearest(unit.y, offset.y));
-    }
-
     public static float Mod(this float a, float mod)
     {
         return a - mod * Mathf.Floor(a / mod);
@@ -79,10 +75,10 @@ public static class Helpers {
     public static Vector3 Round(this Vector3 vector) => new Vector3(Mathf.Round(vector.x), Mathf.Round(vector.y), Mathf.Round(vector.z));
     public static Vector2 Round(this Vector2 vector) => new Vector2(Mathf.Round(vector.x), Mathf.Round(vector.y));
 
-    public static Vector3 RoundToNearest(this Vector3 vector, float unit) => new Vector3(Helpers.RoundToNearest(vector.x, unit), Helpers.RoundToNearest(vector.y, unit), Helpers.RoundToNearest(vector.z, unit));
-    public static Vector3 RoundToNearest(this Vector3 vector, float unit, Vector3 offset) => new Vector3(Helpers.RoundToNearest(vector.x, unit, offset.x), Helpers.RoundToNearest(vector.y, unit, offset.y), Helpers.RoundToNearest(vector.z, unit, offset.z));
-    public static Vector2 RoundToNearest(this Vector2 vector, float unit) => new Vector2(Helpers.RoundToNearest(vector.x, unit), Helpers.RoundToNearest(vector.y, unit));
-    public static Vector2 RoundToNearest(this Vector2 vector, float unit, Vector3 offset) => new Vector2(Helpers.RoundToNearest(vector.x, unit, offset.x), Helpers.RoundToNearest(vector.y, unit, offset.y));
+    public static Vector3 RoundToNearest(this Vector3 vector, Vector3 unit) => new Vector3(Helpers.RoundToNearest(vector.x, unit.x), Helpers.RoundToNearest(vector.y, unit.y), Helpers.RoundToNearest(vector.z, unit.z));
+    public static Vector3 RoundToNearest(this Vector3 vector, Vector3 unit, Vector3 offset) => new Vector3(Helpers.RoundToNearest(vector.x, unit.x, offset.x), Helpers.RoundToNearest(vector.y, unit.y, offset.y), Helpers.RoundToNearest(vector.z, unit.z, offset.z));
+    public static Vector2 RoundToNearest(this Vector2 vector, Vector2 unit) => new Vector2(Helpers.RoundToNearest(vector.x, unit.x), Helpers.RoundToNearest(vector.y, unit.y));
+    public static Vector2 RoundToNearest(this Vector2 vector, Vector2 unit, Vector3 offset) => new Vector2(Helpers.RoundToNearest(vector.x, unit.x, offset.x), Helpers.RoundToNearest(vector.y, unit.y, offset.y));
 
     public static Vector3 Abs(this Vector3 vector) => new Vector3(Mathf.Abs(vector.x), Mathf.Abs(vector.y), Mathf.Abs(vector.z));
 	public static Vector2 Abs(this Vector2 vector) => new Vector2(Mathf.Abs(vector.x), Mathf.Abs(vector.y));

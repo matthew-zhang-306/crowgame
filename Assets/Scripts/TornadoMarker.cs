@@ -6,15 +6,31 @@ public class TornadoMarker : MonoBehaviour
 {
 
     public GameObject MarkerImage;
+    int wallMask;
 
     public void Awake()
     {
         deactivateMarker();
+        wallMask = LayerMask.GetMask("Wall");
     }
 
-    public void setTornadoMarker(Vector3 position)
+    public void UpdatePosition(PlayerMovement player)
     {
-        MarkerImage.transform.position = position; 
+        Vector3 markerPos = Gust.CalculateTornadoPlacement(
+            player.transform.position,
+            player.rotateTransform.forward,
+            player.tornadoSpawnDistance,
+            wallMask
+        );
+        
+        if (markerPos != Vector3.positiveInfinity) {
+            MarkerImage.SetActive(true);
+            MarkerImage.transform.position = markerPos.WithY(transform.position.y);
+        }
+        else {
+            MarkerImage.SetActive(false);
+        }
+        
     }
 
     public void activateMarker()
