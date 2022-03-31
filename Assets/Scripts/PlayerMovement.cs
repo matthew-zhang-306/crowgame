@@ -162,8 +162,9 @@ public class PlayerMovement : PhysicsObject
         {
             // the player is moving, so update the facing direction for pecking/flapping by rounding it to the nearest axis
             // get the eight-way direction of the camera
+            // NOTE: this is now the four-way direction of the camera because we're removing the eight-way directional camera
             float cameraAngle = Vector3.SignedAngle(Vector3.forward, cameraDir, Vector3.up);
-            float cameraAngleRounded = Helpers.RoundToNearest(cameraAngle, 45f);
+            float cameraAngleRounded = Helpers.RoundToNearest(cameraAngle, 90f);
             Vector3 cameraDirRounded = Quaternion.Euler(0, cameraAngleRounded, 0) * Vector3.forward;
 
             // get the four-way angle of the input

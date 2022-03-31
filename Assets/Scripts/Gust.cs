@@ -111,9 +111,10 @@ public class Gust : MonoBehaviour
     // Given an initial position and a direction, figure out where the tornado will end up if a gust was launched out.
     // Returns Vector3.positiveInfinity if there is no place to put the tornado
     // this is equivalent to what the actual gust object is doing, but all of the checks happen in one frame
-    public static Vector3 CalculateTornadoPlacement(Vector3 gustPosition, Vector3 direction, float maxDistance, int wallMask) {
+    public static Vector3 CalculateTornadoPlacement(Vector3 gustPosition, Vector3 direction, float maxDistance, int wallMask, out bool isValid) {
         Collider[] colliders = null;
         Vector3 thePosition = gustPosition;
+        isValid = true;
 
         // guard against infinite loops
         int numLoops = 0;
@@ -123,6 +124,7 @@ public class Gust : MonoBehaviour
             numLoops++;
             if (numLoops > 100) {
                 Debug.LogError("Infinite loop detected in CalculateTornadoPlacement(" + gustPosition + ", " + direction + ", " + maxDistance + ")");
+                isValid = false;
                 break;
             }
 
@@ -150,7 +152,7 @@ public class Gust : MonoBehaviour
         colliders = Physics.OverlapBox(thePosition, Vector3.one * 0.3f, Quaternion.identity, wallMask);
         if (colliders.Length > 0) {
             // we can't put a tornado here unfortunately
-            return Vector3.positiveInfinity;
+            isValid = false;
         }
 
         return thePosition;

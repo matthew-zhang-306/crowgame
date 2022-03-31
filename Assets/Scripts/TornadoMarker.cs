@@ -20,10 +20,11 @@ public class TornadoMarker : MonoBehaviour
             player.transform.position,
             player.rotateTransform.forward,
             player.tornadoSpawnDistance,
-            wallMask
+            wallMask,
+            out bool isValid
         );
         
-        if (markerPos != Vector3.positiveInfinity) {
+        if (isValid) {
             MarkerImage.SetActive(true);
             MarkerImage.transform.position = markerPos.WithY(transform.position.y);
         }
