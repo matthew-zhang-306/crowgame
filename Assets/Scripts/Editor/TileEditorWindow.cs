@@ -88,6 +88,11 @@ public class TileEditorWindow : EditorWindow
                 }
             }
         }
+
+        if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.S) {
+            SnapSelection();
+        }
+
     }
 
     private void DrawTileSelect() {
@@ -132,6 +137,10 @@ public class TileEditorWindow : EditorWindow
             selectedTileProp.objectReferenceValue = null;
         }
 
+        if (GUILayout.Button("Snap Selected To Grid")) {
+            SnapSelection();
+        }
+
         if (so.ApplyModifiedProperties()) {
             SceneView.RepaintAll();
         }
@@ -152,5 +161,37 @@ public class TileEditorWindow : EditorWindow
             GameObject asset = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guid));
             tilePrefabs.Add(asset);
         }
+    }
+
+
+    public void SnapSelection() {
+        Undo.IncrementCurrentGroup();
+        Undo.SetCurrentGroupName("Snap Selection");
+        var undoGroupIndex = Undo.GetCurrentGroup();
+
+        foreach (Object obj in Selection.objects) {
+            GameObject go = obj as GameObject;
+            TileParameters tile = go?.GetComponent<TileParameters>() ?? go?.GetComponentInChildren<TileParameters>(true);
+            if (tile != null) {
+                // snap this tile to the grid
+                Undo.RecordObject(tile.parent.transform, "");
+                
+                // we're going to do the rounding manually, because we need a midpoint rounding policy that c# doesn't natively support
+                System.Func<float, float> manualRound = (value) => {
+                    if (Mathf.Abs(0.5f - (value.Mod(1))) <= 0.01) {
+                        // midpoint rounding strategy: floor
+                        return Mathf.Floor(value);
+                    }
+                    return Mathf.Round(value);
+                };
+                tile.parent.transform.position = new Vector3(
+                    manualRound(tile.parent.transform.position.x),
+                    manualRound(tile.parent.transform.position.y),
+                    manualRound(tile.parent.transform.position.z)
+                );
+            }
+        }
+
+        Undo.CollapseUndoOperations(undoGroupIndex);
     }
 }
