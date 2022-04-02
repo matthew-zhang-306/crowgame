@@ -56,16 +56,14 @@ public class TileEditorWindow : EditorWindow
                 adjPos = new Vector3(Mathf.Round(adjPos.x), Mathf.Round(adjPos.y), Mathf.Round(adjPos.z));
                 Handles.DrawWireCube(adjPos, Vector3.one);
 
-                Debug.Log("hitting");
-
                 if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Space) {
                     // place the object here
                     if (selectedTile == null) {
-                        Debug.Log("no selected tile");
+                        Debug.LogError("no selected tile");
                         return;
                     }
 
-                    GameObject newTile = (GameObject)PrefabUtility.InstantiatePrefab(selectedTile, hit.collider.GetComponentInParent<TileEditor>().transform);
+                    GameObject newTile = (GameObject)PrefabUtility.InstantiatePrefab(selectedTile, tile.parent.parent);
                     Undo.RegisterCreatedObjectUndo(newTile, newTile.name);
                     newTile.transform.position = adjPos;
                 }
