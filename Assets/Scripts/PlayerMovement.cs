@@ -53,6 +53,7 @@ public class PlayerMovement : PhysicsObject
     private bool oldGustInput;
 
     private bool inCutscene;
+    private float invincibilityTimer;
 
     //raycast variables
     public bool boxCastHit;
@@ -101,6 +102,8 @@ public class PlayerMovement : PhysicsObject
 
     protected override void FixedUpdate()
     {
+        invincibilityTimer = Mathf.Max(0, invincibilityTimer - Time.deltaTime);
+
         if (playerState == PlayerState.DEAD) {
             // stay stationary when dead
             SetRelativeVelocity(Vector3.zero);
@@ -304,12 +307,13 @@ public class PlayerMovement : PhysicsObject
     }
 
     public void Die() {
-        if (playerState == PlayerState.DEAD || inCutscene) {
+        if (playerState == PlayerState.DEAD || inCutscene || invincibilityTimer > 0f) {
             return;
         }
 
         inCutscene = true;
         playerState = PlayerState.DEAD;
+        var normalMaterial = mainSprite.material;
 
         Debug.Log("dead!");
 
@@ -317,7 +321,14 @@ public class PlayerMovement : PhysicsObject
             .InsertCallback(0, () => mainSprite.material = whiteMaterial) // white flash
             .InsertCallback(0.1f, () => mainSprite.material = dissolveMaterial) // dissolve
             .Insert(0.1f, DOTween.To(t => mainSprite.material.SetFloat("_Threshold", t), 1f, 0f, 0.7f).SetEase(Ease.InOutCubic))
-            .InsertCallback(1f, () => Managers.ScenesManager.ResetScene()); // reset
+            .InsertCallback(1f, () => {
+                // instead of resetting the level, we're going to do a respawn
+                playerState = PlayerState.MOVE;
+                mainSprite.material = normalMaterial;
+                inCutscene = false;
+                invincibilityTimer = 0.1f;
+                WarpToSafePosition(); 
+            });
     }
 
 

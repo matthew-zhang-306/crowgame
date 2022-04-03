@@ -6,6 +6,9 @@ using DG.Tweening;
 public static class Helpers {
 
     public static float RoundToNearest(this float value, float unit, float offset = 0f) {
+        if (unit == 0f) {
+            return value;
+        }
         return (Mathf.Round((value - offset) / unit) * unit) + offset;
     }
 

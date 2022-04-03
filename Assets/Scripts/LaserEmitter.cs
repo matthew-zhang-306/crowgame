@@ -5,11 +5,16 @@ using UnityEngine;
 public class LaserEmitter : MonoBehaviour
 {
     
-    public LineRenderer lineRenderer; // this object positioned where the laser starts
+    public Transform laserContainer;
     private int hitMask;
     private bool playingLaser;
 
     public float maxDistance;
+
+    // for debugging
+    private bool hasHit;
+    private float lastDistance;
+    private Vector3 lastHit;
 
 
     private void Start() {
@@ -23,14 +28,18 @@ public class LaserEmitter : MonoBehaviour
 
         // determine how far the laser goes by raycasting
         if (Physics.BoxCast(
-            lineRenderer.transform.position,
-            Vector3.one * lineRenderer.startWidth,
-            lineRenderer.transform.right,
+            GetRaycastPosition(),
+            GetRaycastSize(),
+            laserContainer.transform.right,
             out RaycastHit hit,
-            Quaternion.identity,
+            laserContainer.rotation,
             distance,
             hitMask
         )) {
+            hasHit = true;
+            lastHit = hit.point;
+            lastDistance = hit.distance;
+
             distance = hit.distance;   
             if (hit.collider.CompareTag("Player")) {
                 // player is getting hit with a laser
@@ -43,8 +52,33 @@ public class LaserEmitter : MonoBehaviour
                 hit.collider.GetComponent<PlayerMovement>()?.Die();
             }
         }
+        else {
+            hasHit = false;
+        }
 
         // have the line extend forward the right length
-        lineRenderer.SetPosition(1, Vector3.right * distance);
+        laserContainer.transform.localScale = new Vector3(distance, 1f, 1f);
+    }
+
+    private Vector3 GetRaycastPosition() {
+        return laserContainer.transform.position - laserContainer.transform.right * 0.05f;
+    }
+
+    private Vector3 GetRaycastSize() {
+        return new Vector3(0.1f, 0.95f, 0.1f);
+        /*
+            laserContainer.transform.right * 0.1f +
+            laserContainer.transform.forward * 0.1f +
+            laserContainer.transform.up * 0.95f;
+        */
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(GetRaycastPosition(), 0.2f);
+        if (hasHit) {
+            Gizmos.DrawWireSphere(lastHit, 0.2f);
+            // Gizmos.DrawWireCube(GetRaycastPosition() + laserContainer.transform.right * lastDistance, GetRaycastSize());
+        }
     }
 }
