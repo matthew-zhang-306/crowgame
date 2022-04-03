@@ -90,12 +90,10 @@ public class Tornado : PhysicsObject
 
 
     public override Vector3 GetRidePoint(PhysicsObject rider) {
-        /*
         if (rider is PlayerMovement player) {
-            // lift the player up less
-            return Top - new Vector3(0, 0.5f, 0);
+            // lift the player up slightly more so that they can get onto ledges
+            return Top + new Vector3(0, 0.05f, 0);
         }
-        */
 
         return Top;
     }

@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Gust : MonoBehaviour
 {
+    private static Vector3 GRID_SIZE = new Vector3(1, 0, 1);
+
     [Header("Parameters")]
     public float moveSpeed;
     public float maxDistance;
@@ -39,7 +41,7 @@ public class Gust : MonoBehaviour
         if (isMoving) {
             // check the grid position in front of us
             Vector3 positionInFront = transform.position + transform.forward * 0.6f;
-            Vector3 gridPositionInFront = positionInFront.RoundToNearest(Vector3.one);
+            Vector3 gridPositionInFront = positionInFront.RoundToNearest(GRID_SIZE);
             var colliders = Physics.OverlapBox(gridPositionInFront, Vector3.one * 0.3f, Quaternion.identity, wallNoBoxMask);
             if (colliders.Length > 0) {
                 // there's stuff in the way in front of us. let's not go further
@@ -101,7 +103,7 @@ public class Gust : MonoBehaviour
         }
         */
 
-        thePosition = thePosition.RoundToNearest(Vector3.one);
+        thePosition = thePosition.RoundToNearest(GRID_SIZE);
 
         GameObject.Instantiate(tornadoPrefab, thePosition, Quaternion.identity, null);
         Destroy(gameObject);
@@ -129,7 +131,7 @@ public class Gust : MonoBehaviour
             }
 
             Vector3 nextPosition = thePosition + direction * 0.5f;
-            nextPosition = nextPosition.RoundToNearest(Vector3.one);
+            nextPosition = nextPosition.RoundToNearest(GRID_SIZE);
 
             // check if the next position is open
             colliders = Physics.OverlapBox(nextPosition, Vector3.one * 0.3f, Quaternion.identity, wallMask);
@@ -146,7 +148,7 @@ public class Gust : MonoBehaviour
             // ensure thePosition isn't too far away
             thePosition = gustPosition + direction * maxDistance;
         }
-        thePosition = thePosition.RoundToNearest(Vector3.one);
+        thePosition = thePosition.RoundToNearest(GRID_SIZE);
 
         // do one more final check to see if thePosition is actually open
         colliders = Physics.OverlapBox(thePosition, Vector3.one * 0.3f, Quaternion.identity, wallMask);

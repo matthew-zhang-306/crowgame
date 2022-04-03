@@ -125,6 +125,9 @@ public class PhysicsObject : MonoBehaviour
             // check for theRide's local grid
             Vector3 gridPosition = transform.position.RoundToNearest(Vector3.one, theRide.transform.position.WithY(0));
             Vector3.SmoothDamp(transform.position, gridPosition, ref hVelocity, 0.1f, 999f);
+            if (this is Tornado tornado) {
+                Debug.Log("we are snapping to " + gridPosition);
+            }
         }
         else if (groundNormal != Vector3.zero) {
             // align to the world grid while on the ground
