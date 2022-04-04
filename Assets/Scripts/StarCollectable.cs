@@ -27,7 +27,7 @@ public class StarCollectable : MonoBehaviour
     }
 
     //for testing
-    /*private void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
@@ -37,7 +37,7 @@ public class StarCollectable : MonoBehaviour
         {
             Managers.ProgressManager.SetStarCollected(sceneIndex, 1, true);
         }
-    }*/
+    }
 
     private void OnTriggerEnter(Collider other) {
 
