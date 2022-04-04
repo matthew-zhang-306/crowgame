@@ -42,6 +42,7 @@ public class ProgressManager : MonoBehaviour
 
         //resets the bridges
         PlayerPrefsX.SetBool("isBridgeOpened", false);
+        PlayerPrefsX.SetBool("isBridgeOpenedTwo", false);
     }
 
 

@@ -26,6 +26,19 @@ public class StarCollectable : MonoBehaviour
         }
     }
 
+    //for testing
+    /*private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            Managers.ProgressManager.SetStarCollected(sceneIndex, 0, true);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            Managers.ProgressManager.SetStarCollected(sceneIndex, 1, true);
+        }
+    }*/
+
     private void OnTriggerEnter(Collider other) {
 
         if (collected)
