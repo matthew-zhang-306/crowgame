@@ -34,12 +34,13 @@ public class WarpAltar : MonoBehaviour
             if (Managers.ScenesManager.IsPuzzleSceneLoaded())
             {
                 GameObject puzzleControlGo = GameObject.FindGameObjectWithTag("PuzzleDialogue");
-                PuzzleDialogueControl puzzleControlScript = puzzleControlGo.GetComponent<PuzzleDialogueControl>();
-                if (!puzzleControlScript.triggeredDialogue)
-                {
-                    puzzleControlScript.triggeredDialogue = true;
-                    puzzleControlScript.ExitPuzzle();
-                }
+                puzzleControlGo.GetComponent<PuzzleEndController>().ExitPuzzle();
+                //PuzzleDialogueControl puzzleControlScript = puzzleControlGo.GetComponent<PuzzleDialogueControl>();
+                //if (!puzzleControlScript.triggeredDialogue)
+                //{
+                //    puzzleControlScript.triggeredDialogue = true;
+                //    puzzleControlScript.ExitPuzzle();
+                //}
             }
             else
             {
