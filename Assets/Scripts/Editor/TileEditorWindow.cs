@@ -97,7 +97,7 @@ public class TileEditorWindow : EditorWindow
 
     private void DrawTileSelect() {
         Handles.BeginGUI();
-        Rect rect = new Rect(8, 8, 64, 64);
+        Rect rect = new Rect(8, 8, 48, 48);
 
         foreach (GameObject tilePrefab in tilePrefabs) {
             if (tilePrefab == null) {
@@ -114,7 +114,7 @@ public class TileEditorWindow : EditorWindow
             }
 
             // advance to the next rectangle
-            if (rect.x + rect.width + 2 > 200) {
+            if (rect.x + rect.width + 2 > 225) {
                 rect.x = 8;
                 rect.y += rect.height + 2;
             }
