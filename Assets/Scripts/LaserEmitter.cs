@@ -65,7 +65,7 @@ public class LaserEmitter : MonoBehaviour
     }
 
     private Vector3 GetRaycastSize() {
-        return new Vector3(0.1f, 0.95f, 0.1f);
+        return new Vector3(0.1f, 0.95f, 0.1f) / 2;
         /*
             laserContainer.transform.right * 0.1f +
             laserContainer.transform.forward * 0.1f +
@@ -78,7 +78,7 @@ public class LaserEmitter : MonoBehaviour
         Gizmos.DrawWireSphere(GetRaycastPosition(), 0.2f);
         if (hasHit) {
             Gizmos.DrawWireSphere(lastHit, 0.2f);
-            // Gizmos.DrawWireCube(GetRaycastPosition() + laserContainer.transform.right * lastDistance, GetRaycastSize());
+            Gizmos.DrawWireCube(GetRaycastPosition() + laserContainer.transform.right * lastDistance, GetRaycastSize());
         }
     }
 }

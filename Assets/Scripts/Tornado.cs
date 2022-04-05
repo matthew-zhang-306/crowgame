@@ -32,6 +32,13 @@ public class Tornado : PhysicsObject
         previousPlayer = null;
     }
 
+    protected override void CheckForGround()
+    {
+        base.CheckForGround();
+
+        Debug.Log("tornado groundnormal is " + groundNormal);
+    }
+
     private void OnDestroy()
     {
         OnTornadoSpawned -= TornadoSpawned;
@@ -52,7 +59,7 @@ public class Tornado : PhysicsObject
             collider.bounds.center - new Vector3(0, 0.05f, 0),
             Vector3.up,
             out RaycastHit hit,
-            topOffset + 0.2f, // cast slightly higher than the top so that any boxes that move slightly above can still be caught
+            Top.y - collider.bounds.center.y + 0.2f, // cast slightly higher than the top so that any boxes that move slightly above can still be caught
             LayerMask.GetMask("Box")
         );
         PushableBox box = null;
@@ -73,7 +80,7 @@ public class Tornado : PhysicsObject
             Vector3.up,
             out hit,
             Quaternion.identity,
-            cast ? hit.distance : topOffset + 0.2f,
+            cast ? hit.distance : Top.y - collider.bounds.center.y + 0.2f,
             LayerMask.GetMask("Player")
         );
         PlayerMovement player = null;

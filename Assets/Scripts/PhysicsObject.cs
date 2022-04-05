@@ -68,9 +68,16 @@ public class PhysicsObject : MonoBehaviour
         velocity = vel;
 
         PhysicsObject ride = GetMainCarrier();
+        if (this is PushableBox box && currentTornado != null) {
+            Debug.Log(ride + " " + ride.rigidbody.velocity);
+        }
         previousGroundVelocity = ride != null ? ride.rigidbody.velocity : Vector3.zero;
         velocity += previousGroundVelocity;
         rigidbody.velocity = velocity;
+
+        if (this is PushableBox boxx && currentTornado != null) {
+            Debug.Log(vel + " " + rigidbody.velocity);
+        }
 
         // our velocity has changed so we update the velocity of everyone riding us to account for it
         foreach (PhysicsObject riding in allRiders) {
@@ -95,7 +102,17 @@ public class PhysicsObject : MonoBehaviour
         groundRigidbody = null;
 
         // boxcast down starting from a location raised by 0.1
-        if (Physics.BoxCast(collider.bounds.center + Vector3.up * 0.1f, collider.bounds.extents - Vector3.one * 0.03f, Vector3.down, out RaycastHit hit, Quaternion.identity, 0.25f, wallMask)) {
+        var castHit = Physics.BoxCast(
+            collider.bounds.center + Vector3.up * 0.1f, // we raise the location by 0.1 in case the object is slightly inside of the ground it is on
+            collider.bounds.extents - new Vector3(0.03f, 0f, 0.03f), // we decrease the box size by 0.03 in the horizontal directions to avoid being able to stand on wall seams
+            Vector3.down,
+            out RaycastHit hit,
+            Quaternion.identity,
+            0.25f,
+            wallMask
+        );
+
+        if (castHit) {
             Debug.DrawRay(transform.position, hit.normal * 2f, Color.red, Time.fixedDeltaTime);
 
             // we hit ground at this location
@@ -125,9 +142,6 @@ public class PhysicsObject : MonoBehaviour
             // check for theRide's local grid
             Vector3 gridPosition = transform.position.RoundToNearest(Vector3.one, theRide.transform.position.WithY(0));
             Vector3.SmoothDamp(transform.position, gridPosition, ref hVelocity, 0.1f, 999f);
-            if (this is Tornado tornado) {
-                Debug.Log("we are snapping to " + gridPosition);
-            }
         }
         else if (groundNormal != Vector3.zero) {
             // align to the world grid while on the ground
@@ -156,6 +170,7 @@ public class PhysicsObject : MonoBehaviour
     // calculates what the object's new vertical velocity should be based on what it is currently
     protected virtual float HandleVerticalMovement(float vVelocity) {
         if (currentTornado != null) {
+            // tornadoes override being in the air
             Mathf.SmoothDamp(transform.position.y, currentTornado.GetRidePoint(this).y, ref vVelocity, 0.1f, 8f);
         }
         else if (groundNormal == Vector3.zero) {
@@ -165,6 +180,12 @@ public class PhysicsObject : MonoBehaviour
                 vVelocity = -maxFallSpeed;
         }
         else {
+            var carrier = GetMainCarrier();
+            if (carrier != null) {
+                // stay at ride height while riding something
+                Mathf.SmoothDamp(transform.position.y, carrier.GetRidePoint(this).y, ref vVelocity, 0.1f, 8f);
+            }
+
             // stay at the ground height while on the ground
             vVelocity = -groundDistance / Time.fixedDeltaTime;
         }

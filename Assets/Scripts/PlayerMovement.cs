@@ -186,11 +186,23 @@ public class PlayerMovement : PhysicsObject
         // this is for the most part identical to PhysicsObject.CheckForGround()
         groundNormal = Vector3.zero;
         groundRigidbody = null;
-        if (Physics.BoxCast(collider.bounds.center + Vector3.up * 0.1f, collider.bounds.extents, Vector3.down, out RaycastHit hit, Quaternion.identity, 0.25f, wallMask))
+
+        // boxcast down starting from a location raised by 0.1
+        var castHit = Physics.BoxCast(
+            collider.bounds.center + Vector3.up * 0.1f, // we raise the location by 0.1 in case the object is slightly inside of the ground it is on
+            collider.bounds.extents - new Vector3(0.03f, 0f, 0.03f), // we decrease the box size by 0.03 in the horizontal directions to avoid being able to stand on wall seams
+            Vector3.down,
+            out RaycastHit hit,
+            Quaternion.identity,
+            0.25f,
+            wallMask
+        );
+
+        if (castHit)
         {
             Debug.DrawRay(hit.point, hit.normal * 2f, Color.red, Time.fixedDeltaTime);
 
-            // but the player requires an extra check for the slope angle
+            // but there is an extra check for the slope angle here
             if (Vector3.Dot(Vector3.up, hit.normal) > 0.65f)
             {
                 groundY = hit.point.y;
