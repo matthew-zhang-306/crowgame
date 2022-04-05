@@ -59,19 +59,11 @@ public class AudioManager : MonoBehaviour
         if (s != null)
         {
             audioSource.PlayOneShot(s, volumeMultiplier);
-            for (int i = 0; i < sounds.Length; i++)
-            {
-                Debug.Log("" + sounds[i].name + " == " + soundName + " -> " + (sounds[i].name == soundName));
-            }
         }
         else
         {
             Debug.Log("Could not play the sound because it's not in the array!");
             Debug.Log("song name: " + soundName);
-            for (int i = 0; i < sounds.Length; i++)
-            {
-                Debug.Log("" + sounds[i].name + " == " + soundName + " -> " + (sounds[i].name == soundName));
-            }
         }
             
 

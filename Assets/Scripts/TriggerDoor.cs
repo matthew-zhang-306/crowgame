@@ -10,6 +10,12 @@ public class TriggerDoor : BaseSwitch
         if (other.CompareTag("Player") || other.CompareTag("Box")) {
             Switch();
         }
+
+        if (this.CompareTag("Button"))
+        {
+            Debug.Log("This is a button");
+            Managers.AudioManager.PlaySound("button_press");
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -19,6 +25,7 @@ public class TriggerDoor : BaseSwitch
             //if a button nothing needs to be done on exit, stay in position
             if (this.CompareTag("PressurePlate"))
             {
+                Debug.Log("This is a pressure plate");
                 Switch();
             }
         }
