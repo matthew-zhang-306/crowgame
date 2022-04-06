@@ -5,6 +5,8 @@ using DG.Tweening;
 
 public class PlayerMovement : PhysicsObject
 {
+    public static System.Action OnRespawn;
+
     public enum PlayerState {
         MOVE,
         PECK,
@@ -316,6 +318,7 @@ public class PlayerMovement : PhysicsObject
 
     public void WarpToSafePosition() {
         transform.position = safePositionSO.position;
+        OnRespawn?.Invoke();
     }
 
     public void Die() {
