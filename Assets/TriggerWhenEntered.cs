@@ -5,10 +5,10 @@ using UnityEngine;
 public class TriggerWhenEntered : BaseSwitch
 {
     private void OnEnable() {
-        RespawnRegion.OnRespawn += OnRespawn;
+        PlayerMovement.OnRespawn += OnRespawn;
     }
     private void OnDisable() {
-        RespawnRegion.OnRespawn -= OnRespawn;
+        PlayerMovement.OnRespawn -= OnRespawn;
     }
 
     private void OnTriggerEnter(Collider other) {
