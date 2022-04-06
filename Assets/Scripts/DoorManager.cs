@@ -32,7 +32,7 @@ public class DoorManager : BaseSwitchable
         visualTransform.DOMove(State ? openPosition : closedPosition, 1.0f)
             .SetEase(Ease.InOutCubic);
 
-        Managers.AudioManager.PlaySound("door_open");
+        Managers.AudioManager.PlaySound("door_opening");
     }
 
     private void OnDrawGizmos() {

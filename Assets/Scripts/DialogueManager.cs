@@ -12,6 +12,7 @@ public class DialogueManager : MonoBehaviour
     private Queue<string> sentences;
     public Text nameText;
     public Text dialogueText;
+    public Text nextText;
     private bool pressed;
     private bool isRunning;
     public List<GameObject> panelImages = new List<GameObject>();
@@ -24,6 +25,11 @@ public class DialogueManager : MonoBehaviour
     {
         sentences = new Queue<string>();
         EventSystem.current.SetSelectedGameObject(skipButton);
+
+        #if UNITY_WSA
+            //xbox version of text
+            nextText.text = "press A";
+        #endif
     }
 
     private void Update()

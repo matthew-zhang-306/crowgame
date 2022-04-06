@@ -9,7 +9,11 @@ public class TriggerDoor : BaseSwitch
     {
         if (other.CompareTag("Player") || other.CompareTag("Box")) {
             Switch();
+            //play sound on enter for both pressure plate and button
+            Managers.AudioManager.PlaySound("button_press");
         }
+            
+           
     }
 
     private void OnTriggerExit(Collider other)
@@ -19,6 +23,8 @@ public class TriggerDoor : BaseSwitch
             //if a button nothing needs to be done on exit, stay in position
             if (this.CompareTag("PressurePlate"))
             {
+                //only play sound on exit if it is a pressure plate
+                Managers.AudioManager.PlaySound("button_press");
                 Switch();
             }
         }

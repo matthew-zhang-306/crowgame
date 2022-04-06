@@ -41,12 +41,13 @@ public class ScenesManager : MonoBehaviour
         if (IsHubSceneLoaded() || IsPuzzleSceneLoaded() || IsTutorialSceneLoaded())
         {
             Managers.PauseMenu.enabled = true;
-            Managers.ScenesManager.GetComponentInChildren<RestartSlider>().enabled = true;
+            gameObject.GetComponentInChildren<RestartSlider>().enabled = true;
         }
         else
         {
             Managers.PauseMenu.enabled = false;
-            Managers.ScenesManager.GetComponentInChildren<RestartSlider>().enabled = false;
+            gameObject.GetComponentInChildren<RestartSlider>().gameObject.transform.localScale = new Vector3(0, 0, 0);
+            gameObject.GetComponentInChildren<RestartSlider>().enabled = false;
         }
 
         IsTransitioning = false;

@@ -20,6 +20,7 @@ public class AudioManager : MonoBehaviour
         PLAYING
     }
     private MusicState state = MusicState.UNLOADED;
+    
 
     public AudioClip[] sounds;
     AudioSource audioSource;
@@ -56,14 +57,17 @@ public class AudioManager : MonoBehaviour
         // todo
         //get the sound
         AudioClip s = Array.Find(sounds, sound => sound.name == soundName);
-        if(s != null)
+        if (s != null)
         {
+            Debug.Log("Playing " + soundName);
             audioSource.PlayOneShot(s, volumeMultiplier);
         }
         else
         {
             Debug.Log("Could not play the sound because it's not in the array!");
+            Debug.Log("song name: " + soundName);
         }
+            
 
         
     }
