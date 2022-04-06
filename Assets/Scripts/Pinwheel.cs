@@ -36,7 +36,7 @@ public class Pinwheel : BaseSwitch
         // check if there is a tornado blowing on us from below
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 4f, windMask)) {
             Tornado tornado = hit.collider.GetComponent<Tornado>();
-            if (tornado != null && tornado.Top.y > transform.position.y) {
+            if (tornado != null && tornado.Top.y > transform.position.y - 0.1f) {
                 isOn = true;
                 Managers.AudioManager.PlaySound("pinwheel");
             }
