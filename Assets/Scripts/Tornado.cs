@@ -32,13 +32,6 @@ public class Tornado : PhysicsObject
         previousPlayer = null;
     }
 
-    protected override void CheckForGround()
-    {
-        base.CheckForGround();
-
-        Debug.Log("tornado groundnormal is " + groundNormal);
-    }
-
     private void OnDestroy()
     {
         OnTornadoSpawned -= TornadoSpawned;

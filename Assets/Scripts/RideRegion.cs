@@ -10,7 +10,7 @@ public class RideRegion : MonoBehaviour
     protected void OnTriggerEnter(Collider other) {
         PhysicsObject obj = other.GetComponent<PhysicsObject>();
 
-        if (obj != null && obj != physicsObject && obj.transform.position.y > transform.position.y) {
+        if (obj != null && obj != physicsObject && obj.transform.position.y > collider.bounds.max.y) {
             physicsObject.AddRider(obj);
         }
     }
