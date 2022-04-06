@@ -38,14 +38,18 @@ public class Pinwheel : BaseSwitch
             Tornado tornado = hit.collider.GetComponent<Tornado>();
             if (tornado != null && tornado.Top.y > transform.position.y) {
                 isOn = true;
-                Managers.AudioManager.PlaySound("pinwheel");
             }
         }
 
         if (isOn != oldIsOn) {
             // this is a change of state
             Switch();
-
+            if (isOn)
+            {
+                //switching to on, play sound
+                Managers.AudioManager.PlaySound("pinwheel", 5f);
+            }
+           
             spriteRenderer.DOKill();
             spriteRenderer.DOColor(isOn ? onColor : offColor, 0.5f);
             DOTween.To(s => currentRotateSpeed = s, currentRotateSpeed, isOn ? maxRotateSpeed : 0, 0.5f)
