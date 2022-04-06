@@ -83,27 +83,8 @@ public class Gust : MonoBehaviour
             
         }
 
-        /*
-        else if(rayHit)
-        {
-            Vector3 backward = -1 * transform.forward;
-            
-            thePosition = thePosition + Vector3.Scale(backward, tornadoPrefab.transform.localScale / 2)
-             + Vector3.Scale(transform.forward, markerSize / 2);
-
-            Debug.Log("boxcast hit");
-        }
-        */
-        /*
-        else if (!playerColliding)
-        {
-            //acount for size of tornado prefab
-            thePosition = thePosition + Vector3.Scale(transform.forward, tornadoPrefab.transform.localScale / 2);
-            Debug.Log("boxcast not hit");
-        }
-        */
-
         thePosition = thePosition.RoundToNearest(GRID_SIZE);
+        // thePosition += new Vector3(0, 0.1f, 0);
 
         GameObject.Instantiate(tornadoPrefab, thePosition, Quaternion.identity, null);
         Destroy(gameObject);
