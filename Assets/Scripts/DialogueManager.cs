@@ -115,7 +115,28 @@ public class DialogueManager : MonoBehaviour
     public void EndDialogue()
     {
         //Debug.Log("End of Conversation");
-        Managers.ScenesManager.ChangeScene(nextSceneName);
+        if (SceneManager.GetActiveScene().name == "EndCutscene")
+        {
+            GameObject menuBtn = this.transform.GetChild(0).gameObject;
+            GameObject quitBtn = this.transform.GetChild(1).gameObject;
+            menuBtn.SetActive(true);
+            quitBtn.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(menuBtn);
+        }
+        else
+        {
+            Managers.ScenesManager.ChangeScene(nextSceneName);
+        }
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void ReturnMenu()
+    {
+        Managers.ScenesManager.ChangeScene("Menu");
     }
 }
 
