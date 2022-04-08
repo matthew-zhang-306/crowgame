@@ -43,15 +43,15 @@ public class ScenesManager : MonoBehaviour
             Managers.PauseMenu.enabled = true;
             gameObject.GetComponentInChildren<RestartSlider>().enabled = true;
         }
-        if (IsEndSceneLoaded())
-        {
-            GameObject.FindGameObjectWithTag("BlackPanel").GetComponent<FadePanel>().fadeIn();
-        }
         else
         {
             Managers.PauseMenu.enabled = false;
             gameObject.GetComponentInChildren<RestartSlider>().gameObject.transform.localScale = new Vector3(0, 0, 0);
             gameObject.GetComponentInChildren<RestartSlider>().enabled = false;
+        }
+        if (IsEndSceneLoaded())
+        {
+            GameObject.FindGameObjectWithTag("BlackPanel").GetComponent<FadePanel>().fadeIn();
         }
 
         IsTransitioning = false;

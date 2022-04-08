@@ -18,11 +18,13 @@ public class PuzzleEndController : MonoBehaviour
     public Image dialogueImage;
     private PlayerMovement playerMovementScript;
     private CameraController camControllerScript;
+    private bool isLeaving;
     private int levelNumber => Managers.ScenesManager.levelNumber;
 
     // Start is called before the first frame update
     void Start()
     {
+        isLeaving = false;
         DialogueCanvas.SetActive(false);
         playerMovementScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         camControllerScript = GameObject.FindGameObjectWithTag("PlayerCam").GetComponent<CameraController>();
@@ -82,13 +84,23 @@ public class PuzzleEndController : MonoBehaviour
 
     public void LeaveToHub()
     {
-        DOTween.Sequence().InsertCallback(
+        if (!isLeaving)
+        {
+            isLeaving = true;
+            Invoke("ResetLeave", 3f);
+            DOTween.Sequence().InsertCallback(
                 1.0f, () => Managers.ScenesManager.ChangeScene("Hub-World"));
+        }
     }
 
     public void StayInPuzzle()
     {
         confirmationButtons.SetActive(false);
         DialogueCanvas.SetActive(false);
+    }
+
+    private void ResetLeave()
+    {
+        isLeaving = false;
     }
 }
