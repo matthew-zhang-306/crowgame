@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 
 public class HubDialogueController : MonoBehaviour
@@ -66,7 +67,14 @@ public class HubDialogueController : MonoBehaviour
         {
             if (dialogueIdx >= hubDialogue.zodiacs[zodiacIndex].Dialogue.Length)
             {
-                EndTalk();
+                if (Managers.ScenesManager.IsTutorialSceneLoaded())
+                {
+                    EndTutorial();
+                }
+                else
+                {
+                    EndTalk();
+                }
                 return;
             }
             StopAllCoroutines();
@@ -97,7 +105,14 @@ public class HubDialogueController : MonoBehaviour
                 TalkButton = "A";
 #endif
             isTalking = true;
-            other.GetComponent<PlayerMovement>().actionIndicator.Show(TalkButton, "Talk");
+            if (Managers.ScenesManager.IsTutorialSceneLoaded())
+            {
+                other.GetComponent<PlayerMovement>().actionIndicator.Show(TalkButton, "Warp to Hub");
+            }
+            else
+            {
+                other.GetComponent<PlayerMovement>().actionIndicator.Show(TalkButton, "Talk");
+            }
         }
     }
 
@@ -106,7 +121,14 @@ public class HubDialogueController : MonoBehaviour
         if (other.tag == "Player")
         {
             isTalking = false;
-            EndTalk();
+            if (!Managers.ScenesManager.IsTutorialSceneLoaded())
+            {
+                EndTalk();
+            }
+            else
+            {
+                dialogueIdx = -1;
+            }
             other.GetComponent<PlayerMovement>().actionIndicator.Hide();
         }
     }
@@ -117,5 +139,10 @@ public class HubDialogueController : MonoBehaviour
         dialogueCamera.SetActive(false);
         dialogueCanvas.SetActive(false);
         dialogueIdx = -1;
+    }
+    private void EndTutorial()
+    {
+        DOTween.Sequence().InsertCallback(
+                1.0f, () => Managers.ScenesManager.ChangeScene("Hub-World"));
     }
 }
