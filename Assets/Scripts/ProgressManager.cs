@@ -64,6 +64,18 @@ public class ProgressManager : MonoBehaviour
         PlayerPrefsX.SetBool("Visited" + level, visited);        
     }
 
+    public bool IsAllCollected()
+    {
+        for(int i = 0; i < levelList.numLevels; i++)
+        {
+            if ((!Managers.ProgressManager.IsStarCollected(i, 0)) || (!Managers.ProgressManager.IsStarCollected(i, 1)))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     [ContextMenu("Reset Visited Levels")]
     public void ResetVisitedLevels() {
         for (int i = 0; i < levelList.numLevels; i++) {

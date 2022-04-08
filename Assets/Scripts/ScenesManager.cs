@@ -43,6 +43,10 @@ public class ScenesManager : MonoBehaviour
             Managers.PauseMenu.enabled = true;
             gameObject.GetComponentInChildren<RestartSlider>().enabled = true;
         }
+        if (IsEndSceneLoaded())
+        {
+            GameObject.FindGameObjectWithTag("BlackPanel").GetComponent<FadePanel>().fadeIn();
+        }
         else
         {
             Managers.PauseMenu.enabled = false;
@@ -134,5 +138,11 @@ public class ScenesManager : MonoBehaviour
     // returns true if some level scene is currently loaded
     public bool IsPuzzleSceneLoaded() {
         return SceneManager.GetActiveScene().name.StartsWith("P_");
+    }
+
+    // returns true if endcutscene is currently loaded
+    public bool IsEndSceneLoaded()
+    {
+        return SceneManager.GetActiveScene().name == "EndCutscene";
     }
 }

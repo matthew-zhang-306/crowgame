@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class StarCollectable : MonoBehaviour
 {
@@ -68,5 +69,15 @@ public class StarCollectable : MonoBehaviour
     private void SetStarInactive()
     {
         this.gameObject.SetActive(false);
+        EndCheck();
+        
+    }
+
+    private void EndCheck()
+    {
+        if (Managers.ProgressManager.IsAllCollected())
+        {
+            GameObject.FindGameObjectWithTag("BlackPanel").GetComponent<FadePanel>().fadeOut();
+        }
     }
 }
