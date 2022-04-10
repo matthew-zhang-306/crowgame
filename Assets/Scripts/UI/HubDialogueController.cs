@@ -12,6 +12,7 @@ public class HubDialogueController : MonoBehaviour
     [SerializeField] private GameObject dialogueCanvas;
     [SerializeField] private TextMeshProUGUI dialogueText;
     public HubDialogueSO hubDialogue;
+    private Animator anim;
     private int zodiacIndex;
     private bool isTalking;
     private bool isRunning;
@@ -23,6 +24,7 @@ public class HubDialogueController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        anim = this.gameObject.GetComponentInChildren<Animator>();
         dialogueCamera.SetActive(false);
         dialogueCanvas.SetActive(false);
         dialogueIdx = -1;
@@ -49,6 +51,7 @@ public class HubDialogueController : MonoBehaviour
         {
             if (input && !oldInput)
             {
+                anim.SetBool("isTalking", true);
                 dialogueCamera.SetActive(true);
                 dialogueCanvas.SetActive(true);
                 Debug.Log("Talk with " + this.gameObject.name);
@@ -135,6 +138,7 @@ public class HubDialogueController : MonoBehaviour
 
     private void EndTalk()
     {
+        anim.SetBool("isTalking", false);
         //Debug.Log("Exited " + this.gameObject.name + " space.");
         dialogueCamera.SetActive(false);
         dialogueCanvas.SetActive(false);
@@ -142,6 +146,7 @@ public class HubDialogueController : MonoBehaviour
     }
     private void EndTutorial()
     {
+        anim.SetBool("isTalking", false);
         DOTween.Sequence().InsertCallback(
                 1.0f, () => Managers.ScenesManager.ChangeScene("Hub-World"));
     }
