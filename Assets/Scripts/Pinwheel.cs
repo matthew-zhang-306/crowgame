@@ -5,9 +5,9 @@ using DG.Tweening;
 
 public class Pinwheel : BaseSwitch
 {
-    public SpriteRenderer spriteRenderer;
-    public Color offColor;
-    public Color onColor;
+    public MeshRenderer pinwheelHead;
+    public Material[] offMaterials;
+    public Material[] onMaterials;
 
     public float maxRotateSpeed;
     private float currentRotateSpeed;
@@ -17,16 +17,13 @@ public class Pinwheel : BaseSwitch
 
     private void Awake() {
         windMask = LayerMask.GetMask("Wall", "Box", "Tornado");
-        spriteRenderer.color = offColor;
     }
 
     private void FixedUpdate() {
         CheckState();
 
         // do rotation
-        spriteRenderer.transform.localRotation = Quaternion.Euler(
-            0,0, spriteRenderer.transform.localRotation.eulerAngles.z + currentRotateSpeed * Time.deltaTime
-        );
+        pinwheelHead.transform.Rotate(Vector3.right, currentRotateSpeed * Time.deltaTime);
     }
 
 
@@ -50,10 +47,10 @@ public class Pinwheel : BaseSwitch
                 Managers.AudioManager.PlaySound("pinwheel", 5f);
             }
            
-            spriteRenderer.DOKill();
-            spriteRenderer.DOColor(isOn ? onColor : offColor, 0.5f);
+            pinwheelHead.DOKill();
+            pinwheelHead.materials = isOn ? onMaterials : offMaterials;
             DOTween.To(s => currentRotateSpeed = s, currentRotateSpeed, isOn ? maxRotateSpeed : 0, 0.5f)
-                .SetLink(spriteRenderer.gameObject).SetTarget(spriteRenderer);
+                .SetLink(pinwheelHead.gameObject).SetTarget(pinwheelHead);
         }
 
         oldIsOn = isOn;
