@@ -13,6 +13,7 @@ public class ZodiacController : MonoBehaviour
     private int zodiacIndex;
     private bool isTalking;
     private bool isRunning;
+    private Animator anim;
 
     private bool input;
     private bool oldInput;
@@ -21,6 +22,7 @@ public class ZodiacController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        anim = this.gameObject.GetComponentInChildren<Animator>();
         dialogueCamera.SetActive(false);
         dialogueCanvas.SetActive(false);
         isTalking = false;
@@ -47,6 +49,7 @@ public class ZodiacController : MonoBehaviour
         {
             if (input && !oldInput)
             {
+                anim.SetBool("isTalking", true);
                 dialogueCamera.SetActive(true);
                 dialogueCanvas.SetActive(true);
                 Debug.Log("Talk with " + this.gameObject.name);
@@ -130,6 +133,7 @@ public class ZodiacController : MonoBehaviour
 
     private void EndTalk()
     {
+        anim.SetBool("isTalking", false);
         Debug.Log("Exited " + this.gameObject.name + " space.");
         dialogueCamera.SetActive(false);
         dialogueCanvas.SetActive(false);
