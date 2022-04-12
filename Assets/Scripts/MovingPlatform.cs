@@ -143,4 +143,10 @@ public class MovingPlatform : PhysicsObject
         Gizmos.DrawLine(transform.position, transform.position + destinationOffset);
         Gizmos.DrawWireCube(collider.bounds.center + destinationOffset, collider.bounds.size);
     }
+
+
+    public void SetDestination(TileEditorContext context) {
+        Debug.Log("set destination");
+        destinationOffset = context.adjacentPosition - transform.position;
+    }
 }

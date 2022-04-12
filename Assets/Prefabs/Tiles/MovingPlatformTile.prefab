@@ -60,6 +60,23 @@ MonoBehaviour:
   parent: {fileID: 5094527818946799591}
   rotateMode: 0
   size: {x: 1, y: 1, z: 1}
+  actions:
+  - name: set destination
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4726910883062952694}
+          m_TargetAssemblyTypeName: MovingPlatform, Assembly-CSharp
+          m_MethodName: SetDestination
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
 --- !u!1 &6230558338681119319
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,3 +183,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3578594109369826131, guid: 1844bce05949f134290781a34642a982, type: 3}
   m_PrefabInstance: {fileID: 8084212048666167710}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4726910883062952694 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3578594109369826152, guid: 1844bce05949f134290781a34642a982, type: 3}
+  m_PrefabInstance: {fileID: 8084212048666167710}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d83c7a7c7fec8b141883b9b169eb3d15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

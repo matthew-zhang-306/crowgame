@@ -44,7 +44,15 @@ public class TileEditorWindow : EditorWindow
             return;
         }
 
-        DrawTileSelect();
+        // see if the selection is a tile
+        TileParameters tileInSelection = null;
+        if (Selection.objects.Length > 0 && Selection.objects[0] is GameObject go) {
+            // find a tile on the selected object
+            tileInSelection =
+                go.GetComponent<TileParameters>() ?? go.GetComponentInChildren<TileParameters>();
+        }
+
+        DrawTileSelect(tileInSelection);
 
         // do the actual tile editing stuff in the main scene
         Ray mouseRay = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
@@ -52,40 +60,7 @@ public class TileEditorWindow : EditorWindow
             TileParameters tile = hit.collider.GetComponent<TileParameters>();
             if (tile != null) {
                 // this is a tile and we should look next to it
-                Vector3 adjPos = hit.point + hit.normal * 0.5f;
-                adjPos = new Vector3(Mathf.Round(adjPos.x), Mathf.Round(adjPos.y), Mathf.Round(adjPos.z));
-                Handles.DrawWireCube(adjPos, Vector3.one);
-
-                if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Space) {
-                    // place the object here
-                    if (selectedTile == null) {
-                        Debug.LogError("no selected tile");
-                        return;
-                    }
-
-                    GameObject newTile = (GameObject)PrefabUtility.InstantiatePrefab(selectedTile, tile.parent.parent);
-                    Undo.RegisterCreatedObjectUndo(newTile, newTile.name);
-                    newTile.transform.position = adjPos;
-                }
-
-                if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.X) {
-                    // delete this tile
-                    Undo.DestroyObjectImmediate(tile.parent.gameObject);
-                }
-
-                if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.C) {
-                    // rotate this tile
-                    
-                    if (tile.rotateMode == TileParameters.RotateMode.AROUNDY) {
-                        tile.parent.transform.RotateAround(tile.parent.transform.position, Vector3.up, 90);
-                    }
-                    else if (tile.rotateMode == TileParameters.RotateMode.SIXDIRECTIONAL) {
-                        Vector2 currentFacing = tile.transform.forward;
-                        // todo: implement
-                    }
-
-
-                }
+                OnTileHover(tile, tileInSelection, hit);
             }
         }
 
@@ -95,10 +70,84 @@ public class TileEditorWindow : EditorWindow
 
     }
 
-    private void DrawTileSelect() {
+    // the variable names are confusing:
+    // "tileInSelection" is the tile in the scene that the player has in Unity's selection (outlined in orange)
+    // "selectedTile" is the tile type that the player has picked in the tile select menu
+    private void OnTileHover(TileParameters tile, TileParameters tileInSelection, RaycastHit hit) {
+        // figure out where the adjacent position is
+        Vector3 adjPos = hit.point + hit.normal * 0.5f;
+        adjPos = new Vector3(Mathf.Round(adjPos.x), Mathf.Round(adjPos.y), Mathf.Round(adjPos.z));
+        Handles.DrawWireCube(adjPos, Vector3.one);
+
+        // handle placing a tile
+        if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Space) {
+            // place the object here
+            if (selectedTile == null) {
+                Debug.LogError("no selected tile");
+                return;
+            }
+
+            GameObject newTile = (GameObject)PrefabUtility.InstantiatePrefab(selectedTile, tile.parent.parent);
+            Undo.RegisterCreatedObjectUndo(newTile, newTile.name);
+            newTile.transform.position = adjPos;
+        }
+
+        // handle deleting a tile
+        if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.X) {
+            // delete this tile
+            Undo.DestroyObjectImmediate(tile.parent.gameObject);
+        }
+
+        // handle rotating a tile
+        if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.C) {
+            // rotate this tile
+            if (tile.rotateMode == TileParameters.RotateMode.AROUNDY) {
+                Undo.RecordObject(tile.parent.transform, "Rotate " + tile.parent);
+                tile.parent.transform.RotateAround(tile.parent.transform.position, Vector3.up, 90);
+            }
+            else if (tile.rotateMode == TileParameters.RotateMode.SIXDIRECTIONAL) {
+                Vector2 currentFacing = tile.transform.forward;
+                // todo: implement
+            }
+        }
+
+        // handle custom actions, if there are any
+        if (tileInSelection != null && tileInSelection.actions != null) {
+            for (int i = 0; i < tileInSelection.actions.Length; i++) {
+                if (Event.current.type == EventType.KeyDown && (int)Event.current.keyCode == ((int)KeyCode.Alpha3 + i)) {
+                    // run this custom action
+                    var context = new TileEditorContext();
+                    context.hoveredTile = tile;
+                    context.selectedTile = tileInSelection;
+                    context.selectedTilePrefab = selectedTile;
+                    context.adjacentPosition = adjPos;
+
+                    // this should be done in the inspector for each tile prefab, but i'll do it for you if you forget
+                    tileInSelection.actions[i].action.SetPersistentListenerState(0, UnityEngine.Events.UnityEventCallState.EditorAndRuntime);
+
+                    tileInSelection.actions[i].action?.Invoke(context);
+                }
+            }
+        }
+        
+    }
+
+    // the variable names are confusing:
+    // "tileInSelection" is the tile in the scene that the player has in Unity's selection (outlined in orange)
+    // "selectedTile" is the tile type that the player has picked in the tile select menu
+    private void DrawTileSelect(TileParameters tileInSelection) {
         Handles.BeginGUI();
         Rect rect = new Rect(8, 8, 48, 48);
 
+        // write labels for the selected tile
+        Rect labelRect = new Rect(8, 8, 200, 16);
+        GUI.Label(labelRect, "Selected: " + (tileInSelection?.parent.gameObject.name ?? null));
+        for (int i = 0; i < (tileInSelection?.actions?.Length ?? 0); i++) {
+            labelRect.y += 16;
+            GUI.Label(labelRect, "Action " + (i+3) + ": " + tileInSelection.actions[i].name);
+        }
+
+        rect.y = labelRect.yMax;
         foreach (GameObject tilePrefab in tilePrefabs) {
             if (tilePrefab == null) {
                 // can't draw anything for this tile
