@@ -178,6 +178,16 @@ public class PauseMenu : MonoBehaviour
         audioMixer.SetFloat("sfxVolume", Mathf.Log10(volume) * 20);
     }
 
+    public void buttonClick()
+    {
+        Managers.AudioManager.PlaySound("ui_button_press");
+    }
+
+    public void buttonHover()
+    {
+        Managers.AudioManager.PlaySound("ui_button_hover");
+    }
+
     // set the control description based on which platform we are using
     public void SetControls()
     {
