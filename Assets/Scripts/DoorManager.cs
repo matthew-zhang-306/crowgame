@@ -52,6 +52,7 @@ public class DoorManager : BaseSwitchable
             if (timer > 0 && collider.transform.position == openPosition)
             {
                 StartCoroutine(timedDoor());
+                Managers.AudioManager.LoopSound(timer, "timer");
             }
         }
     }

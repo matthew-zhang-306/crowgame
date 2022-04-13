@@ -67,9 +67,41 @@ public class AudioManager : MonoBehaviour
             Debug.Log("Could not play the sound because it's not in the array!");
             Debug.Log("song name: " + soundName);
         }
-            
+    }
 
+    public void LoopSound(int seconds, string soundName)
+    {
+        AudioClip s = Array.Find(sounds, sound => sound.name == soundName);
+        if (s != null)
+        {
+            float length = s.length;
+            
+            StartCoroutine(Looper(s, seconds, length));
+        }
         
+    }
+
+    IEnumerator Looper(AudioClip s, int seconds, float length)
+    {
+        int TimesToPlay = (int) (seconds/ length);
+        int i = 0;
+        while (i <= TimesToPlay)
+        {
+            audioSource.PlayOneShot(s);
+            yield return new WaitForSeconds(length);
+            i++;
+        }
+    }
+
+
+    public void startLoop(string soundName, float volumeMultiplier = 1f)
+    {
+
+    }
+
+    public void StopLoop()
+    {
+
     }
 
     public void PlaySoundAt(string soundName, Vector3 location, float volumeMultiplier = 1f) {
