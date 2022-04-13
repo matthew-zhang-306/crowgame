@@ -60,6 +60,23 @@ MonoBehaviour:
   parent: {fileID: 1087892505233629491}
   rotateMode: 0
   size: {x: 1, y: 1, z: 1}
+  actions:
+  - name: set star index
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1087892505233629485}
+          m_TargetAssemblyTypeName: StarCollectable, Assembly-CSharp
+          m_MethodName: SetStarIndex
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
 --- !u!1 &1087892505233629484
 GameObject:
   m_ObjectHideFlags: 0
@@ -120,6 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5217f76d9623aa4d96e842fff415b92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelList: {fileID: 11400000, guid: 74f62db2c2bbb124a903d398a2916aad, type: 2}
   sceneIndex: 0
   starNumber: 0
   rotateSpeed: 60
