@@ -18,4 +18,12 @@ public class TogglePlatformSwitchable : BaseSwitchable
         tangibleMesh.enabled = State;
         collider.enabled = State;
     }
+
+
+    public void SetStartingState(TileEditorContext context) {
+        startingState = !startingState;
+
+        tangibleMesh.enabled = startingState;
+        collider.enabled = startingState;
+    }
 }

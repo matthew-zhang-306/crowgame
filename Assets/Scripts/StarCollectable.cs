@@ -6,6 +6,7 @@ using System;
 
 public class StarCollectable : MonoBehaviour
 {
+    public LevelListSO levelList;
     public int sceneIndex;
 
     public int starNumber;
@@ -79,5 +80,10 @@ public class StarCollectable : MonoBehaviour
         {
             GameObject.FindGameObjectWithTag("BlackPanel").GetComponent<FadePanel>().fadeOut();
         }
+    }
+
+
+    public void SetStarIndex(TileEditorContext context) {
+        starNumber = (starNumber + 1) % levelList.starsPerLevel;
     }
 }
