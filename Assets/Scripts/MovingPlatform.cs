@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class MovingPlatform : PhysicsObject
 {
     [Header("Moving Platform Parameters")]
@@ -19,6 +23,7 @@ public class MovingPlatform : PhysicsObject
     private Coroutine moveCoroutine;
 
     private RideRegion[] rideRegions;
+    public MeshRenderer meshRenderer;
 
     protected override void Awake() {
         base.Awake();
@@ -146,7 +151,44 @@ public class MovingPlatform : PhysicsObject
 
 
     public void SetDestination(TileEditorContext context) {
-        Debug.Log("set destination");
         destinationOffset = context.adjacentPosition - transform.position;
+    }
+
+    public void SetModel(TileEditorContext context) {
+#if UNITY_EDITOR
+        // find models
+        var models = new List<GameObject>();
+
+        string[] guids = AssetDatabase.FindAssets("t:prefab", new string[] {"Assets/Prefabs/Model Prefabs/MovingPlatforms"});
+        if (guids == null || guids.Length == 0) {
+            Debug.LogError("Couldn't find any moving platform model prefabs");
+            return;
+        }
+        
+        foreach (string guid in guids) {
+            GameObject asset = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guid));
+            models.Add(asset);
+        }
+
+        // figure out which one we have and assign the next one
+        string meshName = meshRenderer.gameObject.name;
+        int modelIndex = models.FindIndex(model => model.name == meshName);
+        if (modelIndex < 0) {
+            Debug.LogError("Couldn't find moving platform model with name " + meshName);
+            return;
+        }
+
+        modelIndex = (modelIndex + 1) % models.Count;
+        GameObject newModel = (GameObject)PrefabUtility.InstantiatePrefab(models[modelIndex], meshRenderer.transform.parent);
+        Undo.RegisterCreatedObjectUndo(newModel, newModel.name);
+
+        try {
+            Undo.DestroyObjectImmediate(meshRenderer.gameObject);
+        } catch {
+            Debug.LogWarning("Undo.DestroyObjectImmediate failed so we're deactivating this game object instead");
+            meshRenderer.gameObject.SetActive(false);
+        }
+        meshRenderer = newModel.GetComponent<MeshRenderer>();
+#endif
     }
 }
