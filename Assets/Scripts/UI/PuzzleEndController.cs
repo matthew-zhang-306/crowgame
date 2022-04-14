@@ -59,7 +59,9 @@ public class PuzzleEndController : MonoBehaviour
             DialogueCanvas.SetActive(true);
             dialogueImage.sprite = puzzleSO.puzzles[levelNumber].zodiacTwoSprite;
             zodiacDialogue.text = puzzleSO.puzzles[levelNumber].TwoStarDialogue;
-            ShowButtons();
+            confirmationButtons.SetActive(true);
+            confirmationButtons.transform.GetChild(1).gameObject.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(leaveButton);
         }
         else if (Managers.ProgressManager.IsStarCollected(levelNumber, 0) || Managers.ProgressManager.IsStarCollected(levelNumber, 1))
         {
@@ -67,19 +69,14 @@ public class PuzzleEndController : MonoBehaviour
             DialogueCanvas.SetActive(true);
             dialogueImage.sprite = puzzleSO.puzzles[levelNumber].zodiacOneSprite;
             zodiacDialogue.text = puzzleSO.puzzles[levelNumber].OneStarDialogue;
-            ShowButtons();
+            confirmationButtons.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(leaveButton);
         }
         else if (!Managers.ProgressManager.IsStarCollected(levelNumber, 0) && !Managers.ProgressManager.IsStarCollected(levelNumber, 1))
         {
             Debug.Log("Leave Puzzle Without Collecting Stars");
             LeaveToHub();
         }
-    }
-
-    private void ShowButtons()
-    {
-        confirmationButtons.SetActive(true);
-        EventSystem.current.SetSelectedGameObject(leaveButton);
     }
 
     public void LeaveToHub()
