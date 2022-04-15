@@ -11,6 +11,8 @@ public class FloatingButtons : MonoBehaviour
     {
         initScale = this.gameObject.transform.localScale;
     }
+
+
     public void OnSelected()
     {
         transform.DOScale(new Vector3(initScale.x * 1.1f, initScale.y * 1.1f, initScale.z * 1.2f), 0.25f);
@@ -18,6 +20,7 @@ public class FloatingButtons : MonoBehaviour
 
     public void OnDeselected()
     {
+        
         transform.DOScale(new Vector3(initScale.x, initScale.y, initScale.z), 0.25f);
     }
 
