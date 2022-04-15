@@ -19,7 +19,7 @@ using UnityEngine.UI;
      private Dictionary<Material, Material> materialMappings = new Dictionary<Material, Material>();
      protected virtual void Start()
      {
-         if (uiElementsToApplyTo.Length == 0)
+         if (uiElementsToApplyTo == null || uiElementsToApplyTo.Length == 0)
          {
              uiElementsToApplyTo = gameObject.GetComponentsInChildren<Graphic>();
          }
