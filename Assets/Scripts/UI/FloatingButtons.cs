@@ -13,17 +13,17 @@ public class FloatingButtons : MonoBehaviour
     }
     public void OnSelected()
     {
-        transform.DOScale(new Vector3(initScale.x * 1.1f, initScale.y * 1.1f, initScale.z * 1.2f), 0.5f);
+        transform.DOScale(new Vector3(initScale.x * 1.1f, initScale.y * 1.1f, initScale.z * 1.2f), 0.25f);
     }
 
     public void OnDeselected()
     {
-        transform.DOScale(new Vector3(initScale.x, initScale.y, initScale.z), 0.5f);
+        transform.DOScale(new Vector3(initScale.x, initScale.y, initScale.z), 0.25f);
     }
 
     public void OnEnter()
     {
-        transform.DOScale(new Vector3(initScale.x, initScale.y, initScale.z), 0.5f);
+        transform.DOScale(new Vector3(initScale.x, initScale.y, initScale.z), 0.25f);
     }
 
     public void KillDOTween()
