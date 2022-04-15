@@ -14,11 +14,13 @@ public class MainMenu : MonoBehaviour
     public GameObject optionsFirstSelected;
     public GameObject creditsFirstSelected;
     public GameObject confirmationFirstSelected;
+    public GameObject playFirstSelected;
     public GameObject startPanel;
     public GameObject mainPanel;
     public GameObject optionsPanel;
     public GameObject creditsPanel;
     public GameObject confirmationPanel;
+    public GameObject playPanel;
 
     private Animator animator;
     private bool backInput;
@@ -95,7 +97,24 @@ public class MainMenu : MonoBehaviour
     public void CloseConfirmation()
     {
         confirmationPanel.SetActive(false);
-        EventSystem.current.SetSelectedGameObject(optionsFirstSelected);
+        EventSystem.current.SetSelectedGameObject(playFirstSelected);
+    }
+    public void OpenPlay()
+    {
+        animator.Play("OpenPlay");
+
+        EventSystem.current.SetSelectedGameObject(playFirstSelected);
+        onBackInput = ClosePlay;
+    }
+    public void ClosePlay()
+    {
+        //mainPanel.SetActive(true);
+        //optionsPanel.SetActive(false);
+        animator.Play("ClosePlay");
+
+        EventSystem.current.SetSelectedGameObject(playButton);
+        playButton.transform.localScale = new Vector3(1.1f, 1.1f, 1);
+        onBackInput = null;
     }
 
     public void ResetData()
@@ -103,5 +122,17 @@ public class MainMenu : MonoBehaviour
         Managers.ProgressManager.ResetPreviousLevel();
         Managers.ProgressManager.ResetStarsCollected();
         Managers.ScenesManager.ResetScene();
+    }
+
+    public void NewGame()
+    {
+        Managers.ProgressManager.ResetPreviousLevel();
+        Managers.ProgressManager.ResetStarsCollected();
+        Managers.ScenesManager.ChangeScene("IntroCutscene");
+    }
+
+    public void LoadGame()
+    {
+        Managers.ScenesManager.ChangeScene("Hub-World");
     }
 }
