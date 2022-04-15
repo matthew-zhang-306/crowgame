@@ -6246,6 +6246,7 @@ GameObject:
   - component: {fileID: 783548894}
   - component: {fileID: 783548893}
   - component: {fileID: 783548892}
+  - component: {fileID: 783548895}
   m_Layer: 5
   m_Name: Scrollbar
   m_TagString: Untagged
@@ -6360,6 +6361,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 783548890}
   m_CullTransparentMesh: 1
+--- !u!114 &783548895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783548890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 9
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1788428019}
+          m_TargetAssemblyTypeName: FloatingButtons, Assembly-CSharp
+          m_MethodName: OnSelected
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 10
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1788428019}
+          m_TargetAssemblyTypeName: FloatingButtons, Assembly-CSharp
+          m_MethodName: OnDeselected
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &787385157
 GameObject:
   m_ObjectHideFlags: 0
@@ -18310,6 +18356,7 @@ GameObject:
   - component: {fileID: 1788428016}
   - component: {fileID: 1788428018}
   - component: {fileID: 1788428017}
+  - component: {fileID: 1788428019}
   m_Layer: 5
   m_Name: Handle
   m_TagString: Untagged
@@ -18374,6 +18421,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1788428015}
   m_CullTransparentMesh: 1
+--- !u!114 &1788428019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1788428015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f727581d77f96c488a540f1f2eed86a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1791172025
 GameObject:
   m_ObjectHideFlags: 0
