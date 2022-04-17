@@ -11,6 +11,7 @@ public class ZodiacController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dialogueText;
     public ZodiacDialogueSO zodiacDialogue;
     private int zodiacIndex;
+    private int dialogueIndex;
     private bool isTalking;
     private bool isRunning;
     private Animator anim;
@@ -22,6 +23,7 @@ public class ZodiacController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        dialogueIndex = -1;
         anim = this.gameObject.GetComponentInChildren<Animator>();
         dialogueCamera.SetActive(false);
         dialogueCanvas.SetActive(false);
@@ -78,8 +80,15 @@ public class ZodiacController : MonoBehaviour
                     {
                         if (!currentTalk)
                         {
+                            if (dialogueIndex < zodiacDialogue.zodiacs[zodiacIndex].randomDialogues.Length - 1)
+                            {
+                                dialogueIndex++;
+                            }
+                            else
+                            {
+                                dialogueIndex = 0;
+                            }
                             dialogueText.text = "";
-                            int dialogueIndex = Random.Range(0, zodiacDialogue.zodiacs[zodiacIndex].randomDialogues.Length);
                             string dialogue = zodiacDialogue.zodiacs[zodiacIndex].randomDialogues[dialogueIndex];
                             StartCoroutine(TypeDialogue(dialogue, 0.01f));
                             currentTalk = true;
