@@ -15,12 +15,16 @@ public class PauseMenu : MonoBehaviour
     [Header("Menus")]
     public GameObject PauseMenuUI;
     public GameObject settingsMenuUI;
+    public GameObject audioMenuUI;
+    public GameObject graphicsMenuUI;
     public GameObject levelsMenuUI;
     public GameObject controlsMenuUI;
 
     [Header("References to buttons, for navigation")]
     public GameObject pauseFirstButton;
     public GameObject settingsFirstButton;
+    public GameObject audioFirstButton;
+    public GameObject graphicsFirstButton;
     public GameObject levelsFirstButton;
     public GameObject controlsFirstButton;
 
@@ -135,7 +139,7 @@ public class PauseMenu : MonoBehaviour
     public void LoadControls()
     {
         //switch to the controls menu
-        PauseMenuUI.SetActive(false);
+        settingsMenuUI.SetActive(false);
         controlsMenuUI.SetActive(true);
         currentMenu = controlsMenuUI;
 
@@ -147,10 +151,54 @@ public class PauseMenu : MonoBehaviour
     public void CloseControls()
     {
         controlsMenuUI.SetActive(false);
-        PauseMenuUI.SetActive(true);
-        currentMenu = PauseMenuUI;
+        settingsMenuUI.SetActive(true);
+        currentMenu = settingsMenuUI;
         EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(pauseFirstButton);
+        EventSystem.current.SetSelectedGameObject(settingsFirstButton);
+        onBackInput = null;
+    }
+
+    public void LoadAudio()
+    {
+        //switch to the audio menu
+        settingsMenuUI.SetActive(false);
+        audioMenuUI.SetActive(true);
+        currentMenu = audioMenuUI;
+
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(audioFirstButton);
+        onBackInput = CloseAudio;
+    }
+
+    public void CloseAudio()
+    {
+        audioMenuUI.SetActive(false);
+        settingsMenuUI.SetActive(true);
+        currentMenu = settingsMenuUI;
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(settingsFirstButton);
+        onBackInput = null;
+    }
+
+    public void LoadGraphics()
+    {
+        //switch to the graphics menu
+        settingsMenuUI.SetActive(false);
+        graphicsMenuUI.SetActive(true);
+        currentMenu = graphicsMenuUI;
+
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(graphicsFirstButton);
+        onBackInput = CloseGraphics;
+    }
+
+    public void CloseGraphics()
+    {
+        graphicsMenuUI.SetActive(false);
+        settingsMenuUI.SetActive(true);
+        currentMenu = settingsMenuUI;
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(settingsFirstButton);
         onBackInput = null;
     }
 
