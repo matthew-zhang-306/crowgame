@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
@@ -15,12 +16,22 @@ public class MainMenu : MonoBehaviour
     public GameObject creditsFirstSelected;
     public GameObject confirmationFirstSelected;
     public GameObject playFirstSelected;
+    public GameObject audioFirstSelected;
+    public GameObject graphicsFirstSelected;
+    public GameObject controlsFirstSelected;
+
     public GameObject startPanel;
     public GameObject mainPanel;
     public GameObject optionsPanel;
     public GameObject creditsPanel;
     public GameObject confirmationPanel;
     public GameObject playPanel;
+    public GameObject settingsPanel;
+    public GameObject audioPanel;
+    public GameObject graphicsPanel;
+    public GameObject controlsPanel;
+
+    public TextMeshProUGUI controlsText;
 
     private Animator animator;
     private bool backInput;
@@ -28,6 +39,7 @@ public class MainMenu : MonoBehaviour
     private System.Action onBackInput;
 
     private void Start() {
+        SetControls();
         EventSystem.current.SetSelectedGameObject(startButton);
     }
 
@@ -55,6 +67,10 @@ public class MainMenu : MonoBehaviour
     public void OpenOptions() {
         //mainPanel.SetActive(false);
         //optionsPanel.SetActive(true);
+        settingsPanel.SetActive(true);
+        audioPanel.SetActive(false);
+        graphicsPanel.SetActive(false);
+        controlsPanel.SetActive(false);
         animator.Play("OpenOptions");
         
         EventSystem.current.SetSelectedGameObject(optionsFirstSelected);
@@ -67,6 +83,54 @@ public class MainMenu : MonoBehaviour
 
         EventSystem.current.SetSelectedGameObject(optionsButton);
         optionsButton.transform.localScale = new Vector3(1.1f, 1.1f, 1);
+        onBackInput = null;
+    }
+
+    public void LoadAudio()
+    {
+        settingsPanel.SetActive(false);
+        audioPanel.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(audioFirstSelected);
+        onBackInput = CloseAudio;
+    }
+
+    public void CloseAudio()
+    {
+        audioPanel.SetActive(false);
+        settingsPanel.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(optionsFirstSelected);
+        onBackInput = null;
+    }
+
+    public void LoadGraphcs()
+    {
+        settingsPanel.SetActive(false);
+        graphicsPanel.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(graphicsFirstSelected);
+        onBackInput = CloseGraphics;
+    }
+
+    public void CloseGraphics()
+    {
+        graphicsPanel.SetActive(false);
+        settingsPanel.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(optionsFirstSelected);
+        onBackInput = null;
+    }
+
+    public void LoadControls()
+    {
+        settingsPanel.SetActive(false);
+        controlsPanel.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(controlsFirstSelected);
+        onBackInput = CloseControls;
+    }
+
+    public void CloseControls()
+    {
+        controlsPanel.SetActive(false);
+        settingsPanel.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(optionsFirstSelected);
         onBackInput = null;
     }
     public void OpenCredits() {
@@ -134,5 +198,29 @@ public class MainMenu : MonoBehaviour
     public void LoadGame()
     {
         Managers.ScenesManager.ChangeScene("Hub-World");
+    }
+
+    // set the control description based on which platform we are using
+    public void SetControls()
+    {
+        string ControlDescription = "Arrows/WASD - Movement\n" +
+                                    "L / R Shift - Camera\n" +
+                                    "Space - Pecking\n" +
+                                    "F - Tornado\n" +
+                                    "R - Restart Scene\n" +
+                                    "T - Open Telescope(HUB ONLY)\n" +
+                                    "ESC - Pause";
+        //using xbox
+#if UNITY_WSA
+            ControlDescription =    "Joystick - Movement\n" +
+                                    "LB / RB - Camera\n" +
+                                    "A - Pecking\n" +
+                                    "X - Tornado\n" +
+                                    "Y - Restart Scene\n" +
+                                    "[] - Open Telescope(HUB ONLY)\n" +
+                                    "= - Pause";
+#endif
+
+        controlsText.text = ControlDescription;
     }
 }
