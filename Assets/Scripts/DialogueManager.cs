@@ -67,6 +67,8 @@ public class DialogueManager : MonoBehaviour
                 EndDialogue();
                 return;
             }
+
+            Managers.AudioManager.PlaySound("ui_button_press");
             string sentence = sentences.Dequeue();
             //dialogueText.text = sentence;
             StopAllCoroutines();

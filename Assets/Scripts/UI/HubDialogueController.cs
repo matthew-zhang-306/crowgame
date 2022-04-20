@@ -54,6 +54,7 @@ public class HubDialogueController : MonoBehaviour
                 anim.SetBool("isTalking", true);
                 dialogueCamera.SetActive(true);
                 dialogueCanvas.SetActive(true);
+                Managers.AudioManager.PlaySound("ui_button_hover");
                 Debug.Log("Talk with " + this.gameObject.name);
                 if (!isRunning)
                 {

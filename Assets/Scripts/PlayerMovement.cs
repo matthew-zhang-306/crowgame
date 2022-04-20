@@ -272,7 +272,6 @@ public class PlayerMovement : PhysicsObject
         Debug.Log("peck");
         playerState = PlayerState.PECK;
         
-        Managers.AudioManager.PlaySound("Peck");
         peckHitbox.SetActive(true);
         
         // stop pecking after some time
