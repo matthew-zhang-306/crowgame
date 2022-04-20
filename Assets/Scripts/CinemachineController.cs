@@ -10,12 +10,12 @@ public class CinemachineController : MonoBehaviour
     private bool isInterior;
     private int camInput;
     private int oldCamInput;
-    private int activeCam;
+    public PositionSO cameraSO;
+
     // Start is called before the first frame update
     void Start()
     {
         Container = this.gameObject.transform;
-        activeCam = 0;
     }
 
     // Update is called once per frame
@@ -58,14 +58,14 @@ public class CinemachineController : MonoBehaviour
         {
             PlayerCam.Priority = 1;
             //InteriorCam.Priority = 0;
-            activeCam = 0;
-            Container.GetChild(activeCam).GetComponent<CinemachineVirtualCamera>().Priority = 0;
+            //activeCam = 0;
+            Container.GetChild(cameraSO.interiorCamIdx).GetComponent<CinemachineVirtualCamera>().Priority = 0;
         }
         else
         {
             PlayerCam.Priority = 0;
             //InteriorCam.Priority = 1;
-            Container.GetChild(activeCam).GetComponent<CinemachineVirtualCamera>().Priority = 1;
+            Container.GetChild(cameraSO.interiorCamIdx).GetComponent<CinemachineVirtualCamera>().Priority = 1;
         }
     }
 
@@ -89,16 +89,16 @@ public class CinemachineController : MonoBehaviour
 
     private void NextCam()
     {
-        activeCam++;
+        cameraSO.interiorCamIdx++;
         //Debug.Log(activeCam);
-        if (activeCam >= Container.childCount)
+        if (cameraSO.interiorCamIdx >= Container.childCount)
         {
-            activeCam = 0;
+            cameraSO.interiorCamIdx = 0;
         }
-        Container.GetChild(activeCam).GetComponent<CinemachineVirtualCamera>().Priority = 1;
+        Container.GetChild(cameraSO.interiorCamIdx).GetComponent<CinemachineVirtualCamera>().Priority = 1;
         for (int i = 0; i < Container.childCount; i++)
         {
-            if (i != activeCam)
+            if (i != cameraSO.interiorCamIdx)
             {
                 Container.GetChild(i).GetComponent<CinemachineVirtualCamera>().Priority = 0;
             }
@@ -107,16 +107,16 @@ public class CinemachineController : MonoBehaviour
 
     private void PrevCam()
     {
-        activeCam--;
+        cameraSO.interiorCamIdx--;
         //Debug.Log(activeCam);
-        if (activeCam < 0)
+        if (cameraSO.interiorCamIdx < 0)
         {
-            activeCam = Container.childCount - 1;
+            cameraSO.interiorCamIdx = Container.childCount - 1;
         }
-        Container.GetChild(activeCam).GetComponent<CinemachineVirtualCamera>().Priority = 1;
+        Container.GetChild(cameraSO.interiorCamIdx).GetComponent<CinemachineVirtualCamera>().Priority = 1;
         for (int i = 0; i < Container.childCount; i++)
         {
-            if (i != activeCam)
+            if (i != cameraSO.interiorCamIdx)
             {
                 Container.GetChild(i).GetComponent<CinemachineVirtualCamera>().Priority = 0;
             }
