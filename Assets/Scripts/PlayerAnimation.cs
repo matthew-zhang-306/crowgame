@@ -90,7 +90,7 @@ public class PlayerAnimation : MonoBehaviour
             anim.SetBool("isRising", false);
         }
 
-        if (myRB.velocity.y < -0.1)
+        if (myRB.velocity.y < -1)
         {
             anim.SetBool("isFalling", true);
         }
