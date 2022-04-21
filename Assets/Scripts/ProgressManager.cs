@@ -7,6 +7,8 @@ public class ProgressManager : MonoBehaviour
     public LevelListSO levelList;
     private bool[] starsCollected;
 
+    public string newGameScene;
+
 
     public void Init() {
         starsCollected = PlayerPrefsX.GetBoolArray("StarsCollected", false, 0);
@@ -37,7 +39,7 @@ public class ProgressManager : MonoBehaviour
         starsCollected = new bool[levelList.numStars];
         PlayerPrefsX.SetBoolArray("StarsCollected", starsCollected);
 
-        ResetPreviousLevel();
+        ResetSavePosition();
         ResetVisitedLevels();
 
         //resets the bridges
@@ -46,15 +48,17 @@ public class ProgressManager : MonoBehaviour
     }
 
 
-    public int GetPreviousLevel() {
-        return PlayerPrefs.GetInt("PreviousLevel", -1);
+    public void GetSavePosition(out string sceneName, out string exitName) {
+        sceneName = PlayerPrefs.GetString("SavePositionScene", newGameScene);
+        exitName = PlayerPrefs.GetString("SavePositionExit", "");
     }
-    public void SetPreviousLevel(int level) {
-        PlayerPrefs.SetInt("PreviousLevel", level);
+    public void SetSavePosition(string sceneName, string exitName = "") {
+        PlayerPrefs.SetString("SavePositionScene", sceneName);
+        PlayerPrefs.SetString("SavePositionExit", exitName);
     }
 
-    [ContextMenu("Reset Previous Level")]
-    public void ResetPreviousLevel() => SetPreviousLevel(-1);
+    [ContextMenu("Reset Save Position")]
+    public void ResetSavePosition() => SetSavePosition(newGameScene, "");
 
 
     public bool GetLevelVisited(int level) {

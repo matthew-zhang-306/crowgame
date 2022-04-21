@@ -9,8 +9,23 @@ public class WarpAltar : MonoBehaviour
 
     [Tooltip("-1 = Hub, 0 = First level, 1 = Second level, ...")]
     public int levelIndex;
+    public bool isInAHubAndGoesToAnotherHub;
 
-    public LevelDef targetLevel => levelIndex >= 0 ? levelList.levels[levelIndex] : levelList.hub;
+    public SceneDef targetLevel { get {
+        if (Managers.ScenesManager.IsPuzzleSceneLoaded()) {
+            // this warp pad is in a puzzle, so it needs to go back to its corresponding hub
+            return levelList.hubs[levelList.levels[levelIndex].hubIndex];
+        }
+        else {
+            // use the level index that we specified
+            if (isInAHubAndGoesToAnotherHub) {
+                return levelList.hubs[levelIndex];
+            }
+            else {
+                return levelList.levels[levelIndex];
+            }
+        }
+    }}
 
     public Vector3 playerSpawnPosOffset;
     public Vector3 PlayerPosition => transform.position + playerSpawnPosOffset;
@@ -34,22 +49,27 @@ public class WarpAltar : MonoBehaviour
             if (Managers.ScenesManager.IsPuzzleSceneLoaded())
             {
                 GameObject puzzleControlGo = GameObject.FindGameObjectWithTag("PuzzleDialogue");
-                puzzleControlGo.GetComponent<PuzzleEndController>().ExitPuzzle();
-                //PuzzleDialogueControl puzzleControlScript = puzzleControlGo.GetComponent<PuzzleDialogueControl>();
-                //if (!puzzleControlScript.triggeredDialogue)
-                //{
-                //    puzzleControlScript.triggeredDialogue = true;
-                //    puzzleControlScript.ExitPuzzle();
-                //}
+                puzzleControlGo.GetComponent<PuzzleEndController>().ExitPuzzle(Warp);
             }
             else
             {
-                isWarping = true;
-                OnAltarWarp?.Invoke(this);
-                DOTween.Sequence().InsertCallback(
-                    1.0f, () => Managers.ScenesManager.ChangeScene(targetLevel.sceneName));
+                Warp();
             }
         }
+    }
+
+    public void Warp() {
+        isWarping = true;
+        OnAltarWarp?.Invoke(this);
+
+        // note: for now, a warp altar that goes from a hub to another hub will pass -1 into SetExit.
+        // this is because i'm dumb and seriously cannot think of a better way to manage exits to figure out what goes to what across scenes
+        // there exist way better solutions to this than the hacky stuff i've done here but i genuinely cannot think of them
+        HubSpawnHandler.SetExit(this, isInAHubAndGoesToAnotherHub ? -1 : Managers.ScenesManager.levelNumber);
+        
+        DOTween.Sequence().InsertCallback(
+            1.0f, () => Managers.ScenesManager.ChangeScene(targetLevel.sceneName)
+        );
     }
 
     private void OnTriggerEnter(Collider other) {

@@ -35,7 +35,6 @@ public class HubDialogueController : MonoBehaviour
             if (this.gameObject.name == hubDialogue.zodiacs[i].zodiacName)
             {
                 zodiacIndex = i;
-                //Debug.Log(this.gameObject.name + " is in index " + zodiacIndex);
                 break;
             }
         }
@@ -55,7 +54,7 @@ public class HubDialogueController : MonoBehaviour
                 dialogueCamera.SetActive(true);
                 dialogueCanvas.SetActive(true);
                 Managers.AudioManager.PlaySound("ui_button_hover");
-                Debug.Log("Talk with " + this.gameObject.name);
+                
                 if (!isRunning)
                 {
                     DisplayDialogue();
@@ -71,14 +70,7 @@ public class HubDialogueController : MonoBehaviour
         {
             if (dialogueIdx >= hubDialogue.zodiacs[zodiacIndex].Dialogue.Length)
             {
-                if (Managers.ScenesManager.IsTutorialSceneLoaded())
-                {
-                    EndTutorial();
-                }
-                else
-                {
-                    EndTalk();
-                }
+                EndTalk();
                 return;
             }
             StopAllCoroutines();
@@ -109,14 +101,8 @@ public class HubDialogueController : MonoBehaviour
                 TalkButton = "A";
 #endif
             isTalking = true;
-            if (Managers.ScenesManager.IsTutorialSceneLoaded())
-            {
-                other.GetComponent<PlayerMovement>().actionIndicator.Show(TalkButton, "Warp to Hub");
-            }
-            else
-            {
-                other.GetComponent<PlayerMovement>().actionIndicator.Show(TalkButton, "Talk");
-            }
+            
+            other.GetComponent<PlayerMovement>().actionIndicator.Show(TalkButton, "Talk");
         }
     }
 
@@ -125,14 +111,7 @@ public class HubDialogueController : MonoBehaviour
         if (other.tag == "Player")
         {
             isTalking = false;
-            if (!Managers.ScenesManager.IsTutorialSceneLoaded())
-            {
-                EndTalk();
-            }
-            else
-            {
-                dialogueIdx = -1;
-            }
+            EndTalk();
             other.GetComponent<PlayerMovement>().actionIndicator.Hide();
         }
     }
@@ -140,7 +119,6 @@ public class HubDialogueController : MonoBehaviour
     private void EndTalk()
     {
         anim.SetBool("isTalking", false);
-        //Debug.Log("Exited " + this.gameObject.name + " space.");
         dialogueCamera.SetActive(false);
         dialogueCanvas.SetActive(false);
         dialogueIdx = -1;

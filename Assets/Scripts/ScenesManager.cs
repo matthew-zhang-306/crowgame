@@ -6,10 +6,24 @@ using UnityEngine.SceneManagement;
 
 public class ScenesManager : MonoBehaviour
 {
+    public enum SceneType {
+        MENU,
+        HUB,
+        PUZZLE
+    }
+    [HideInInspector] public SceneType sceneType;
     [HideInInspector] public int levelNumber;
     [HideInInspector] public string nameOfScene;
     public LevelListSO levelList;
     public SceneTransition sceneTransition;
+
+    public SceneDef currentSceneDef { get {
+        if (sceneType == SceneType.HUB)
+            return levelList.hubs[levelNumber];
+        if (sceneType == SceneType.PUZZLE)
+            return levelList.levels[levelNumber];
+        return null;
+    }}
 
     public bool HasChangedScenes { get; private set; } // true if a scene change has taken place
     public bool IsTransitioning { get; private set; } // true if we are in the process of changing scenes
@@ -31,24 +45,24 @@ public class ScenesManager : MonoBehaviour
 
     // called whenever a scene is loaded
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode) {
-        // search the levelList for the level number that corresponds to this scene
-        levelNumber = levelList.levels.ToList().FindIndex(0, levelList.levels.Length, l => l.sceneName == scene.name);
-        if (levelNumber >= 0)
+        sceneType = FetchSceneData(scene);
+
+        if (IsPuzzleSceneLoaded())
         {
-            Managers.ProgressManager.SetPreviousLevel(levelNumber);
             Managers.ProgressManager.SetLevelVisited(levelNumber, true);
         }
-        if (IsHubSceneLoaded() || IsPuzzleSceneLoaded() || IsTutorialSceneLoaded())
-        {
-            Managers.PauseMenu.enabled = true;
-            gameObject.GetComponentInChildren<RestartSlider>().enabled = true;
-        }
-        else
+
+        if (sceneType == SceneType.MENU)
         {
             Managers.PauseMenu.enabled = false;
             gameObject.GetComponentInChildren<RestartSlider>().gameObject.transform.localScale = new Vector3(0, 0, 0);
             gameObject.GetComponentInChildren<RestartSlider>().enabled = false;
         }
+        else {
+            Managers.PauseMenu.enabled = true;
+            gameObject.GetComponentInChildren<RestartSlider>().enabled = true;
+        }
+        
         if (IsEndSceneLoaded())
         {
             GameObject.FindGameObjectWithTag("BlackPanel").GetComponent<FadePanel>().fadeIn();
@@ -63,21 +77,46 @@ public class ScenesManager : MonoBehaviour
     }
 
 
+    // sets nameOfScene and levelNumber appropriately, then returns the correct value for sceneType
+    private SceneType FetchSceneData(Scene scene) {
+        nameOfScene = scene.name;
+
+        levelNumber = levelList.hubs.ToList().FindIndex(0, levelList.hubs.Length, h => h.sceneName == scene.name);
+        if (levelNumber >= 0) {
+            // we are in a hub level
+            return SceneType.HUB;
+        }
+
+        levelNumber = levelList.levels.ToList().FindIndex(0, levelList.levels.Length, l => l.sceneName == scene.name);
+        if (levelNumber >= 0) {
+            // we are in a puzzle level
+            return SceneType.PUZZLE;
+        }
+
+#if UNITY_EDITOR
+        // if we're in the editor, when testing a brand new scene we'll use the scene name to infer its type
+        if (nameOfScene.ToLower().Contains("hub")) {
+            return SceneType.HUB;
+        }
+        else if (nameOfScene.ToLower().Contains("p_")) {
+            return SceneType.PUZZLE;
+        }
+#endif
+        
+        return SceneType.MENU;
+    }
+
+
     private void Update() {
         oldResetInput = resetInput;
         resetInput = Input.GetAxisRaw("Reset") > 0;
-
-        // in-game reset
-        //if (resetInput) {
-        //    ResetScene();
-        //}
         
 #if UNITY_EDITOR
         // debug reset
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.R)) {
             if (IsHubSceneLoaded()) {
                 // resetting in the hub world? we probably want to warp the player back to the very beginning
-                Managers.ProgressManager.ResetPreviousLevel();
+                Managers.ProgressManager.SetSavePosition(nameOfScene);
             }
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
@@ -126,13 +165,7 @@ public class ScenesManager : MonoBehaviour
 
     // returns true if the hub is currently loaded
     public bool IsHubSceneLoaded() {
-        return SceneManager.GetActiveScene().name == levelList.hub.sceneName;
-    }
-
-    // returns true if the tutorial is currently loaded
-    public bool IsTutorialSceneLoaded()
-    {
-        return SceneManager.GetActiveScene().name == "Tutorial";
+        return SceneManager.GetActiveScene().name.StartsWith("Hub");
     }
 
     // returns true if some level scene is currently loaded

@@ -46,6 +46,7 @@ public class PlayerMovement : PhysicsObject
 
     public PositionSO cameraPosition;
 
+    Vector3 cutsceneHorizontalInput;
     Vector3 horizontalInput;
     Vector3 horizontalVelocity; // used for calculating vertical velocity
 
@@ -147,7 +148,12 @@ public class PlayerMovement : PhysicsObject
     // it also sets the player's facing angle for pecking/flapping
     private void GetHorizontalInput()
     {
-        if (inCutscene || (playerState != PlayerState.MOVE && playerState != PlayerState.CHARGE)) {
+        if (inCutscene) {
+            // use the horizontal input defined by whatever cutscene we're in
+            horizontalInput = cutsceneHorizontalInput;
+            return;
+        } 
+        else if (playerState != PlayerState.MOVE && playerState != PlayerState.CHARGE) {
             // don't read any horizontal input
             horizontalInput = Vector3.zero;
             return;
@@ -343,6 +349,12 @@ public class PlayerMovement : PhysicsObject
                 invincibilityTimer = 0.1f;
                 WarpToSafePosition(); 
             });
+    }
+
+
+    public void SetLoadingZone(LoadingZone loadingZone) {
+        inCutscene = true;
+        cutsceneHorizontalInput = loadingZone.walkDirection;
     }
 
 

@@ -8,6 +8,7 @@ public class SavingSystem : MonoBehaviour
     public GameObject player;
     public Transform warpAltarContainer;
 
+    /*
 
     // Start is called before the first frame update
     void Start()
@@ -15,8 +16,7 @@ public class SavingSystem : MonoBehaviour
         int musicIndex = 0;
 
         // if there is a previous position saved we should put the player there
-        if (Managers.ScenesManager.IsHubSceneLoaded()
-            && Managers.ProgressManager.GetPreviousLevel() >= 0
+        if (Managers.ProgressManager.GetPreviousLevel() >= 0
             // check that there is a corresponding warp altar for this level
             && Managers.ProgressManager.GetPreviousLevel() < warpAltarContainer.childCount
 #if UNITY_EDITOR
@@ -25,6 +25,7 @@ public class SavingSystem : MonoBehaviour
             && Managers.ScenesManager.HasChangedScenes
 #endif
         ) {
+
             // warp to the corresponding altar
             Transform warp = warpAltarContainer.GetChild(Managers.ProgressManager.GetPreviousLevel());
             player.transform.position = warp.GetComponent<WarpAltar>().PlayerPosition;
@@ -33,5 +34,6 @@ public class SavingSystem : MonoBehaviour
 
         Managers.AudioManager.SetSong(Managers.ScenesManager.levelList.levelSongs[musicIndex], 0);
     }
+    */
 
 }

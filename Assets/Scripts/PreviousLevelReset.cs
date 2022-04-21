@@ -5,6 +5,6 @@ using UnityEngine;
 public class PreviousLevelReset : MonoBehaviour
 {
     private void Start() {
-        Managers.ProgressManager.SetPreviousLevel(-1);
+        Managers.ProgressManager.ResetSavePosition();
     }
 }

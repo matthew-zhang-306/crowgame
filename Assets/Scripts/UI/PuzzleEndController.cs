@@ -21,6 +21,8 @@ public class PuzzleEndController : MonoBehaviour
     private bool isLeaving;
     private int levelNumber => Managers.ScenesManager.levelNumber;
 
+    private System.Action exitAction;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,8 +53,10 @@ public class PuzzleEndController : MonoBehaviour
     }
 
 
-    public void ExitPuzzle()
+    public void ExitPuzzle(System.Action exitAction)
     {
+        this.exitAction = exitAction;
+
         if (Managers.ProgressManager.IsStarCollected(levelNumber, 0) && Managers.ProgressManager.IsStarCollected(levelNumber, 1))
         {
             Debug.Log("Trigger Two Star Dialogue");
@@ -85,8 +89,13 @@ public class PuzzleEndController : MonoBehaviour
         {
             isLeaving = true;
             Invoke("ResetLeave", 3f);
-            DOTween.Sequence().InsertCallback(
-                1.0f, () => Managers.ScenesManager.ChangeScene("Hub-World"));
+            DialogueCanvas.SetActive(false);
+            
+            if (exitAction == null) {
+                Debug.LogError("Hi Jiaxin, if this has happened then i have sorely misunderstood how your code works and would like some help");
+            }
+            exitAction?.Invoke();
+            exitAction = null;
         }
     }
 

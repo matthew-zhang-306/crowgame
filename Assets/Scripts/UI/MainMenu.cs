@@ -183,14 +183,14 @@ public class MainMenu : MonoBehaviour
 
     public void ResetData()
     {
-        Managers.ProgressManager.ResetPreviousLevel();
+        Managers.ProgressManager.ResetSavePosition();
         Managers.ProgressManager.ResetStarsCollected();
         Managers.ScenesManager.ResetScene();
     }
 
     public void NewGame()
     {
-        Managers.ProgressManager.ResetPreviousLevel();
+        Managers.ProgressManager.ResetSavePosition();
         Managers.ProgressManager.ResetStarsCollected();
         Managers.ScenesManager.ChangeScene("IntroCutscene");
     }

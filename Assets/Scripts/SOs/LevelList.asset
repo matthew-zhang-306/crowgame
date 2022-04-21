@@ -13,43 +13,55 @@ MonoBehaviour:
   m_Name: LevelList
   m_EditorClassIdentifier: 
   starsPerLevel: 2
-  hub:
-    sceneName: Hub-World
+  mainHubIndex: 1
+  hubs:
+  - sceneName: Hub_Tutorial
+    displayName: Path
+    defaultMusicIndex: 2
+  - sceneName: Hub-World
     displayName: Hub
-    zodiacAnimal: 
-    difficulty: 0
-    musicIndex: 0
+    defaultMusicIndex: 0
+  - sceneName: Hub_Tower
+    displayName: Tower
+    defaultMusicIndex: 1
   levels:
   - sceneName: P_SimpleBoxes
     displayName: King's Return
     zodiacAnimal: Rooster&Tiger
     difficulty: 1
     musicIndex: 0
+    hubIndex: 0
   - sceneName: P_SimpleTornados
     displayName: Windy Temple
     zodiacAnimal: Horse&Dog
     difficulty: 1
     musicIndex: 0
+    hubIndex: 0
   - sceneName: P_LiftingBoxes
     displayName: Broken Record
     zodiacAnimal: Snake&Rabbit
     difficulty: 2
     musicIndex: 1
-  - sceneName: P_Shifting
-    displayName: Laser Focus
-    zodiacAnimal: Dragon&Ox
-    difficulty: 2
-    musicIndex: 1
+    hubIndex: 0
   - sceneName: P_BoxOnTornadoOnBox
     displayName: Mirror Image
     zodiacAnimal: Pig&Goat
     difficulty: 2
     musicIndex: 1
+    hubIndex: 0
+  - sceneName: P_Shifting
+    displayName: Laser Focus
+    zodiacAnimal: Dragon&Ox
+    difficulty: 2
+    musicIndex: 1
+    hubIndex: 0
   - sceneName: P_TwoStackThreeStack
     displayName: The Beginning
     zodiacAnimal: Rat
-    difficulty: 2
+    difficulty: 3
     musicIndex: 1
+    hubIndex: 0
   levelSongs:
   - {fileID: 11400000, guid: ac1c2327b91299a4584117d57fe97b58, type: 2}
   - {fileID: 11400000, guid: 744fa869092e9784dafae680bcc2f26d, type: 2}
+  - {fileID: 11400000, guid: ee39e447d1aaf4f49be187ff261f7fd1, type: 2}
