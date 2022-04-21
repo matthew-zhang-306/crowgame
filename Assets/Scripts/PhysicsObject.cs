@@ -25,6 +25,7 @@ public class PhysicsObject : MonoBehaviour
     protected float groundY; // y level of the ground that the object is on
     protected float groundDistance; // size of the gap between the object and the ground below it
     protected Rigidbody groundRigidbody; // rigidbody attached to the ground that the object is on
+    protected Vector3 groundPoint; // position that the ground collision was detected at
     protected Vector3 previousGroundVelocity; // the velocity of the ground when we last checked
 
     protected int wallMask; // layer mask for raycasting for walls
@@ -119,7 +120,8 @@ public class PhysicsObject : MonoBehaviour
             groundY = hit.point.y;
             groundNormal = hit.normal;
             groundDistance = hit.distance - 0.11f; // 0.11 = 0.1 (the distance that the boxcast was raised by) + 0.01 (the minimum distance between adjacent colliders in unity)
-        
+            groundPoint = hit.point;
+
             groundRigidbody = hit.rigidbody ?? hit.collider.GetComponentInParent<Rigidbody>();
         }
     }
