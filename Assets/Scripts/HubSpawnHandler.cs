@@ -12,7 +12,7 @@ public class HubSpawnHandler : MonoBehaviour
         // int musicIndex = Managers.ScenesManager.currentSceneDef.musicIndex;
         if (Managers.ScenesManager.destinationExit != "") {
             int exit = System.Array.FindIndex(exitPoints, 0, exitPoints.Length,
-                exit => exit.exitName == Managers.ScenesManager.destinationExit
+                exit => { Debug.Log(exit.exitName + " " + Managers.ScenesManager.destinationExit); return exit.exitName == Managers.ScenesManager.destinationExit; }
             );
             if (exit >= 0) {
                 player.transform.position = exitPoints[exit].transform.position;

@@ -9,9 +9,9 @@ public class WarpAltar : MonoBehaviour
 
     public bool isTargetPuzzle;
     public int targetLevelIndex;
-    public string targetExitName;
 
     public ExitPoint exitPoint;
+    public string targetExitName => exitPoint.exitName;
 
     public SceneDef targetLevel { get {
         if (Managers.ScenesManager.IsPuzzleSceneLoaded()) {
@@ -51,7 +51,10 @@ public class WarpAltar : MonoBehaviour
         if (Managers.ScenesManager.IsPuzzleSceneLoaded()) {
             // have target exit match the level
             targetLevelIndex = (Managers.ScenesManager.currentSceneDef as LevelDef).hubIndex;
-            targetExitName = Managers.ScenesManager.levelNumber + "";
+            exitPoint.exitName = Managers.ScenesManager.levelNumber + "";
+        }
+        else if (exitPoint.exitName == "unnamed") {
+            Debug.LogWarning("You added a WarpAltar to this hub scene that is set to link up with another hub scene, but you didn't give its ExitPoint a name. You either want to a) have this warp altar connect with a puzzle instead, or b) name the exit point so that you can refer to it in other scenes.");
         }
     }
 
