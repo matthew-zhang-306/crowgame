@@ -9,9 +9,8 @@ public class LoadingZone : MonoBehaviour
     public string targetExitName;
     public int targetHubIndex;
 
-    public Vector3 playerPosOffset;
-    public Vector3 PlayerPosition => transform.position + playerPosOffset;
-    public Vector3 walkDirection;
+    public ExitPoint exitPoint;
+    public Vector3 walkDirection => transform.forward;
     
     public int musicIndex;
 
@@ -24,11 +23,4 @@ public class LoadingZone : MonoBehaviour
         }
     }
 
-
-    private void OnDrawGizmos() {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(PlayerPosition, 1f);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawRay(PlayerPosition, walkDirection * 2f);
-    }
 }
