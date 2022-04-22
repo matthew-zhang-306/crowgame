@@ -7,28 +7,28 @@ public class WarpAltar : MonoBehaviour
 {
     public LevelListSO levelList;
 
-    [Tooltip("-1 = Hub, 0 = First level, 1 = Second level, ...")]
-    public int levelIndex;
-    public bool isInAHubAndGoesToAnotherHub;
+    public bool isTargetPuzzle;
+    public int targetLevelIndex;
+    public string targetExitName;
+
+    public ExitPoint exitPoint;
 
     public SceneDef targetLevel { get {
         if (Managers.ScenesManager.IsPuzzleSceneLoaded()) {
             // this warp pad is in a puzzle, so it needs to go back to its corresponding hub
-            return levelList.hubs[levelList.levels[levelIndex].hubIndex];
+            return levelList.hubs[levelList.levels[Managers.ScenesManager.levelNumber].hubIndex];
         }
         else {
             // use the level index that we specified
-            if (isInAHubAndGoesToAnotherHub) {
-                return levelList.hubs[levelIndex];
+            if (isTargetPuzzle) {
+                return levelList.levels[targetLevelIndex];
             }
             else {
-                return levelList.levels[levelIndex];
+                return levelList.hubs[targetLevelIndex];
             }
         }
     }}
 
-    public Vector3 playerSpawnPosOffset;
-    public Vector3 PlayerPosition => transform.position + playerSpawnPosOffset;
     private PlayerMovement playerInside;
     private bool isWarping;
 
@@ -41,6 +41,18 @@ public class WarpAltar : MonoBehaviour
 
     private void Awake() {
         rocks = GetComponentsInChildren<WarpAltarRock>();
+        if (isTargetPuzzle) {
+            // the exit point linked to this warp altar should be named based on the level number that it targets
+            exitPoint.exitName = targetLevelIndex + "";
+        }
+    }
+
+    private void Start() {
+        if (Managers.ScenesManager.IsPuzzleSceneLoaded()) {
+            // have target exit match the level
+            targetLevelIndex = (Managers.ScenesManager.currentSceneDef as LevelDef).hubIndex;
+            targetExitName = Managers.ScenesManager.levelNumber + "";
+        }
     }
 
 
@@ -62,11 +74,7 @@ public class WarpAltar : MonoBehaviour
         isWarping = true;
         OnAltarWarp?.Invoke(this);
 
-        // note: for now, a warp altar that goes from a hub to another hub will pass -1 into SetExit.
-        // this is because i'm dumb and seriously cannot think of a better way to manage exits to figure out what goes to what across scenes
-        // there exist way better solutions to this than the hacky stuff i've done here but i genuinely cannot think of them
-        HubSpawnHandler.SetExit(this, isInAHubAndGoesToAnotherHub ? -1 : Managers.ScenesManager.levelNumber);
-        
+        Managers.ScenesManager.SetDestinationExit(targetExitName);        
         DOTween.Sequence().InsertCallback(
             1.0f, () => Managers.ScenesManager.ChangeScene(targetLevel.sceneName)
         );
@@ -102,8 +110,4 @@ public class WarpAltar : MonoBehaviour
     }
 
 
-    private void OnDrawGizmosSelected() {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(PlayerPosition, 0.2f);
-    }
 }

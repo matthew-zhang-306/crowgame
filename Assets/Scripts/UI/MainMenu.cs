@@ -197,7 +197,9 @@ public class MainMenu : MonoBehaviour
 
     public void LoadGame()
     {
-        Managers.ScenesManager.ChangeScene("Hub-World");
+        Managers.ProgressManager.GetSavePosition(out string sceneName, out string exitName);
+        Managers.ScenesManager.SetDestinationExit(exitName);
+        Managers.ScenesManager.ChangeScene(sceneName);
     }
 
     // set the control description based on which platform we are using

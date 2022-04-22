@@ -6,8 +6,7 @@ public class LoadingZone : MonoBehaviour
 {
     public LevelListSO levelList;
 
-    public int id;
-    public int destinationId;
+    public string targetExitName;
     public int targetHubIndex;
 
     public Vector3 playerPosOffset;
@@ -20,7 +19,7 @@ public class LoadingZone : MonoBehaviour
         if (other.CompareTag("Player")) {
             other.GetComponent<PlayerMovement>()?.SetLoadingZone(this);
             
-            HubSpawnHandler.SetExit(this, id);
+            Managers.ScenesManager.SetDestinationExit(targetExitName);
             Managers.ScenesManager.ChangeScene(levelList.hubs[targetHubIndex].sceneName);
         }
     }

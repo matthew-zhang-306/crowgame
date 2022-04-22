@@ -25,6 +25,8 @@ public class ScenesManager : MonoBehaviour
         return null;
     }}
 
+    public string destinationExit { get; private set; }
+
     public bool HasChangedScenes { get; private set; } // true if a scene change has taken place
     public bool IsTransitioning { get; private set; } // true if we are in the process of changing scenes
     bool didTransitionOut;
@@ -47,7 +49,11 @@ public class ScenesManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode) {
         sceneType = FetchSceneData(scene);
 
-        if (IsPuzzleSceneLoaded())
+        if (sceneType == SceneType.PUZZLE || sceneType == SceneType.HUB) {
+            Managers.ProgressManager.SetSavePosition(scene.name, destinationExit);
+        }
+
+        if (sceneType == SceneType.PUZZLE)
         {
             Managers.ProgressManager.SetLevelVisited(levelNumber, true);
         }
@@ -131,6 +137,10 @@ public class ScenesManager : MonoBehaviour
     }
 
 
+    public void SetDestinationExit(string exitName) {
+        destinationExit = exitName;
+    }
+
     public void ChangeScene(string sceneName, float transitionTime = 0.5f) {
         if (IsTransitioning) {
             return;
@@ -165,12 +175,12 @@ public class ScenesManager : MonoBehaviour
 
     // returns true if the hub is currently loaded
     public bool IsHubSceneLoaded() {
-        return SceneManager.GetActiveScene().name.StartsWith("Hub");
+        return sceneType == SceneType.HUB;
     }
 
     // returns true if some level scene is currently loaded
     public bool IsPuzzleSceneLoaded() {
-        return SceneManager.GetActiveScene().name.StartsWith("P_");
+        return sceneType == SceneType.PUZZLE;
     }
 
     // returns true if endcutscene is currently loaded
