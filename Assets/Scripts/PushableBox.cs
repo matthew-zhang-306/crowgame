@@ -52,6 +52,7 @@ public class PushableBox : PhysicsObject
         if (peckedTimer == 0f && other.CompareTag("Peck") && (groundNormal != Vector3.zero || currentTornado != null))
         {
             Managers.AudioManager.PlaySound("Peck");
+            Instantiate(Resources.Load("Peck"), other.transform.position, other.transform.rotation);
             Vector3 pushDirection = other.transform.forward;
             Debug.DrawRay(collider.bounds.center, other.transform.forward * 1f, Color.yellow, 0.2f);
 
