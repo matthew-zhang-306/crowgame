@@ -11,6 +11,7 @@ public class TriggerDoor : BaseSwitch
             Switch();
             //play sound on enter for both pressure plate and button
             Managers.AudioManager.PlaySound("button_press");
+            transform.GetComponentInChildren<ParticleSystem>().Stop();
         }
             
            
@@ -25,6 +26,7 @@ public class TriggerDoor : BaseSwitch
             {
                 //only play sound on exit if it is a pressure plate
                 Managers.AudioManager.PlaySound("button_press");
+                transform.GetComponentInChildren<ParticleSystem>().Play();
                 Switch();
             }
         }
