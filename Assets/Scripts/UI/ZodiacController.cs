@@ -62,7 +62,19 @@ public class ZodiacController : MonoBehaviour
                         if (!currentTalk)
                         {
                             dialogueText.text = "";
+                            string xboxDialogue = zodiacDialogue.zodiacs[zodiacIndex].xboxText;
+                            Debug.Log("xbox -> " + xboxDialogue);
                             string dialogue = zodiacDialogue.zodiacs[zodiacIndex].firstDialogue;
+
+      
+                            //xbox build
+                            #if UNITY_WSA
+                                //if the xbox dialogue is not empty and we are in UWP build, use xbox dialogue
+                                if(xboxDialogue != "")
+                                {
+                                    dialogue = xboxDialogue;
+                                }
+                            #endif
                             zodiacDialogue.zodiacs[zodiacIndex].haveTalkedTo = true;
                             StartCoroutine(TypeDialogue(dialogue, 0.01f));
                             currentTalk = true;
@@ -90,6 +102,16 @@ public class ZodiacController : MonoBehaviour
                             }
                             dialogueText.text = "";
                             string dialogue = zodiacDialogue.zodiacs[zodiacIndex].randomDialogues[dialogueIndex];
+                            string xboxDialogue = zodiacDialogue.zodiacs[zodiacIndex].xboxText;
+
+                            //xbox build
+                            #if UNITY_WSA
+                            //if the xbox dialogue is not empty and we are in UWP build, use xbox dialogue
+                            if (xboxDialogue != "")
+                            {
+                                dialogue = xboxDialogue;
+                            }
+                            #endif
                             StartCoroutine(TypeDialogue(dialogue, 0.01f));
                             currentTalk = true;
                         }
