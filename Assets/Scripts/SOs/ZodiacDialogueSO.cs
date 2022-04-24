@@ -18,5 +18,8 @@ public class ZodiacDialogueSO : ScriptableObject
         public String firstDialogue;
         [TextArea]
         public String[] randomDialogues;
+        [TextArea]
+        public String xboxText;
+
     }
 }
