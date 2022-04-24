@@ -59,6 +59,7 @@ public class HubDialogueController : MonoBehaviour
                 {
                     DisplayDialogue();
                 }
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().actionIndicator.Hide();
             }
         }
     }
