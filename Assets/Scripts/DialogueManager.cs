@@ -17,18 +17,18 @@ public class DialogueManager : MonoBehaviour
     private bool isRunning;
     public List<GameObject> panelImages = new List<GameObject>();
     private int currentPanel = -1;
-    public GameObject skipButton;
+    public GameObject firstButton;
     public string nextSceneName;
 
     // Start is called before the first frame update
     void Start()
     {
         sentences = new Queue<string>();
-        EventSystem.current.SetSelectedGameObject(skipButton);
+        EventSystem.current.SetSelectedGameObject(firstButton);
 
         #if UNITY_WSA
             //xbox version of text
-            nextText.text = "press A";
+            nextText.text = "Press A";
         #endif
     }
 

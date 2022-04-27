@@ -51,6 +51,7 @@ public class ZodiacController : MonoBehaviour
         {
             if (input && !oldInput)
             {
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().actionIndicator.Hide();
                 anim.SetBool("isTalking", true);
                 dialogueCamera.SetActive(true);
                 dialogueCanvas.SetActive(true);
