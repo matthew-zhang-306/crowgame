@@ -241,22 +241,22 @@ public class PauseMenu : MonoBehaviour
     // set the control description based on which platform we are using
     public void SetControls()
     {
-        string ControlDescription = "Arrows/WASD - Movement\n" +
-                                    "L / R Shift - Camera\n" +
-                                    "Space - Pecking\n" +
+        string ControlDescription = "Arrows / WASD - Movement\n" +
+                                    "Q / E - Rotate Camera\n" +
+                                    "Space - Peck\n" +
                                     "F - Tornado\n" +
-                                    "R - Restart Scene\n" +
-                                    "T - Open Telescope(HUB ONLY)\n" +
+                                    "R - Restart Level\n" +
+                                    "T - Telescope (HUB ONLY)\n" +
                                     "ESC - Pause";
         //using xbox
         #if UNITY_WSA
             ControlDescription =    "Joystick - Movement\n" +
-                                    "LB / RB - Camera\n" +
-                                    "A - Pecking\n" +
+                                    "LB / RB - Rotate Camera\n" +
+                                    "A - Peck\n" +
                                     "X - Tornado\n" +
-                                    "Y - Restart Scene\n" +
-                                    "[] - Open Telescope(HUB ONLY)\n" +
-                                    "= - Pause";
+                                    "Y - Restart Level\n" +
+                                    "Select - Telescope (HUB ONLY)\n" +
+                                    "Start - Pause";
         #endif
 
         controlsText.text = ControlDescription;
