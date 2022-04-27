@@ -5,6 +5,7 @@ using UnityEngine;
 public class ProgressManager : MonoBehaviour
 {
     public LevelListSO levelList;
+    public ZodiacDialogueSO zodiacSO;
     private bool[] starsCollected;
 
     public string newGameScene;
@@ -88,6 +89,10 @@ public class ProgressManager : MonoBehaviour
         for (int i = 0; i < levelList.numLevels; i++) {
             SetLevelVisited(i, false);
             PlayerPrefsX.SetBool(i.ToString(), false);
+        }
+        for (int i = 0; i < zodiacSO.zodiacs.Length; i++)
+        {
+            zodiacSO.zodiacs[i].haveTalkedTo = false;
         }
     }
 }
