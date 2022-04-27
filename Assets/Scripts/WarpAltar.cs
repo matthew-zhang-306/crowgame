@@ -77,7 +77,7 @@ public class WarpAltar : MonoBehaviour
         isWarping = true;
         OnAltarWarp?.Invoke(this);
 
-        Managers.ScenesManager.SetDestinationExit(targetExitName);        
+        Managers.ScenesManager.destinationExit = targetExitName;
         DOTween.Sequence().InsertCallback(
             1.0f, () => Managers.ScenesManager.ChangeScene(targetLevel.sceneName)
         );

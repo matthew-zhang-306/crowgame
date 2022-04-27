@@ -26,7 +26,7 @@ public class LoadingZone : MonoBehaviour
         if (other.CompareTag("Player")) {
             other.GetComponent<PlayerMovement>()?.SetLoadingZone(this);
             
-            Managers.ScenesManager.SetDestinationExit(targetExitName);
+            Managers.ScenesManager.destinationExit = targetExitName;
             Managers.ScenesManager.ChangeScene(levelList.hubs[targetHubIndex].sceneName);
         }
     }

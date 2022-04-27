@@ -25,7 +25,11 @@ public class ScenesManager : MonoBehaviour
         return null;
     }}
 
-    public string destinationExit { get; private set; }
+    private string _destinationExit;
+    public string destinationExit {
+        get { return _destinationExit; }
+        set { Debug.Log("setting " + _destinationExit); _destinationExit = value; }
+    }
 
     public bool HasChangedScenes { get; private set; } // true if a scene change has taken place
     public bool IsTransitioning { get; private set; } // true if we are in the process of changing scenes
@@ -136,10 +140,6 @@ public class ScenesManager : MonoBehaviour
 #endif
     }
 
-
-    public void SetDestinationExit(string exitName) {
-        destinationExit = exitName;
-    }
 
     public void ChangeScene(string sceneName, float transitionTime = 0.5f) {
         if (IsTransitioning) {

@@ -198,7 +198,7 @@ public class MainMenu : MonoBehaviour
     public void LoadGame()
     {
         Managers.ProgressManager.GetSavePosition(out string sceneName, out string exitName);
-        Managers.ScenesManager.SetDestinationExit(exitName);
+        Managers.ScenesManager.destinationExit = exitName;
         Managers.ScenesManager.ChangeScene(sceneName);
     }
 
