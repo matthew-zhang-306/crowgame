@@ -58,7 +58,10 @@ public class ProgressManager : MonoBehaviour
     }
 
     [ContextMenu("Reset Save Position")]
-    public void ResetSavePosition() => SetSavePosition(newGameScene, "");
+    public void ResetSavePosition() {
+        Managers.ScenesManager.destinationExit = "";
+        SetSavePosition(newGameScene, "");
+    }
 
 
     public bool GetLevelVisited(int level) {
