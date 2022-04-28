@@ -72,7 +72,7 @@ public class StarCollectable : MonoBehaviour
     private void SetStarInactive()
     {
         this.gameObject.SetActive(false);
-        EndCheck();
+        //EndCheck();
         
     }
 
