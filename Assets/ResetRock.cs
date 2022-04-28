@@ -6,8 +6,9 @@ public class ResetRock : MonoBehaviour
 {
 
     public PushableBox[] boxes;
-    // Start is called before the first frame update
+    
 
+    
 
     protected void OnTriggerEnter(Collider other)
     {
