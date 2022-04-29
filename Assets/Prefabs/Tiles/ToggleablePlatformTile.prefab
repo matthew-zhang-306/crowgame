@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6481608241626017265}
-  rotateMode: 0
+  rotateMode: 1
   size: {x: 1, y: 1, z: 1}
   actions:
   - name: flip starting state
@@ -285,11 +285,20 @@ PrefabInstance:
       value: ToggleablePlatform
       objectReference: {fileID: 0}
     - target: {fileID: 8881591411439843645, guid: 4bad71df8f203664c909c6dba39270da, type: 3}
+      propertyPath: collider
+      value: 
+      objectReference: {fileID: 3161987520998486433}
+    - target: {fileID: 8881591411439843645, guid: 4bad71df8f203664c909c6dba39270da, type: 3}
       propertyPath: modelContainer
       value: 
       objectReference: {fileID: 8278418513447494063}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4bad71df8f203664c909c6dba39270da, type: 3}
+--- !u!1 &2500214736127600183 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8881591411439843644, guid: 4bad71df8f203664c909c6dba39270da, type: 3}
+  m_PrefabInstance: {fileID: 6481608241202405131}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2500214736127600177 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8881591411439843642, guid: 4bad71df8f203664c909c6dba39270da, type: 3}
@@ -300,9 +309,22 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8881591411439843645, guid: 4bad71df8f203664c909c6dba39270da, type: 3}
   m_PrefabInstance: {fileID: 6481608241202405131}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2500214736127600183}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 824a23ac714ee2e4a912a44fe7493cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &3161987520998486433
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2500214736127600183}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: -0.5, z: 0}

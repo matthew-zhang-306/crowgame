@@ -17,7 +17,8 @@ public class TogglePlatformSwitchable : BaseSwitchable
     private void Awake() {
         tangibleMesh = modelContainer.transform.GetChild(1).GetComponent<MeshRenderer>();
         intangibleMesh = modelContainer.transform.GetChild(0).GetComponent<MeshRenderer>();
-        tangibleMesh.enabled = false;
+        intangibleMesh.gameObject.SetActive(true);
+        tangibleMesh.gameObject.SetActive(false);
         collider.enabled = false;
     }
 
