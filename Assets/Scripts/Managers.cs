@@ -22,6 +22,7 @@ public class Managers : MonoBehaviour
         if (instance == null) {
             // initialize singleton
             instance = this;
+            Debug.Log(gameObject);
             DontDestroyOnLoad(gameObject);
         
             AudioManager = GetComponentInChildren<AudioManager>();
