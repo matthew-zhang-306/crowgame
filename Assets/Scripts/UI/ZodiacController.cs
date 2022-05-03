@@ -19,6 +19,7 @@ public class ZodiacController : MonoBehaviour
     private bool input;
     private bool oldInput;
     private bool currentTalk;
+    public int textSpeed;
 
     // Start is called before the first frame update
     void Start()
@@ -130,10 +131,24 @@ public class ZodiacController : MonoBehaviour
     private IEnumerator TypeDialogue(string dialogue, float speed)
     {
         isRunning = true;
-        foreach (char letter in dialogue.ToCharArray())
+        dialogueText.text = dialogue;
+        dialogueText.maxVisibleCharacters = 0;
+
+        bool input = Input.GetAxisRaw("Action1") > 0;
+        bool oldInput = input;
+
+        for (float t = 0; dialogueText.maxVisibleCharacters < dialogue.Length; t += Time.deltaTime)
         {
-            dialogueText.text += letter;
-            yield return new WaitForSeconds(speed);
+            dialogueText.maxVisibleCharacters = (int)(t * textSpeed);
+
+            if (input && !oldInput)
+            {
+                // consume input
+                oldInput = input;
+                dialogueText.maxVisibleCharacters = dialogue.Length;
+            }
+
+            yield return null;
         }
         isRunning = false;
     }
