@@ -4,21 +4,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using TMPro;
 
 // partial code credit to Brackeys on dialogue systems
 public class DialogueManager : MonoBehaviour
 {
     // First in First out
     private Queue<string> sentences;
-    public Text nameText;
-    public Text dialogueText;
-    public Text nextText;
-    private bool pressed;
+    public TextMeshProUGUI nameText;
+    public TextMeshProUGUI dialogueText;
+    public TextMeshProUGUI nextText;
+    private bool oldInput;
+    private bool input;
     private bool isRunning;
     public List<GameObject> panelImages = new List<GameObject>();
     private int currentPanel = -1;
     public GameObject firstButton;
     public string nextSceneName;
+    public float textSpeed;
 
     // Start is called before the first frame update
     void Start()
@@ -34,15 +37,12 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        // dialogue moves faster is space is pressed
-        if (Input.GetAxisRaw("Action1") > 0)
+        oldInput = input;
+        input = Input.GetAxisRaw("Action1") > 0;
+
+        if (input && !oldInput)
         {
-            pressed = true;
             DisplayNextSentence();
-        }
-        else
-        {
-            pressed = false;
         }
     }
 
@@ -62,6 +62,9 @@ public class DialogueManager : MonoBehaviour
     {
         if (!isRunning)
         {
+            // consume the input
+            oldInput = input;
+
             if (sentences.Count == 0)
             {
                 EndDialogue();
@@ -97,23 +100,27 @@ public class DialogueManager : MonoBehaviour
     IEnumerator TypeSentence(string sentence)
     {
         isRunning = true;
-        dialogueText.text = "";
-        foreach (char letter in sentence.ToCharArray())
-        {
-            dialogueText.text += letter;
-            if (pressed == true)
-            {
-                //Debug.Log("check");
-                yield return new WaitForSeconds(0.0001f);
+        dialogueText.text = sentence;
+        dialogueText.maxVisibleCharacters = 0;
+
+        bool input = Input.GetAxisRaw("Action1") > 0;
+        bool oldInput = input;
+        
+        for (float t = 0; dialogueText.maxVisibleCharacters < sentence.Length; t += Time.deltaTime) {
+            dialogueText.maxVisibleCharacters = (int)(t * textSpeed);
+
+            if (input && !oldInput) {
+                // consume input
+                oldInput = input;
+                dialogueText.maxVisibleCharacters = sentence.Length;
             }
-            else
-            {
-                //Debug.Log("not pressed");
-                yield return new WaitForSeconds(0.001f);
-            }
+
+            yield return null;
         }
+        
         isRunning = false;
     }
+    
     public void EndDialogue()
     {
         //Debug.Log("End of Conversation");
