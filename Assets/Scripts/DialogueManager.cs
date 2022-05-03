@@ -38,7 +38,7 @@ public class DialogueManager : MonoBehaviour
     private void Update()
     {
         oldInput = input;
-        input = Input.GetAxisRaw("Action1") > 0;
+        input = Input.GetAxisRaw("Action1") > 0 || Input.GetAxisRaw("Submit") > 0;
 
         if (input && !oldInput)
         {
