@@ -102,9 +102,6 @@ public class DialogueManager : MonoBehaviour
         isRunning = true;
         dialogueText.text = sentence;
         dialogueText.maxVisibleCharacters = 0;
-
-        bool input = Input.GetAxisRaw("Action1") > 0;
-        bool oldInput = input;
         
         for (float t = 0; dialogueText.maxVisibleCharacters < sentence.Length; t += Time.deltaTime) {
             dialogueText.maxVisibleCharacters = (int)(t * textSpeed);
