@@ -11,7 +11,7 @@ public class DialogueManager : MonoBehaviour
 {
     // First in First out
     private Queue<string> sentences;
-    public TextMeshProUGUI nameText;
+    //public TextMeshProUGUI nameText;
     public TextMeshProUGUI dialogueText;
     public TextMeshProUGUI nextText;
     private bool oldInput;
@@ -48,7 +48,7 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(Dialogue dialogue)
     {
-        nameText.text = dialogue.name;
+        //nameText.text = dialogue.name;
         sentences.Clear();
 
         foreach (string sentence in dialogue.sentences)
