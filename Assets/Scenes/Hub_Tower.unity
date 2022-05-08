@@ -2397,7 +2397,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-390852
+  m_Name: pb_Mesh-35300
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2920,7 +2920,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-388356
+  m_Name: pb_Mesh-32804
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5690,6 +5690,18 @@ PrefabInstance:
     - target: {fileID: 2370606205587718728, guid: 6f8a7af3e840b453c8e1f79ae9453d7a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5703055339945375436, guid: 6f8a7af3e840b453c8e1f79ae9453d7a, type: 3}
+      propertyPath: m_Size.y
+      value: 2.9915438
+      objectReference: {fileID: 0}
+    - target: {fileID: 5703055339945375436, guid: 6f8a7af3e840b453c8e1f79ae9453d7a, type: 3}
+      propertyPath: m_Center.y
+      value: 1.5733247
+      objectReference: {fileID: 0}
+    - target: {fileID: 5703055339945375436, guid: 6f8a7af3e840b453c8e1f79ae9453d7a, type: 3}
+      propertyPath: m_Center.z
+      value: -0.0014466675
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f8a7af3e840b453c8e1f79ae9453d7a, type: 3}
@@ -9399,7 +9411,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-391368
+  m_Name: pb_Mesh-35816
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10283,6 +10295,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Donation (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fb556a17a2d61c248a1cd9caaf8f6107, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb556a17a2d61c248a1cd9caaf8f6107, type: 3}
 --- !u!4 &499203928 stripped
@@ -10301,7 +10317,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh302540
+  m_Name: pb_Mesh61296
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11089,8 +11105,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.022373213, y: 0.042276327, z: 0.04728482}
-  m_Center: {x: 0.00000065393317, y: -0.000003662026, z: 0.012388668}
+  m_Size: {x: 0.022373213, y: 0.042276327, z: 0.09687208}
+  m_Center: {x: 0.00000065393317, y: -0.0000036620263, z: 0.0371823}
 --- !u!4 &539117305 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fb556a17a2d61c248a1cd9caaf8f6107, type: 3}
@@ -11835,40 +11851,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7443111172437208306, guid: fe3030f6edc425d41b4745920c01440e, type: 3}
   m_PrefabInstance: {fileID: 247868210}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &564537113
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Default UI Material
-  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
 --- !u!114 &567662865 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1397673121023746152, guid: ec7bc90abf766224b86fc2258a42593e, type: 3}
@@ -12211,7 +12193,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-387570
+  m_Name: pb_Mesh-32018
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -16880,7 +16862,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-392380
+  m_Name: pb_Mesh-36830
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -17798,7 +17780,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-396966
+  m_Name: pb_Mesh-41416
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -18047,7 +18029,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-391442
+  m_Name: pb_Mesh-35890
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -19627,7 +19609,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-386658
+  m_Name: pb_Mesh-31106
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -24335,109 +24317,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5843424017528326948, guid: dd21a65d57d91a142b1f7ad7db9aacc4, type: 3}
   m_PrefabInstance: {fileID: 1165599658}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &1166151773
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: OtsutomeFont_Ver3 SDF Material
-  m_Shader: {fileID: 4800000, guid: dd89cf5b9246416f84610a006f916af7, type: 3}
-  m_ShaderKeywords: UNDERLAY_ON
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Cube:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _FaceTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 7750536688848335765, guid: 056a64694da19b54181bb362e40e8766, type: 2}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _OutlineTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _Ambient: 0.5
-    - _Bevel: 0.5
-    - _BevelClamp: 0
-    - _BevelOffset: 0
-    - _BevelRoundness: 0
-    - _BevelWidth: 0
-    - _BumpFace: 0
-    - _BumpOutline: 0
-    - _ColorMask: 15
-    - _CullMode: 0
-    - _Diffuse: 0.5
-    - _FaceDilate: 0
-    - _FaceUVSpeedX: 0
-    - _FaceUVSpeedY: 0
-    - _GlowInner: 0.05
-    - _GlowOffset: 0
-    - _GlowOuter: 0.05
-    - _GlowPower: 0.75
-    - _GradientScale: 6
-    - _LightAngle: 3.1416
-    - _MaskSoftnessX: 0
-    - _MaskSoftnessY: 0
-    - _OutlineSoftness: 0
-    - _OutlineUVSpeedX: 0
-    - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0
-    - _PerspectiveFilter: 0.875
-    - _Reflectivity: 10
-    - _ScaleRatioA: 0.8333333
-    - _ScaleRatioB: 0.6770833
-    - _ScaleRatioC: 0.6770833
-    - _ScaleX: 1
-    - _ScaleY: 1
-    - _ShaderFlags: 0
-    - _Sharpness: 0
-    - _SpecularPower: 2
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _TextureHeight: 512
-    - _TextureWidth: 512
-    - _UnderlayDilate: 0
-    - _UnderlayOffsetX: 1
-    - _UnderlayOffsetY: 0.92
-    - _UnderlaySoftness: 0
-    - _VertexOffsetX: 0
-    - _VertexOffsetY: 0
-    - _WeightBold: 0.75
-    - _WeightNormal: 0
-    m_Colors:
-    - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
-    - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
-    - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
-    - _GlowColor: {r: 0, g: 1, b: 0, a: 0.5}
-    - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
-    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _UnderlayColor: {r: 0.7156938, g: 0.597202, b: 0.2581829, a: 1}
-  m_BuildTextureStacks: []
 --- !u!4 &1168896228 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7147601209891142277, guid: c000d1b550d25974393177b9f2435f8d, type: 3}
@@ -25700,6 +25579,109 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5843424017528326948, guid: dd21a65d57d91a142b1f7ad7db9aacc4, type: 3}
   m_PrefabInstance: {fileID: 323782202}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &1210125170
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: OtsutomeFont_Ver3 SDF Material
+  m_Shader: {fileID: 4800000, guid: dd89cf5b9246416f84610a006f916af7, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Cube:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FaceTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 7750536688848335765, guid: 056a64694da19b54181bb362e40e8766, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OutlineTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Ambient: 0.5
+    - _Bevel: 0.5
+    - _BevelClamp: 0
+    - _BevelOffset: 0
+    - _BevelRoundness: 0
+    - _BevelWidth: 0
+    - _BumpFace: 0
+    - _BumpOutline: 0
+    - _ColorMask: 15
+    - _CullMode: 0
+    - _Diffuse: 0.5
+    - _FaceDilate: 0
+    - _FaceUVSpeedX: 0
+    - _FaceUVSpeedY: 0
+    - _GlowInner: 0.05
+    - _GlowOffset: 0
+    - _GlowOuter: 0.05
+    - _GlowPower: 0.75
+    - _GradientScale: 6
+    - _LightAngle: 3.1416
+    - _MaskSoftnessX: 0
+    - _MaskSoftnessY: 0
+    - _OutlineSoftness: 0
+    - _OutlineUVSpeedX: 0
+    - _OutlineUVSpeedY: 0
+    - _OutlineWidth: 0
+    - _PerspectiveFilter: 0.875
+    - _Reflectivity: 10
+    - _ScaleRatioA: 0.8333333
+    - _ScaleRatioB: 0.6770833
+    - _ScaleRatioC: 0.6770833
+    - _ScaleX: 1
+    - _ScaleY: 1
+    - _ShaderFlags: 0
+    - _Sharpness: 0
+    - _SpecularPower: 2
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _TextureHeight: 512
+    - _TextureWidth: 512
+    - _UnderlayDilate: 0
+    - _UnderlayOffsetX: 1
+    - _UnderlayOffsetY: 0.92
+    - _UnderlaySoftness: 0
+    - _VertexOffsetX: 0
+    - _VertexOffsetY: 0
+    - _WeightBold: 0.75
+    - _WeightNormal: 0
+    m_Colors:
+    - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
+    - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
+    - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
+    - _GlowColor: {r: 0, g: 1, b: 0, a: 0.5}
+    - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
+    - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
+    - _UnderlayColor: {r: 0.7156938, g: 0.597202, b: 0.2581829, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1211810260
 GameObject:
   m_ObjectHideFlags: 0
@@ -26932,7 +26914,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-392900
+  m_Name: pb_Mesh-37350
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -27289,7 +27271,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-400770
+  m_Name: pb_Mesh-42842
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -27905,11 +27887,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5703055339945375436, guid: 6f8a7af3e840b453c8e1f79ae9453d7a, type: 3}
       propertyPath: m_Size.y
-      value: 2.3407612
+      value: 3.5172317
       objectReference: {fileID: 0}
     - target: {fileID: 5703055339945375436, guid: 6f8a7af3e840b453c8e1f79ae9453d7a, type: 3}
       propertyPath: m_Center.y
-      value: 1.2479331
+      value: 1.8361684
       objectReference: {fileID: 0}
     - target: {fileID: 5703055339945375436, guid: 6f8a7af3e840b453c8e1f79ae9453d7a, type: 3}
       propertyPath: m_Center.z
@@ -28644,7 +28626,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-396796
+  m_Name: pb_Mesh-41246
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -29586,7 +29568,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-400794
+  m_Name: pb_Mesh-42866
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -31318,7 +31300,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-400782
+  m_Name: pb_Mesh-42854
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -31844,7 +31826,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-396120
+  m_Name: pb_Mesh-40570
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -33401,7 +33383,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-400758
+  m_Name: pb_Mesh-42830
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -33689,7 +33671,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-386090
+  m_Name: pb_Mesh-30538
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -34220,7 +34202,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-386738
+  m_Name: pb_Mesh-31186
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -34508,7 +34490,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-395716
+  m_Name: pb_Mesh-40166
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -34845,7 +34827,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-386796
+  m_Name: pb_Mesh-31244
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -35730,6 +35712,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Donation
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fb556a17a2d61c248a1cd9caaf8f6107, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb556a17a2d61c248a1cd9caaf8f6107, type: 3}
 --- !u!1001 &1642213200
@@ -36298,7 +36284,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-390494
+  m_Name: pb_Mesh-34942
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -37654,6 +37640,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: fb556a17a2d61c248a1cd9caaf8f6107, type: 3}
       propertyPath: m_Name
       value: Donation (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fb556a17a2d61c248a1cd9caaf8f6107, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb556a17a2d61c248a1cd9caaf8f6107, type: 3}
@@ -41728,11 +41718,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5703055339945375436, guid: 6f8a7af3e840b453c8e1f79ae9453d7a, type: 3}
       propertyPath: m_Size.y
-      value: 2.3407612
+      value: 3.5172317
       objectReference: {fileID: 0}
     - target: {fileID: 5703055339945375436, guid: 6f8a7af3e840b453c8e1f79ae9453d7a, type: 3}
       propertyPath: m_Center.y
-      value: 1.2479331
+      value: 1.8361684
       objectReference: {fileID: 0}
     - target: {fileID: 5703055339945375436, guid: 6f8a7af3e840b453c8e1f79ae9453d7a, type: 3}
       propertyPath: m_Center.z
@@ -42443,6 +42433,40 @@ PrefabInstance:
       objectReference: {fileID: 395042487}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44106a5dbb4a3ca499643702deb30c6b, type: 3}
+--- !u!21 &1958499494
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Default UI Material
+  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1961721379
 GameObject:
   m_ObjectHideFlags: 0
@@ -42607,7 +42631,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-395138
+  m_Name: pb_Mesh-39588
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -43771,7 +43795,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-391816
+  m_Name: pb_Mesh-36264
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -45466,6 +45490,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Donation (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fb556a17a2d61c248a1cd9caaf8f6107, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb556a17a2d61c248a1cd9caaf8f6107, type: 3}
 --- !u!4 &2068855710 stripped
@@ -45489,8 +45517,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.022373213, y: 0.042276327, z: 0.047284827}
-  m_Center: {x: 0.00000065393317, y: -0.000003662026, z: 0.01238867}
+  m_Size: {x: 0.022373213, y: 0.042276327, z: 0.096872084}
+  m_Center: {x: 0.00000065393317, y: -0.0000036620263, z: 0.037182305}
 --- !u!1001 &2069523775
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46527,7 +46555,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-396260
+  m_Name: pb_Mesh-40710
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -46775,7 +46803,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh301890
+  m_Name: pb_Mesh60664
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -51678,6 +51706,24 @@ PrefabInstance:
       objectReference: {fileID: 2053239901}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb378f7f681d8cc4cb2ffd88806574e8, type: 3}
+--- !u!1 &2845466453606144359 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2457679015810627096, guid: cb378f7f681d8cc4cb2ffd88806574e8, type: 3}
+  m_PrefabInstance: {fileID: 2845466453606144358}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2845466453606144360
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2845466453606144359}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.011674214, y: 0.14295617, z: 0.028678434}
+  m_Center: {x: -0.075128175, y: 0.03958193, z: 0.008918768}
 --- !u!1001 &2848160285013077163
 PrefabInstance:
   m_ObjectHideFlags: 0
