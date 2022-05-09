@@ -96,10 +96,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ca20676ec48c3409171183f67f2866, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startsOpen: 0
+  startingState: 0
   openOffset: {x: 0, y: 2.86, z: 0}
-  collider: {fileID: 7443111173053107395}
+  collider: {fileID: 0}
   visualTransform: {fileID: 1418382923017800059}
+  timer: 0
 --- !u!1 &7443111173053107405
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,7 +113,8 @@ GameObject:
   - component: {fileID: 7443111173053107392}
   - component: {fileID: 7443111173053107393}
   - component: {fileID: 7443111173053107394}
-  - component: {fileID: 7443111173053107395}
+  - component: {fileID: 6487312175655495438}
+  - component: {fileID: 4706597857794968518}
   m_Layer: 6
   m_Name: Collision
   m_TagString: Door
@@ -399,7 +401,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7443111173053107405}
   m_Mesh: {fileID: 0}
---- !u!64 &7443111173053107395
+--- !u!64 &6487312175655495438
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -410,9 +412,22 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!65 &4706597857794968518
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7443111173053107405}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.17211819, y: 1.8850651, z: 2.1818352}
+  m_Center: {x: 0.08605909, y: 3.8373318, z: -1.0257816}
 --- !u!1001 &8924182017690788153
 PrefabInstance:
   m_ObjectHideFlags: 0
