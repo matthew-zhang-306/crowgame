@@ -15,6 +15,7 @@ public class ResetRock : MonoBehaviour
         if (other.CompareTag("Peck"))
         {
             //being pecked, reset
+            Managers.AudioManager.PlaySound("meow");
             ResetBoxes();
         }
     }
