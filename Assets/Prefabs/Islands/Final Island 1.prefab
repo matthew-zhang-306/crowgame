@@ -33633,6 +33633,8 @@ GameObject:
   - component: {fileID: 6408959947229030053}
   - component: {fileID: 6408959947229030054}
   - component: {fileID: 6408959947229030055}
+  - component: {fileID: 2375253859916637258}
+  - component: {fileID: 5611579223720632280}
   m_Layer: 6
   m_Name: Circle
   m_TagString: Untagged
@@ -33718,6 +33720,31 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2124705421725058983, guid: d722586ce6cc6674abc54c74633e1865, type: 3}
+--- !u!65 &2375253859916637258
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6408959947229030057}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.023629058, y: 0.02362906, z: 0.007587998}
+  m_Center: {x: 0.0003415821, y: -7.848925e-11, z: 0.0008778875}
+--- !u!114 &5611579223720632280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6408959947229030057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd8a2450cc128fd4a97f8d442c68fc3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6408959947229852555
 GameObject:
   m_ObjectHideFlags: 0
@@ -67651,7 +67678,7 @@ GameObject:
   - component: {fileID: 6408959947940420997}
   m_Layer: 6
   m_Name: Raven_Gong
-  m_TagString: Untagged
+  m_TagString: gong
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
