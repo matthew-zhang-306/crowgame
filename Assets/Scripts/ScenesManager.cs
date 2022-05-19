@@ -93,6 +93,10 @@ public class ScenesManager : MonoBehaviour
 
         levelNumber = levelList.hubs.ToList().FindIndex(0, levelList.hubs.Length, h => h.sceneName == scene.name);
         if (levelNumber >= 0) {
+            if (levelNumber > 0)
+            {
+                PlayerPrefsX.SetBool("hasPlayed", true);
+            }
             // we are in a hub level
             return SceneType.HUB;
         }

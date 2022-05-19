@@ -190,6 +190,7 @@ public class MainMenu : MonoBehaviour
 
     public void NewGame()
     {
+        PlayerPrefsX.SetBool("hasPlayed", false);
         Managers.ProgressManager.ResetSavePosition();
         Managers.ProgressManager.ResetStarsCollected();
         Managers.ScenesManager.ChangeScene("IntroCutscene");
